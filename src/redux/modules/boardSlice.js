@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 const boardSlice = createSlice({
   name: "board",
@@ -14,8 +13,8 @@ const boardSlice = createSlice({
     // },
     loadBoard: (state, action) => {},
     createBoard(state, action) {
-      console.log(action.payload);
-      state.list.push(action.payload);
+      console.log("리듀서", action.payload);
+      // state.list.push(action.payload);
     },
     updateBoard(state, action) {},
     reamoveBoard(state, action) {},
