@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import Header from './Header';
+import styled from "styled-components";
+import Header from "./Header";
 
 const Main = () => {
   return (
@@ -16,7 +16,7 @@ const Main = () => {
 };
 
 const Title = styled.h1`
-  color: ${props => props.theme.color.primary};
+  color: ${(props) => props.theme.color.primary};
 `;
 
 const Container = styled.div`
