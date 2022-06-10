@@ -7,8 +7,9 @@ import { Link } from "react-router-dom";
 //styled
 import styled from "styled-components";
 //redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { createBoard } from "../redux/modules/boardSlice";
+import { loadBoard } from "../redux/modules/boardSlice";
 //firebase
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../shared/firebase";
@@ -16,12 +17,22 @@ import { storage } from "../shared/firebase";
 import axios from "axios";
 
 const Write = () => {
+  //삭제할거
+  // LOAD;
+  React.useEffect(() => {
+    dispatch(LoadBoardDB());
+  }, []);
+  const topics = useSelector((list) => list.board); //
+  console.log("aa", topics);
+
   const dispatch = useDispatch();
   const text = React.useRef(null);
-  const file_link_ref = React.useRef("");
+  const file_link_ref = React.useRef([]);
   const [img, setImg] = React.useState("");
   const [imageSrc, setImageSrc] = React.useState("");
-
+  // let imgMultiple = { ...img };
+  // console.log(img[1]);
+  // console.log(imgMultiple);
   //사진 미리보기
   const encodeFileToBase64 = (fileBlob) => {
     const reader = new FileReader();
@@ -37,8 +48,8 @@ const Write = () => {
   //서버에 넘겨줄 데이터 목록
   const getInputData = () => {
     const content = text.current?.value;
-    const imageUrl = file_link_ref.current?.url;
-    console.log("abcc", imageUrl);
+    const imageUrl = file_link_ref.current;
+    console.log(imageUrl);
     if (!content) {
       alert("글 내용을 입력해주세요.");
       return false;
@@ -54,37 +65,51 @@ const Write = () => {
     return contents_obj;
   };
 
+  //데이터를 스토리지에 올림
   const upLoadFB = async () => {
-    const uploded_file = await uploadBytes(
-      ref(storage, `images/${img.name}`), //경로
-      img //어떤파일 올릴지
-    );
-    const file_url = await getDownloadURL(uploded_file.ref);
-    //링크를 담는다.
-    file_link_ref.current = { url: file_url };
-    console.log("abc", file_link_ref);
-
+    for (let i = 0; i < img.length; i++) {
+      const uploded_file = await uploadBytes(
+        ref(storage, `images/${img[i].name}`), //경로
+        img[i] //어떤파일 올릴지
+      );
+      const file_url = await getDownloadURL(uploded_file.ref);
+      //링크를 담는다.
+      file_link_ref.current.push(file_url);
+    }
     //데이터를 리덕스에 옮김
-    // const createBoardData = () => {
     const contents_obj = getInputData();
     if (!contents_obj) return;
     const new_contents_obj = {
       ...contents_obj,
     };
-    await dispatch(createBoard({ ...new_contents_obj }));
-    // };
+    await dispatch(CreateBoardDB({ ...new_contents_obj }));
+  };
 
-    await axios
-      .post("http://localhost:5001/board", contents_obj)
-      .then((response) => {
-        console.log(response);
-      });
+  //미들웨어
+  const CreateBoardDB = (contents_obj) => {
+    return async function (dispatch) {
+      await axios
+        .post("http://localhost:5001/board", contents_obj)
+        .then((response) => {
+          // console.log(response);
+        });
+      dispatch(createBoard(contents_obj));
+    };
+  };
+
+  const LoadBoardDB = () => {
+    return async function (dispatch) {
+      await axios.get("http://localhost:5001/board").then((response) => {
+        console.log(response.data);
+        dispatch(loadBoard(response.data));
+      }); //혹시라도 데이터를 더 넣어야하거나 헤더 컨피그 설정 추가하고싶으면 두번째 인자에 넣음
+    };
   };
 
   return (
     <WriteWrap>
       <FormWrap>
-        <Title>{1 === 1 ? "작성페이지" : "수정페이지"}</Title>
+        <Title>{1 === 1 ? "글 쓰기" : "글 수정"}</Title>
 
         <div>
           <label htmlFor="file">
@@ -92,11 +117,12 @@ const Write = () => {
           </label>
           <input
             type="file"
+            multiple
             id="file"
             accept="image/jpg, image/png, image/jpeg"
             onChange={(e) => {
-              encodeFileToBase64(e.target.files[0]);
-              setImg(e.target.files[0]);
+              // encodeFileToBase64(e.target.files);
+              setImg(e.target.files);
             }}
           />
         </div>
