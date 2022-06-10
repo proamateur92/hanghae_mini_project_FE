@@ -5,6 +5,9 @@ import { loadBoard } from '../redux/modules/boardSlice';
 import styled from 'styled-components';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
+import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
+import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -16,11 +19,16 @@ const Main = () => {
     dispatch(loadBoard(response.data));
   };
 
-  console.log(boards.length);
   useEffect(() => {
     getData();
   }, []);
 
+  const movePage = event => {
+    console.log(event);
+    console.log(event.data);
+    // navigate(`/${board.articleId}`, { state: board })}
+    // navigate(`/write/${board.articleId}`, { state: board })}
+  };
   return (
     <>
       <Header />
@@ -31,12 +39,36 @@ const Main = () => {
               boards.map(board => (
                 <Item key={board.articleId} onClick={() => navigate(`/${board.articleId}`, { state: board })}>
                   <Text>
-                    <Nickname>{board.nickName}</Nickname>
+                    <Top>
+                      <Nickname>{board.nickName}</Nickname>
+                      <Edit>
+                        <Icon>
+                          <FontAwesomeIcon
+                            onClick={e => {
+                              e.stopPropagation();
+                              navigate(`/write/${board.articleId}`, { state: board });
+                            }}
+                            icon={faPencil}
+                            size='xl'
+                          />
+                        </Icon>
+                        <Icon>
+                          <FontAwesomeIcon icon={faTrashCan} size='xl' />
+                        </Icon>
+                      </Edit>
+                    </Top>
                     <Content>{board.content}</Content>
                   </Text>
                   <ImageBox>
                     <Image src={board.imageURL} />
                   </ImageBox>
+                  <Detail>
+                    <Like>
+                      <FontAwesomeIcon icon={faThumbsUp} size='xl' />
+                      <Count>2</Count>
+                    </Like>
+                    <Comment>댓글 2개</Comment>
+                  </Detail>
                 </Item>
               ))}
           </List>
@@ -55,23 +87,23 @@ const Container = styled.div`
 const List = styled.div``;
 const Box = styled.div`
   @media (max-width: 767px) {
-    width: 90%;
-    max-width: 300px;
+    width: 100%;
+    max-width: 270px;
   }
 
   @media (min-width: 768px) and (max-width: 991px) {
-    width: 90%;
-    max-width: 991px;
+    width: 100%;
+    max-width: 500px;
   }
 
   @media (min-width: 992px) and (max-width: 1199px) {
-    width: 90%;
-    max-width: 991px;
+    width: 100%;
+    max-width: 700px;
   }
 
   @media (min-width: 1200px) {
-    width: 90%;
-    max-width: 1200px;
+    width: 100%;
+    max-width: 1000px;
   }
 `;
 
@@ -89,6 +121,30 @@ const Item = styled.div`
   }
 `;
 
+const Icon = styled.div``;
+const Top = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  ${Icon} {
+    margin-left: 10px;
+  }
+  ${Icon}:hover {
+    transform: scale(1.1);
+  }
+  ${Icon}:first-child:hover {
+    color: #076be1;
+  }
+  ${Icon}:last-child:hover {
+    color: red;
+  }
+`;
+
+const Edit = styled.div`
+  display: flex;
+`;
+
 const Nickname = styled.span``;
 const Content = styled.span``;
 const Text = styled.div`
@@ -97,7 +153,6 @@ const Text = styled.div`
   padding: 30px 50px;
   ${Nickname} {
     display: block;
-    margin-bottom: 15px;
     font-weight: bold;
     font-size: 30px;
   }
@@ -115,4 +170,25 @@ const ImageBox = styled.div`
   }
 `;
 
+const Detail = styled.div`
+  margin: 0 10px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+`;
+
+const Comment = styled.span``;
+const Count = styled.span``;
+const Like = styled.div`
+  color: #000;
+  &:hover {
+    color: #076be1;
+    transform: scale(1.1);
+    font-weight: bold;
+  }
+  ${Count} {
+    margin-left: 5px;
+  }
+`;
 export default Main;
