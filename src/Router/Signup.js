@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHouse } from "@fortawesome/free-solid-svg-icons";
-import Modal from "../components/Modal"; //modal
 
 const Signup = () => {
   const navigate = useNavigate;
@@ -11,17 +10,6 @@ const Signup = () => {
   const password_ref = React.useRef(null);
   const confirmPassword_ref = React.useRef(null);
   const nickName_ref = React.useRef(null);
-
-  //modal
-  const [modalOpen, setModalOpen] = React.useState(false);
-
-  const openModal = () => {
-    setModalOpen(true);
-  };
-  const closeModal = () => {
-    setModalOpen(false);
-  };
-  //modal
 
   const emailCheck = (email) => {
     let _reg =
@@ -130,12 +118,6 @@ const Signup = () => {
           ></input>
         </Input>
         <Btn onClick={signup}>회원가입</Btn>
-        <Btn onClick={openModal}>modal test</Btn>
-        <Modal
-          open={modalOpen}
-          close={closeModal}
-          header="Modal heading"
-        ></Modal>
       </SignupWrap>
     </Container>
   );
