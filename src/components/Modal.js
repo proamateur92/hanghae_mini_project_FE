@@ -3,7 +3,8 @@ import styled from "styled-components";
 import "../assets/css/modal.css";
 import { useNavigate } from "react-router-dom";
 
-const Modal = (props) => {
+//Signup Modal
+const ModalSignup = (props) => {
   const navigate = useNavigate;
   const email_ref = React.useRef(null);
   const password_ref = React.useRef(null);
@@ -53,6 +54,27 @@ const Modal = (props) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close } = props;
 
+  // const callSomethingAxios = () => {
+  //   //post
+  //   let userdata = {
+  //     email: email_ref.currnet.value,
+  //     nickname: nickName_ref.current.value,
+  //     password: password_ref.current.value,
+  //     confirmPassword: confirmPassword_ref.current.value,
+  //   };
+  //   axios
+  //     .post("api", userdata)
+  //     //api,{데이터}, {config}
+  //     .then((response) => {
+  //       console.log(response);
+  //     });
+  // };
+  // //axios가 알아서 json화해서 요청을 보내기 때문
+
+  // React.useEffect(() => {
+  //   callSomethingAxios();
+  // });
+
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div className={open ? "openModal modal" : "modal"}>
@@ -69,7 +91,6 @@ const Modal = (props) => {
               <SignupHeader>
                 <SignupTitle>SIGN UP</SignupTitle>
               </SignupHeader>
-
               <Input>
                 <label htmlFor="email">ID</label>
 
@@ -77,6 +98,7 @@ const Modal = (props) => {
                 <br />
                 <p>이메일로 아이디를 작성해주세요!</p>
               </Input>
+
               <Input>
                 <label htmlFor="nickName">NickName</label>
                 <br />
@@ -116,6 +138,98 @@ const Modal = (props) => {
     </div>
   );
 };
+//Login Modal
+const ModalLogin = (props) => {
+  const navigate = useNavigate();
+  const email_ref = React.useRef(null);
+  const password_ref = React.useRef(null);
+
+  const emailCheck = (email) => {
+    let _reg =
+      /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
+    return _reg.test(email);
+  };
+
+  const login = async () => {
+    //벨리데이션 필수!
+    if (email_ref.current.value === "" || password_ref.current.value === "") {
+      window.alert("아이디와 비밀번호를 입력하세요!");
+      return;
+    }
+    if (!emailCheck(email_ref.current.value)) {
+      window.alert("이메일 형식이 맞지 않습니다!");
+      return;
+    } else {
+      navigate("/");
+    }
+  };
+  // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
+  const { open, close } = props;
+
+  // const callSomethingAxios = () => {
+  //   //post
+  //   let userdata = {
+  //     email: email_ref.currnet.value,
+  //     nickname: nickName_ref.current.value,
+  //     password: password_ref.current.value,
+  //     confirmPassword: confirmPassword_ref.current.value,
+  //   };
+  //   axios
+  //     .post("api", userdata)
+  //     //api,{데이터}, {config}
+  //     .then((response) => {
+  //       console.log(response);
+  //     });
+  // };
+  // //axios가 알아서 json화해서 요청을 보내기 때문
+
+  // React.useEffect(() => {
+  //   callSomethingAxios();
+  // });
+
+  return (
+    // 모달이 열릴때 openModal 클래스가 생성된다.
+    <div className={open ? "openModal modal" : "modal"}>
+      {open ? (
+        <section>
+          <header>
+            <button className="close" onClick={close}>
+              &times;
+            </button>
+          </header>
+          <main>
+            {" "}
+            <SignupWrap>
+              <SignupHeader>
+                <SignupTitle>LOG IN</SignupTitle>
+              </SignupHeader>
+
+              <Input>
+                <label htmlFor="email">ID</label>
+
+                <input id="email" type="email" ref={email_ref} required></input>
+                <br />
+                <p>이메일로 아이디를 작성해주세요!</p>
+              </Input>
+
+              <Input>
+                <label htmlFor="password">PW</label>
+                <input
+                  id="password"
+                  type="password"
+                  ref={password_ref}
+                  required
+                ></input>
+                <p>3 ~ 10자 영문, 숫자 및 특수문자조합</p>
+              </Input>
+              <Btn onClick={login}>로그인</Btn>
+            </SignupWrap>
+          </main>
+        </section>
+      ) : null}
+    </div>
+  );
+};
 
 const SignupTitle = styled.h1`
   color: #e07575;
@@ -139,16 +253,17 @@ const SignupWrap = styled.div`
   align-items: center;
   justify-content: center;
 `;
+
 const Input = styled.div`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   margin: 10px 0;
   color: #e07575;
   font-size: 1.2rem;
   width: 50%;
   p {
     color: #999494;
-    font-size: 15px;
+    font-size: 13px;
   }
   input {
     width: 100%;
@@ -175,4 +290,5 @@ const Btn = styled.button`
     background-color: #e07575;
   }
 `;
-export default Modal;
+
+export { ModalSignup, ModalLogin };
