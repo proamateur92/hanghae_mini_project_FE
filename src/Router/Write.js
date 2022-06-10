@@ -12,6 +12,8 @@ import { createBoard } from "../redux/modules/boardSlice";
 //firebase
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../shared/firebase";
+//axios
+import axios from "axios";
 
 const Write = () => {
   const dispatch = useDispatch();
@@ -19,6 +21,18 @@ const Write = () => {
   const file_link_ref = React.useRef("");
   const [img, setImg] = React.useState("");
   const [imageSrc, setImageSrc] = React.useState("");
+
+  //사진 미리보기
+  const encodeFileToBase64 = (fileBlob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
 
   //서버에 넘겨줄 데이터 목록
   const getInputData = () => {
@@ -40,18 +54,6 @@ const Write = () => {
     return contents_obj;
   };
 
-  //사진 미리보기
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        resolve();
-      };
-    });
-  };
-
   const upLoadFB = async () => {
     const uploded_file = await uploadBytes(
       ref(storage, `images/${img.name}`), //경로
@@ -71,6 +73,12 @@ const Write = () => {
     };
     await dispatch(createBoard({ ...new_contents_obj }));
     // };
+
+    await axios
+      .post("http://localhost:5001/board", contents_obj)
+      .then((response) => {
+        console.log(response);
+      });
   };
 
   return (
@@ -114,7 +122,7 @@ const Write = () => {
             type="button"
             onClick={() => {
               upLoadFB();
-              // createBoardData();
+              // callSomethingAxios();
             }}
             value={1 === 1 ? "게시글 작성" : "게시글 수정"}
           />
