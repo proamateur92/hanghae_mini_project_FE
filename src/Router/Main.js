@@ -4,10 +4,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loadBoard } from '../redux/modules/boardSlice';
 import styled from 'styled-components';
 import Header from './Header';
+import { useNavigate } from 'react-router-dom';
 
 const Main = () => {
   const dispatch = useDispatch();
-  // const { boards } = useSelector(state => state.board.list);
+  const navigate = useNavigate();
   const boards = useSelector(state => state.board.list);
 
   const getData = async () => {
@@ -28,7 +29,7 @@ const Main = () => {
           <List>
             {boards &&
               boards.map(board => (
-                <Item key={board.articleId}>
+                <Item key={board.articleId} onClick={() => navigate(`/${board.articleId}`, { state: board })}>
                   <Text>
                     <Nickname>{board.nickName}</Nickname>
                     <Content>{board.content}</Content>
@@ -75,10 +76,17 @@ const Box = styled.div`
 `;
 
 const Item = styled.div`
-  margin: 50px 0;
+  margin: 100px 0;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+  transition: 0.4s;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    filter: brightness(90%);
+    transform: scale(1.05);
+  }
 `;
 
 const Nickname = styled.span``;
@@ -101,7 +109,6 @@ const Text = styled.div`
 const Image = styled.img``;
 const ImageBox = styled.div`
   width: 100%;
-  background-color: red;
   font-size: 0;
   ${Image} {
     width: 100%;
