@@ -9,15 +9,15 @@ const Main = () => {
   const dispatch = useDispatch();
   // const { boards } = useSelector(state => state.board.list);
   const boards = useSelector(state => state.board.list);
+
   const getData = async () => {
     const response = await axios.get('http://localhost:5000/boards');
     dispatch(loadBoard(response.data));
   };
 
+  console.log(boards.length);
   useEffect(() => {
-    if (boards.length === 0) {
-      getData();
-    }
+    getData();
   }, []);
 
   return (
@@ -77,6 +77,7 @@ const Box = styled.div`
 const Item = styled.div`
   margin: 50px 0;
   border-radius: 10px;
+  overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 `;
 
