@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from './Header';
@@ -10,6 +10,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const Main = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMore, setIsMore] = useState(false);
+  const [isComment, setIsComment] = useState(false);
   const boards = useSelector(state => state.board.list);
 
   return (
@@ -20,7 +22,7 @@ const Main = () => {
           <List>
             {boards &&
               boards.map(board => (
-                <Item key={board.articleId} onClick={() => navigate(`/${board.articleId}`, { state: board })}>
+                <Item key={board.articleId}>
                   <Text>
                     <Top>
                       <Nickname>{board.nickName}</Nickname>
@@ -32,22 +34,38 @@ const Main = () => {
                               navigate(`/write/${board.articleId}`, { state: board });
                             }}
                             icon={faPencil}
-                            size='xl'
+                            size='lg'
                           />
                         </Icon>
                         <Icon>
-                          <FontAwesomeIcon icon={faTrashCan} size='xl' />
+                          <FontAwesomeIcon icon={faTrashCan} size='lg' />
                         </Icon>
                       </Edit>
                     </Top>
-                    <Content>{board.content}</Content>
+                    {isMore ? (
+                      <>
+                        <Content>{board.content}</Content>
+                        <More onClick={() => setIsMore(false)}>접기</More>
+                      </>
+                    ) : (
+                      <>
+                        {board.content.length > 30 ? (
+                          <Content>
+                            {board.content.slice(0, 60) + '...'}
+                            <More onClick={() => setIsMore(true)}>더보기</More>
+                          </Content>
+                        ) : (
+                          <Content>{board.content}</Content>
+                        )}
+                      </>
+                    )}
                   </Text>
                   <ImageBox>
                     <Image src={board.imageURL} />
                   </ImageBox>
                   <Detail>
                     <Like>
-                      <FontAwesomeIcon icon={faThumbsUp} size='xl' />
+                      <FontAwesomeIcon icon={faThumbsUp} size='lg' />
                       <Count>2</Count>
                     </Like>
                     <Comment>댓글 2개</Comment>
@@ -95,7 +113,6 @@ const Item = styled.div`
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  cursor: pointer;
   transition: 0.4s;
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
@@ -111,7 +128,7 @@ const Top = styled.div`
   align-items: center;
   margin-bottom: 15px;
   ${Icon} {
-    margin-left: 10px;
+    margin-left: 15px;
   }
   ${Icon}:hover {
     transform: scale(1.1);
@@ -130,17 +147,24 @@ const Edit = styled.div`
 
 const Nickname = styled.span``;
 const Content = styled.span``;
+const More = styled.span``;
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 30px 50px;
+  padding: 30px 20px;
   ${Nickname} {
+    color: #9c9c9c;
     display: block;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 16px;
   }
   ${Content} {
-    font-size: 20px;
+    font-size: 16px;
+  }
+  ${More} {
+    color: #383838;
+    font-weight: bold;
+    cursor: pointer;
   }
 `;
 
@@ -153,15 +177,21 @@ const ImageBox = styled.div`
   }
 `;
 
+const Comment = styled.span``;
 const Detail = styled.div`
   margin: 0 10px;
   padding: 15px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 20px;
+  ${Comment} {
+    color: #383838;
+    cursor: pointer;
+    font-size: 16px;
+  }
 `;
 
-const Comment = styled.span``;
 const Count = styled.span``;
 const Like = styled.div`
   color: #000;
