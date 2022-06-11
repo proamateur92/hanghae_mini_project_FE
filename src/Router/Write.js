@@ -56,12 +56,12 @@ const Write = () => {
     }
     const contents_obj = {
       content: content,
-      imageUrl: imageUrl,
+      imageURL: imageUrl,
       date: moment().format("YYYY-MM-DD HH:mm:ss"),
       likeCount: 0,
       commentCount: 0,
     };
-    console.log(imageUrl);
+    // console.log(imageURL);
     return contents_obj;
   };
 
