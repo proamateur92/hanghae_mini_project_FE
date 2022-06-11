@@ -14,21 +14,16 @@ const Main = () => {
   const navigate = useNavigate();
   const boards = useSelector(state => state.board.list);
 
-  const getData = async () => {
-    const response = await axios.get('http://localhost:5000/boards');
-    dispatch(loadBoard(response.data));
+  const LoadBoardDB = () => {
+    return async function (dispatch) {
+      const response = await axios.get('http://localhost:5000/boards');
+      dispatch(loadBoard(response.data));
+    };
   };
 
   useEffect(() => {
-    getData();
+    dispatch(LoadBoardDB());
   }, []);
-
-  const movePage = event => {
-    console.log(event);
-    console.log(event.data);
-    // navigate(`/${board.articleId}`, { state: board })}
-    // navigate(`/write/${board.articleId}`, { state: board })}
-  };
   return (
     <>
       <Header />
