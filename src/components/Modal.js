@@ -63,10 +63,11 @@ const ModalSignup = (props) => {
     }
   };
 
-  // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
+  // 모달 열기, 닫기를 부모로부터 받아옴
   const { open, close } = props;
 
-  // const callSomethingAxios = () => {
+  // const SignupAxios = () => {
+  //   // 백엔드에 보내줄 데이터들
   //   //post
   //   let userdata = {
   //     email: email_ref.currnet.value,
@@ -75,16 +76,16 @@ const ModalSignup = (props) => {
   //     confirmPassword: confirmPassword_ref.current.value,
   //   };
   //   axios
-  //     .post("api", userdata)
+  //     .post("받은데이터api", userdata)
   //     //api,{데이터}, {config}
   //     .then((response) => {
   //       console.log(response);
   //     });
   // };
-  // //axios가 알아서 json화해서 요청을 보내기 때문
+  //axios가 알아서 json화해서 요청을 보내기 때문
 
   // React.useEffect(() => {
-  //   callSomethingAxios();
+  //   SignupAxios();
   // });
 
   return (
@@ -105,7 +106,6 @@ const ModalSignup = (props) => {
               </SignupHeader>
               <Input>
                 <label htmlFor="email">ID</label>
-
                 <input id="email" type="email" ref={email_ref} required></input>
                 <br />
                 <p>이메일로 아이디를 작성해주세요!</p>
@@ -143,7 +143,14 @@ const ModalSignup = (props) => {
                   required
                 ></input>
               </Input>
-              <Btn onClick={signup}>회원가입</Btn>
+              <Btn
+                onClick={() => {
+                  signup();
+                  // SignupAxios();
+                }}
+              >
+                회원가입
+              </Btn>
             </SignupWrap>
           </main>
         </section>
@@ -151,6 +158,7 @@ const ModalSignup = (props) => {
     </div>
   );
 };
+
 //Login Modal
 const ModalLogin = (props) => {
   const navigate = useNavigate();
@@ -182,7 +190,7 @@ const ModalLogin = (props) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close } = props;
 
-  // const callSomethingAxios = () => {
+  // const LoginAxios = () => {
   //   //post
   //   let userdata = {
   //     email: email_ref.currnet.value,
@@ -200,7 +208,7 @@ const ModalLogin = (props) => {
   // //axios가 알아서 json화해서 요청을 보내기 때문
 
   // React.useEffect(() => {
-  //   callSomethingAxios();
+  //   LoginAxios();
   // });
 
   return (
@@ -238,7 +246,14 @@ const ModalLogin = (props) => {
                 ></input>
                 <p>3 ~ 10자 영문, 숫자 및 특수문자조합</p>
               </Input>
-              <Btn onClick={login}>로그인</Btn>
+              <Btn
+                onClick={() => {
+                  login();
+                  // LoginAxios();
+                }}
+              >
+                로그인
+              </Btn>
             </SignupWrap>
           </main>
         </section>
