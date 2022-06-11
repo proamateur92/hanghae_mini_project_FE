@@ -81,24 +81,14 @@ const Container = styled.div`
 
 const List = styled.div``;
 const Box = styled.div`
-  @media (max-width: 767px) {
-    width: 100%;
-    max-width: 270px;
+  @media (min-width: 499px) {
+    width: 90%;
+    max-width: 440px;
   }
 
-  @media (min-width: 768px) and (max-width: 991px) {
-    width: 100%;
-    max-width: 500px;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    width: 100%;
-    max-width: 700px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 100%;
-    max-width: 1000px;
+  @media (min-width: 500px) {
+    width: 90%;
+    max-width: 450px;
   }
 `;
 
@@ -112,7 +102,6 @@ const Item = styled.div`
   &:hover {
     background-color: rgba(0, 0, 0, 0.1);
     filter: brightness(90%);
-    transform: scale(1.05);
   }
 `;
 
