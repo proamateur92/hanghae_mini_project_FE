@@ -1,17 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faTrashCan, faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Main = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isMore, setIsMore] = useState(false);
+  const [isComment, setIsComment] = useState(false);
   const boards = useSelector(state => state.board.list);
+  const comments = useSelector(state => state.comment.list);
 
+  const commentBox = articleId => {
+    const filteredComment = comments.filter(comment => comment.articleId === articleId);
+    return filteredComment.map(comment => (
+      <>
+        <div>
+          {comment.nickName} {comment.comment}
+        </div>
+      </>
+    ));
+  };
+
+  const onComment = board => {
+    const filteredComment = comments.filter(comment => comment.articleId === board.articleId);
+    return <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {filteredComment.length}개</Comment>;
+  };
   return (
     <>
       <Header />
@@ -20,7 +38,7 @@ const Main = () => {
           <List>
             {boards &&
               boards.map(board => (
-                <Item key={board.articleId} onClick={() => navigate(`/${board.articleId}`, { state: board })}>
+                <Item key={board.articleId}>
                   <Text>
                     <Top>
                       <Nickname>{board.nickName}</Nickname>
@@ -32,36 +50,77 @@ const Main = () => {
                               navigate(`/write/${board.articleId}`, { state: board });
                             }}
                             icon={faPencil}
-                            size='xl'
+                            size='lg'
                           />
                         </Icon>
                         <Icon>
-                          <FontAwesomeIcon icon={faTrashCan} size='xl' />
+                          <FontAwesomeIcon icon={faTrashCan} size='lg' />
                         </Icon>
                       </Edit>
                     </Top>
-                    <Content>{board.content}</Content>
+                    {isMore ? (
+                      <>
+                        <Content>
+                          {board.content}
+                          <More onClick={() => setIsMore(false)}>접기</More>
+                        </Content>
+                      </>
+                    ) : (
+                      <>
+                        {board.content.length > 30 ? (
+                          <Content>
+                            {board.content.slice(0, 60) + '...'}
+                            <More onClick={() => setIsMore(true)}>더보기</More>
+                          </Content>
+                        ) : (
+                          <Content>{board.content}</Content>
+                        )}
+                      </>
+                    )}
                   </Text>
                   <ImageBox>
                     <Image src={board.imageURL} />
                   </ImageBox>
                   <Detail>
                     <Like>
-                      <FontAwesomeIcon icon={faThumbsUp} size='xl' />
+                      <FontAwesomeIcon icon={faThumbsUp} size='lg' />
                       <Count>2</Count>
                     </Like>
-                    <Comment>댓글 2개</Comment>
+                    {onComment(board)}
                   </Detail>
+                  {isComment && (
+                    <>
+                      <span>닉네임</span>
+                      <input type='text' />
+                      {commentBox(board.articleId)}
+                    </>
+                  )}
+                  {!isComment && null}
                 </Item>
               ))}
           </List>
         </Box>
       </Container>
+      <WriteButton>
+        <FontAwesomeIcon onClick={() => navigate('/write')} icon={faSquarePlus} size='3x' />
+      </WriteButton>
     </>
   );
 };
 
+const WriteButton = styled.div`
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  cursor: pointer;
+  transition: 0.4s;
+  &:hover {
+    color: #076be1;
+  }
+`;
+
 const Container = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -69,24 +128,13 @@ const Container = styled.div`
 
 const List = styled.div``;
 const Box = styled.div`
-  @media (max-width: 767px) {
-    width: 100%;
-    max-width: 250px;
+  @media (min-width: 499px) {
+    width: 90%;
+    max-width: 440px;
   }
-
-  @media (min-width: 768px) and (max-width: 991px) {
-    width: 100%;
-    max-width: 400px;
-  }
-
-  @media (min-width: 992px) and (max-width: 1199px) {
-    width: 100%;
-    max-width: 600px;
-  }
-
-  @media (min-width: 1200px) {
-    width: 100%;
-    max-width: 900px;
+  @media (min-width: 500px) {
+    width: 90%;
+    max-width: 450px;
   }
 `;
 
@@ -95,11 +143,8 @@ const Item = styled.div`
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
-  cursor: pointer;
   transition: 0.4s;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
-    filter: brightness(90%);
     transform: scale(1.05);
   }
 `;
@@ -111,7 +156,7 @@ const Top = styled.div`
   align-items: center;
   margin-bottom: 15px;
   ${Icon} {
-    margin-left: 10px;
+    margin-left: 15px;
   }
   ${Icon}:hover {
     transform: scale(1.1);
@@ -130,17 +175,24 @@ const Edit = styled.div`
 
 const Nickname = styled.span``;
 const Content = styled.span``;
+const More = styled.span``;
 const Text = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 30px 50px;
+  padding: 30px 20px;
   ${Nickname} {
+    color: #9c9c9c;
     display: block;
     font-weight: bold;
-    font-size: 30px;
+    font-size: 16px;
   }
   ${Content} {
-    font-size: 20px;
+    font-size: 16px;
+  }
+  ${More} {
+    color: #383838;
+    font-weight: bold;
+    cursor: pointer;
   }
 `;
 
@@ -153,15 +205,21 @@ const ImageBox = styled.div`
   }
 `;
 
+const Comment = styled.span``;
 const Detail = styled.div`
   margin: 0 10px;
   padding: 15px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   font-size: 20px;
+  ${Comment} {
+    color: #383838;
+    cursor: pointer;
+    font-size: 16px;
+  }
 `;
 
-const Comment = styled.span``;
 const Count = styled.span``;
 const Like = styled.div`
   color: #000;
@@ -174,4 +232,5 @@ const Like = styled.div`
     margin-left: 5px;
   }
 `;
+
 export default Main;
