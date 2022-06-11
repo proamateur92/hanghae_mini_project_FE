@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import moment from "moment";
 import { useState } from "react";
 
 //Router
-import { Link } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 //styled
 import styled from "styled-components";
 //redux
@@ -16,22 +16,31 @@ import { storage } from "../shared/firebase";
 //axios
 import axios from "axios";
 
-const Write = () => {
-  //삭제할거
-  // // LOAD;
-  // React.useEffect(() => {
-  //   dispatch(LoadBoardDB());
-  // }, []);
-  // const topics = useSelector((list) => list.board); //
-  // console.log("aa", topics);
 
+const Write = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const text = React.useRef(null);
   const file_link_ref = React.useRef([]);
   const [img, setImg] = React.useState("");
   const [imageSrc, setImageSrc] = React.useState("");
-  //
   const [showImages, setShowImages] = useState([]);
+
+  const { id } = useParams();
+  const board = useSelector((list) => list.board); //
+  //edit_mode
+  const is_edit = id ? true : false;
+  const _post = is_edit ? board.list.find((p) => p.id  === parseInt(id))  : null;
+
+  useEffect(() => {
+    if (is_edit && !_post) {
+      console.log("포스트 정보가 없어요! ㅜㅜ");
+      window.alert("포스트 정보가 없어요! ㅜㅜ");
+      navigate("/")
+      return;
+    }
+  }, []);
+  
 
   
 
@@ -84,6 +93,7 @@ const Write = () => {
           // console.log(response);
         });
       dispatch(createBoard(contents_obj));
+      navigate(-1);
     };
   };
 
@@ -120,19 +130,21 @@ const Write = () => {
       imageUrlLists = imageUrlLists.slice(0, 3);
     }
     setShowImages(imageUrlLists);
+    
   };
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (id) => {
-    setShowImages(showImages.filter((_, index) => index !== id));
+    setShowImages(showImages.filter((l, index) => index !== id));
+    console.log("dsa",showImages, id)
   };
 
 
   return (
     <WriteWrap>
       <FormWrap>
-        <Title>{1 === 1 ? "글 쓰기" : "글 수정"}</Title>
+        <Title>{is_edit ? "글 수정" : "글 쓰기"}</Title>
 
-        <div>
+        <ImgInputWrap>
           <label htmlFor="file" onChange={handleAddImages}>
             <div>이미지 첨부</div>
           <input
@@ -146,24 +158,13 @@ const Write = () => {
             }}
           />
           </label>
-
           {showImages.map((image, id) => (
             <div key={id}>
               <Img src={image?image:"https://t1.daumcdn.net/cfile/blog/225FFE4451C3F7C219"} alt={`${image}-${id}`} />
-              <button onClick={() => handleDeleteImage(id)}>sdf</button>
+              {/* <button onClick={() => handleDeleteImage(id)}>sdf</button> */}
             </div>
           ))}
-
-        </div>
-        <br />
-        {/* <Img
-          src={
-            imageSrc
-              ? imageSrc
-              : "https://t1.daumcdn.net/cfile/blog/225FFE4451C3F7C219"
-          }
-          alt="content-image"
-        /> */}
+        </ImgInputWrap>
         <br />
         <TextInput
           type="text"
@@ -177,9 +178,10 @@ const Write = () => {
             type="button"
             onClick={() => {
               upLoadFB();
+              
               // callSomethingAxios();
             }}
-            value={1 === 1 ? "게시글 작성" : "게시글 수정"}
+            value={is_edit ? "게시글 수정" : "게시글 작성"}
           />
         </InputButtonWrap>
       </FormWrap>
@@ -192,6 +194,7 @@ export default Write;
 //Wrap
 const WriteWrap = styled.div`
   display: flex;
+  box-sizing: border-box;
   flex-direction: column;
   align-items: center;
   align-content: center;
@@ -215,6 +218,10 @@ const WriteWrap = styled.div`
     border: 0;
   }
 `;
+const ImgInputWrap = styled.div`
+border: 1px solid #d3d2d2;
+width:500px;
+`
 const FormWrap = styled.form`
   text-align: center;
 `;
