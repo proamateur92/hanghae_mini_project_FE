@@ -2,6 +2,8 @@ import styled from 'styled-components';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ModalSignup, ModalLogin } from '../components/Modal'; //modal
+import { faBars } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -29,6 +31,7 @@ const Header = () => {
       <List>
         <Item onClick={openLoginModal}>Login</Item>
         <ModalLogin open={modalLoginOpen} close={closeLoginModal} header='Modal heading'></ModalLogin>
+        {/* <FontAwesomeIcon icon={faBars} size='2x' /> */}
         <Item>Logout</Item>
         <Item onClick={openSignupModal}>SignUp</Item>
         <ModalSignup open={modalSignupOpen} close={closeSignupModal} header='Modal heading'></ModalSignup>
@@ -62,10 +65,15 @@ const Logo = styled.div`
 const List = styled.div``;
 const Item = styled.div``;
 const Container = styled.div`
-  padding: 30px;
   display: flex;
   justify-content: space-between;
   background-color: ${props => props.theme.color.primary};
+  @media (max-width: 499px) {
+    padding: 30px;
+  }
+  @media (min-width: 500px) {
+    padding: 25px;
+  }
   ${List} {
     display: flex;
     align-items: center;
