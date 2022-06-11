@@ -1,3 +1,7 @@
+import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { loadBoard } from '../redux/modules/boardSlice';
 import Detail from './Detail';
 import Login from './Login';
 import Main from './Main';
@@ -7,6 +11,19 @@ import Write from './Write';
 import { Routes, Route } from 'react-router-dom';
 
 const Router = () => {
+  const dispatch = useDispatch();
+
+  const loadBoardDB = () => {
+    return async function (dispatch) {
+      const response = await axios.get('http://localhost:5000/boards');
+      dispatch(loadBoard(response.data));
+    };
+  };
+
+  useEffect(() => {
+    dispatch(loadBoardDB());
+  }, []);
+
   return (
     <Routes>
       <Route path='/' element={<Main />} />
