@@ -18,11 +18,7 @@ import axios from "axios";
 
 const Write = () => {
   //삭제할거
-<<<<<<< HEAD
   // // LOAD;
-=======
-  // LOAD;
->>>>>>> 1f361735a2c2cb0adfc8f0189a403d1e1894520a
   // React.useEffect(() => {
   //   dispatch(LoadBoardDB());
   // }, []);
@@ -99,8 +95,6 @@ const Write = () => {
   //     }); //혹시라도 데이터를 더 넣어야하거나 헤더 컨피그 설정 추가하고싶으면 두번째 인자에 넣음
   //   };
   // };
-<<<<<<< HEAD
-=======
 
   //사진 미리보기
   const encodeFileToBase64 = (fileBlob) => {
@@ -113,7 +107,6 @@ const Write = () => {
       };
     });
   };
->>>>>>> 1f361735a2c2cb0adfc8f0189a403d1e1894520a
 
   const handleAddImages = (e) => {
     const imageLists = e.target.files;
