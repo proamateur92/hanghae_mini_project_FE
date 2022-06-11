@@ -130,14 +130,7 @@ const Container = styled.div`
 
 const List = styled.div``;
 const Box = styled.div`
-  @media (min-width: 499px) {
-    width: 90%;
-    max-width: 440px;
-  }
-  @media (min-width: 500px) {
-    width: 90%;
-    max-width: 450px;
-  }
+  padding: 20px;
 `;
 
 const Item = styled.div`
