@@ -9,40 +9,51 @@ const ModalSignup = (props) => {
   const email_ref = React.useRef(null);
   const password_ref = React.useRef(null);
   const confirmPassword_ref = React.useRef(null);
-  const nickName_ref = React.useRef(null);
-  const emailCheck = (email) => {
-    let _reg =
-      /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
-    //이메일 형식으로!
-    return _reg.test(email);
-  };
-  const passwordCheck = (password) => {
-    let _reg =
-      /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*#?&])[0-9a-zA-Z@$!%*#?&]{3,10}$/;
-    //비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로
-    return _reg.test(password);
-  };
+  const nickname_ref = React.useRef(null);
+  //벨리데이션 주석처리(마지막에 살리기)
+  // const emailCheck = (email) => {
+  //   let _reg =
+  //     /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
+  //   //이메일 형식으로!
+  //   return _reg.test(email);
+  // };
+  // const passwordCheck = (password) => {
+  //   let _reg =
+  //     /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*#?&])[0-9a-zA-Z@$!%*#?&]{3,10}$/;
+  //   //비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로
+  //   return _reg.test(password);
+  // };
+  // const nicknameCheck = (nickname) => {
+  //   let _reg = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{3,8}$/;
+  //   //닉네임은 한글,영문,숫자로 3~8 글자 이내로!
+  //   return _reg.test(nickname);
+  // };
 
   const signup = async () => {
     //벨리데이션 필수!
     if (
       email_ref.current.value === "" ||
       password_ref.current.value === "" ||
-      nickName_ref.current.value === ""
+      nickname_ref.current.value === ""
     ) {
       window.alert("빈칸을 전부 채워주세요!");
       return;
     }
-    if (!emailCheck(email_ref.current.value)) {
-      window.alert("이메일 형식이 맞지 않습니다!");
-      return;
-    }
-    if (!passwordCheck(password_ref.current.value)) {
-      window.alert(
-        "비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로 작성하세요!"
-      );
-      return;
-    }
+    //벨리데이션 주석처리(마지막에 살리기)
+    // if (!emailCheck(email_ref.current.value)) {
+    //   window.alert("이메일 형식이 맞지 않습니다!");
+    //   return;
+    // }
+    // if (!passwordCheck(password_ref.current.value)) {
+    //   window.alert(
+    //     "비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로 작성하세요!"
+    //   );
+    //   return;
+    // }
+    // if (!nicknameCheck(nickname_ref.current.value)) {
+    //   window.alert("닉네임은 한글,영문,숫자로 3~8 글자 이내로 정해주세요!");
+    //   return;
+    // }
     if (password_ref.current.value !== confirmPassword_ref.current.value) {
       window.alert("비밀번호가 일치하지 않습니다.");
       return;
@@ -96,18 +107,19 @@ const ModalSignup = (props) => {
 
                 <input id="email" type="email" ref={email_ref} required></input>
                 <br />
-                <p>이메일로 아이디를 작성해주세요!</p>
+                <p>이메일 형식으로 작성해주세요!</p>
               </Input>
 
               <Input>
-                <label htmlFor="nickName">NickName</label>
+                <label htmlFor="nickname">NickName</label>
                 <br />
                 <input
-                  id="nickName"
-                  type="name"
-                  ref={nickName_ref}
+                  id="nickname"
+                  type="nickname"
+                  ref={nickname_ref}
                   required
                 ></input>
+                <p>3~8자 이내 한글,영문,숫자 </p>
               </Input>
               <Input>
                 <label htmlFor="password">PW</label>
@@ -118,7 +130,7 @@ const ModalSignup = (props) => {
                   ref={password_ref}
                   required
                 ></input>
-                <p>3 ~ 10자 영문, 숫자 및 특수문자조합</p>
+                <p>3~10자이내 영문,숫자,특수문자조합</p>
               </Input>
               <Input>
                 <label htmlFor="confirmPassword">PW CHECK</label>
@@ -138,17 +150,18 @@ const ModalSignup = (props) => {
     </div>
   );
 };
+
 //Login Modal
 const ModalLogin = (props) => {
   const navigate = useNavigate();
   const email_ref = React.useRef(null);
   const password_ref = React.useRef(null);
-
-  const emailCheck = (email) => {
-    let _reg =
-      /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
-    return _reg.test(email);
-  };
+  //벨리데이션 주석처리 (마지막에 풀기)
+  // const emailCheck = (email) => {
+  //   let _reg =
+  //     /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
+  //   return _reg.test(email);
+  // };
 
   const login = async () => {
     //벨리데이션 필수!
@@ -156,10 +169,12 @@ const ModalLogin = (props) => {
       window.alert("아이디와 비밀번호를 입력하세요!");
       return;
     }
-    if (!emailCheck(email_ref.current.value)) {
-      window.alert("이메일 형식이 맞지 않습니다!");
-      return;
-    } else {
+    //벨리데이션 주석처리 (마지막에 풀기)
+    // if (!emailCheck(email_ref.current.value)) {
+    //   window.alert("이메일 형식이 맞지 않습니다!");
+    //   return;
+    // }
+    else {
       navigate("/");
     }
   };
