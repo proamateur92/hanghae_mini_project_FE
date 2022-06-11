@@ -1,7 +1,5 @@
-import axios from 'axios';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadBoard } from '../redux/modules/boardSlice';
 import styled from 'styled-components';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
@@ -14,16 +12,6 @@ const Main = () => {
   const navigate = useNavigate();
   const boards = useSelector(state => state.board.list);
 
-  const LoadBoardDB = () => {
-    return async function (dispatch) {
-      const response = await axios.get('http://localhost:5000/boards');
-      dispatch(loadBoard(response.data));
-    };
-  };
-
-  useEffect(() => {
-    dispatch(LoadBoardDB());
-  }, []);
   return (
     <>
       <Header />
@@ -83,22 +71,22 @@ const List = styled.div``;
 const Box = styled.div`
   @media (max-width: 767px) {
     width: 100%;
-    max-width: 270px;
+    max-width: 250px;
   }
 
   @media (min-width: 768px) and (max-width: 991px) {
     width: 100%;
-    max-width: 500px;
+    max-width: 400px;
   }
 
   @media (min-width: 992px) and (max-width: 1199px) {
     width: 100%;
-    max-width: 700px;
+    max-width: 600px;
   }
 
   @media (min-width: 1200px) {
     width: 100%;
-    max-width: 1000px;
+    max-width: 900px;
   }
 `;
 
