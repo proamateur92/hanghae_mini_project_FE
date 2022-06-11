@@ -15,6 +15,7 @@ const Main = () => {
   const boards = useSelector(state => state.board.list);
   const comments = useSelector(state => state.comment.list);
 
+  // 각 게시글 별 댓글 가져오기
   const commentBox = articleId => {
     const filteredComment = comments.filter(comment => comment.articleId === articleId);
     return filteredComment.map(comment => (
@@ -26,6 +27,7 @@ const Main = () => {
     ));
   };
 
+  // 각 게시글 별 댓글 갯수 값 계산 로직
   const onComment = board => {
     const filteredComment = comments.filter(comment => comment.articleId === board.articleId);
     return <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {filteredComment.length}개</Comment>;
@@ -144,9 +146,6 @@ const Item = styled.div`
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   transition: 0.4s;
-  &:hover {
-    transform: scale(1.05);
-  }
 `;
 
 const Icon = styled.div``;
