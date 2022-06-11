@@ -9,19 +9,30 @@ import PageNotFound from './PageNotFound';
 import Signup from './Signup';
 import Write from './Write';
 import { Routes, Route } from 'react-router-dom';
-
+import { loadComment } from '../redux/modules/commentSlice';
 const Router = () => {
   const dispatch = useDispatch();
 
   const loadBoardDB = () => {
     return async function (dispatch) {
       const response = await axios.get('http://localhost:5000/boards');
+      console.log(response);
+      // const newData = response.data.map(data => return({...response}));
+      // console.log(newData);
       dispatch(loadBoard(response.data));
+    };
+  };
+
+  const loadCommentDB = () => {
+    return async function (dispatch) {
+      const response = await axios.get('http://localhost:5000/comments');
+      dispatch(loadComment(response.data));
     };
   };
 
   useEffect(() => {
     dispatch(loadBoardDB());
+    dispatch(loadCommentDB());
   }, []);
 
   return (
