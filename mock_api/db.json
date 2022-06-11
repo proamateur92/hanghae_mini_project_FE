@@ -8,7 +8,7 @@
       "userId": "user1",
       "nickName": "닉네임1",
       "imageURL": "https://img.sbs.co.kr/newsnet/etv/upload/2019/06/03/30000628847.jpg",
-      "date": "4/23/2021"
+      "date": "2021-04-23"
     },
     {
       "id": 2,
@@ -18,7 +18,60 @@
       "userId": "user2",
       "nickName": "닉네임2",
       "imageURL": "https://w.namu.la/s/272afabb71533a989c5538311a12b76153e8583df72f0f7daaa28290b2f40e372f77d70c16e69ab97a73f0c5976b317100d3a9944d51d88c6d8eaa77c1dd5d1062bf92136a5d8f2433cf6620e0c10ab5e03b529c05424b30ed470eb5f3f7d66d2bc647dd763713d60f7666aee41e7f83",
-      "date": "2/22/2021"
+      "date": "2021-02-21"
+    },
+    {
+      "articleId": 3,
+      "title": "제목3",
+      "content": "내용3내용3내용3내용3내용3내용3내용3내용3",
+      "userId": "user13",
+      "nickName": "닉네임3",
+      "imageURL": "https://newsimg.hankookilbo.com/cms/articlerelease/2021/03/25/731fb1b9-0f9f-4d64-909a-27246d430e8c.jpg",
+      "date": "3/14/2021"
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "articleId": 1,
+      "nickName": "닉네임1",
+      "comment": "댓글111111",
+      "date": "2022-06-11"
+    },
+    {
+      "id": 2,
+      "articleId": 1,
+      "nickName": "닉네임2",
+      "comment": "댓글22222",
+      "date": "2022-04-31"
+    },
+    {
+      "id": 3,
+      "articleId": 1,
+      "nickName": "닉네임3",
+      "comment": "댓글33333",
+      "date": "2022-03-12"
+    },
+    {
+      "id": 4,
+      "articleId": 2,
+      "nickName": "닉네임4",
+      "comment": "댓글111111",
+      "date": "2021-02-22"
+    },
+    {
+      "id": 5,
+      "articleId": 2,
+      "nickName": "닉네임5",
+      "comment": "댓글222222",
+      "date": "2020-06-11"
+    },
+    {
+      "id": 3,
+      "articleId": 3,
+      "nickName": "닉네임6",
+      "comment": "댓글55555",
+      "date": "2022-04-31"
     }
   ]
 }
