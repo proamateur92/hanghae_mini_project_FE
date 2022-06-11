@@ -1,7 +1,5 @@
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { loadBoard } from '../redux/modules/boardSlice';
 import styled from 'styled-components';
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
@@ -16,16 +14,6 @@ const Main = () => {
   const [isComment, setIsComment] = useState(false);
   const boards = useSelector(state => state.board.list);
 
-  const LoadBoardDB = () => {
-    return async function (dispatch) {
-      const response = await axios.get('http://localhost:5000/boards');
-      dispatch(loadBoard(response.data));
-    };
-  };
-
-  useEffect(() => {
-    dispatch(LoadBoardDB());
-  }, []);
   return (
     <>
       <Header />
@@ -99,14 +87,24 @@ const Container = styled.div`
 
 const List = styled.div``;
 const Box = styled.div`
-  @media (min-width: 499px) {
-    width: 90%;
-    max-width: 440px;
+  @media (max-width: 767px) {
+    width: 100%;
+    max-width: 250px;
   }
 
-  @media (min-width: 500px) {
-    width: 90%;
-    max-width: 450px;
+  @media (min-width: 768px) and (max-width: 991px) {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  @media (min-width: 992px) and (max-width: 1199px) {
+    width: 100%;
+    max-width: 600px;
+  }
+
+  @media (min-width: 1200px) {
+    width: 100%;
+    max-width: 900px;
   }
 `;
 
@@ -117,8 +115,9 @@ const Item = styled.div`
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   transition: 0.4s;
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
-    filter: brightness(95%);
+    background-color: rgba(0, 0, 0, 0.1);
+    filter: brightness(90%);
+    transform: scale(1.05);
   }
 `;
 
