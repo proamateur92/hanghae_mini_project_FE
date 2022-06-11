@@ -18,7 +18,11 @@ import axios from "axios";
 
 const Write = () => {
   //삭제할거
+<<<<<<< HEAD
   // // LOAD;
+=======
+  // LOAD;
+>>>>>>> 1f361735a2c2cb0adfc8f0189a403d1e1894520a
   // React.useEffect(() => {
   //   dispatch(LoadBoardDB());
   // }, []);
@@ -30,20 +34,10 @@ const Write = () => {
   const file_link_ref = React.useRef([]);
   const [img, setImg] = React.useState("");
   const [imageSrc, setImageSrc] = React.useState("");
-  // let imgMultiple = { ...img };
-  // console.log(img[1]);
-  // console.log(imgMultiple);
-  //사진 미리보기
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        resolve();
-      };
-    });
-  };
+  //
+  const [showImages, setShowImages] = useState([]);
+
+  
 
   //서버에 넘겨줄 데이터 목록
   const getInputData = () => {
@@ -105,6 +99,40 @@ const Write = () => {
   //     }); //혹시라도 데이터를 더 넣어야하거나 헤더 컨피그 설정 추가하고싶으면 두번째 인자에 넣음
   //   };
   // };
+<<<<<<< HEAD
+=======
+
+  //사진 미리보기
+  const encodeFileToBase64 = (fileBlob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImageSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+>>>>>>> 1f361735a2c2cb0adfc8f0189a403d1e1894520a
+
+  const handleAddImages = (e) => {
+    const imageLists = e.target.files;
+    let imageUrlLists = [...showImages];
+    for (let i = 0; i < imageLists.length; i++) {
+      const currentImageUrl = URL.createObjectURL(imageLists[i]);
+      imageUrlLists.push(currentImageUrl);
+    }
+    //3장 제한
+    if (imageUrlLists.length > 3) {
+      imageUrlLists = imageUrlLists.slice(0, 3);
+    }
+    setShowImages(imageUrlLists);
+  };
+  // X버튼 클릭 시 이미지 삭제
+  const handleDeleteImage = (id) => {
+    setShowImages(showImages.filter((_, index) => index !== id));
+  };
+
 
   return (
     <WriteWrap>
@@ -112,29 +140,37 @@ const Write = () => {
         <Title>{1 === 1 ? "글 쓰기" : "글 수정"}</Title>
 
         <div>
-          <label htmlFor="file">
+          <label htmlFor="file" onChange={handleAddImages}>
             <div>이미지 첨부</div>
-          </label>
           <input
             type="file"
             multiple
             id="file"
             accept="image/jpg, image/png, image/jpeg"
             onChange={(e) => {
-              // encodeFileToBase64(e.target.files);
+              // encodeFileToBase64(e.target.files[0]);
               setImg(e.target.files);
             }}
           />
+          </label>
+
+          {showImages.map((image, id) => (
+            <div key={id}>
+              <Img src={image?image:"https://t1.daumcdn.net/cfile/blog/225FFE4451C3F7C219"} alt={`${image}-${id}`} />
+              <button onClick={() => handleDeleteImage(id)}>sdf</button>
+            </div>
+          ))}
+
         </div>
         <br />
-        <Img
+        {/* <Img
           src={
             imageSrc
               ? imageSrc
               : "https://t1.daumcdn.net/cfile/blog/225FFE4451C3F7C219"
           }
           alt="content-image"
-        />
+        /> */}
         <br />
         <TextInput
           type="text"
