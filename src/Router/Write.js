@@ -39,10 +39,7 @@ const Write = () => {
   //img_Ref
   const file_link_ref = React.useRef([]);
   const [img, setImg] = React.useState("");
-  const [showImages, setShowImages] = useState(is_edit?[...board.list[id-1].imageURL]:[]);
-
-
-
+  const [showImages, setShowImages] = useState(is_edit?[...board.list[id-1]?.imageURL]:[]);
 
   useEffect(() => {
     if (is_edit && !_post) {
@@ -122,19 +119,6 @@ const Write = () => {
   };
 };
 
-
-  // const LoadBoardDB = () => {
-  //   return async function (dispatch) {
-  //     await axios.get("http://localhost:5000/boards").then((response) => {
-  //       console.log(response.data);
-  //       dispatch(loadBoard(response.data));
-  //     }); //혹시라도 데이터를 더 넣어야하거나 헤더 컨피그 설정 추가하고싶으면 두번째 인자에 넣음
-  //   };
-  // };
-
-  
-
-
   //사진 여러장 넣기
   const handleAddImages = (e) => {
     const imageLists = e.target.files;
@@ -164,6 +148,15 @@ const Write = () => {
     slidesToScroll: 1 //한 번에 넘어가는 콘텐츠 수이다. 2로 정하면 2개씩 넘어간다.
   };
 
+
+  // const LoadBoardDB = () => {
+  //   return async function (dispatch) {
+  //     await axios.get("http://localhost:5000/boards").then((response) => {
+  //       console.log(response.data);
+  //       dispatch(loadBoard(response.data));
+  //     }); //혹시라도 데이터를 더 넣어야하거나 헤더 컨피그 설정 추가하고싶으면 두번째 인자에 넣음
+  //   };
+  // };
   return (
     <WriteWrap>
       <FormWrap>
