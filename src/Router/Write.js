@@ -89,7 +89,7 @@ const Write = () => {
   const CreateBoardDB = (contents_obj) => {
     return async function (dispatch) {
       await axios
-        .post("http://localhost:5001/board", contents_obj)
+        .post("http://localhost:5000/boards", contents_obj)
         .then((response) => {
           // console.log(response);
         });
@@ -99,7 +99,7 @@ const Write = () => {
 
   const LoadBoardDB = () => {
     return async function (dispatch) {
-      await axios.get("http://localhost:5001/board").then((response) => {
+      await axios.get("http://localhost:5000/boards").then((response) => {
         console.log(response.data);
         dispatch(loadBoard(response.data));
       }); //혹시라도 데이터를 더 넣어야하거나 헤더 컨피그 설정 추가하고싶으면 두번째 인자에 넣음

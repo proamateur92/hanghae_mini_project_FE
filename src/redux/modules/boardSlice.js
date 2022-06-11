@@ -1,7 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const boardSlice = createSlice({
-  name: 'board',
+  name: "board",
   initialState: {
     list: [],
   },
@@ -16,7 +16,7 @@ const boardSlice = createSlice({
       state.list.push(...action.payload);
     },
     createBoard(state, action) {
-      console.log('리듀서', action.payload);
+      console.log("리듀서", action.payload);
       // state.list.push(action.payload);
     },
     updateBoard(state, action) {},
@@ -25,5 +25,6 @@ const boardSlice = createSlice({
 });
 
 // export const boardActions = boardSlice.actions;
-export const { loadBoard, createBoard, updateBoard, reamoveBoard } = boardSlice.actions;
+export const { loadBoard, createBoard, updateBoard, reamoveBoard } =
+  boardSlice.actions;
 export default boardSlice.reducer;
