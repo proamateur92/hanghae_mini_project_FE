@@ -8,29 +8,41 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { createBoard } from "../redux/modules/boardSlice";
+import { createBoard, updateBoard } from "../redux/modules/boardSlice";
 import { loadBoard } from "../redux/modules/boardSlice";
 //firebase
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../shared/firebase";
 //axios
 import axios from "axios";
+//Slider
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+//fontAwesome
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
+
 
 
 const Write = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const text = React.useRef(null);
-  const file_link_ref = React.useRef([]);
-  const [img, setImg] = React.useState("");
-  const [imageSrc, setImageSrc] = React.useState("");
-  const [showImages, setShowImages] = useState([]);
-
+  const board = useSelector((list) => list.board);
+  //Parmas
   const { id } = useParams();
-  const board = useSelector((list) => list.board); //
   //edit_mode
   const is_edit = id ? true : false;
   const _post = is_edit ? board.list.find((p) => p.id  === parseInt(id))  : null;
+  //Ref
+  const text = React.useRef(null);
+  //img_Ref
+  const file_link_ref = React.useRef([]);
+  const [img, setImg] = React.useState("");
+  const [showImages, setShowImages] = useState(is_edit?[...board.list[id-1].imageURL]:[]);
+
+
+
 
   useEffect(() => {
     if (is_edit && !_post) {
@@ -40,9 +52,6 @@ const Write = () => {
       return;
     }
   }, []);
-  
-
-  
 
   //서버에 넘겨줄 데이터 목록
   const getInputData = () => {
@@ -80,22 +89,39 @@ const Write = () => {
     if (!contents_obj) return;
     const new_contents_obj = {
       ...contents_obj,
+      id
     };
-    await dispatch(CreateBoardDB({ ...new_contents_obj }));
+    if(is_edit){
+      await dispatch(updateBoardDB({ ...new_contents_obj }, id));
+    } else {
+      await dispatch(createBoardDB({ ...new_contents_obj }));
+    }
   };
 
   //미들웨어
-  const CreateBoardDB = (contents_obj) => {
+  //생성
+  const createBoardDB = (contents_obj) => {
     return async function (dispatch) {
       await axios
         .post("http://localhost:5000/boards", contents_obj)
         .then((response) => {
-          // console.log(response);
         });
       dispatch(createBoard(contents_obj));
       navigate(-1);
     };
   };
+  //수정
+  const updateBoardDB = (contents_obj, id) => {
+  return async function (dispatch) {
+    await axios
+        // .post("http://localhost:5000/boards", contents_obj)
+        // .then((response) => {
+          // console.log("aa",response)
+        // });
+    dispatch(updateBoard(contents_obj, id));
+  };
+};
+
 
   // const LoadBoardDB = () => {
   //   return async function (dispatch) {
@@ -106,18 +132,10 @@ const Write = () => {
   //   };
   // };
 
-  //사진 미리보기
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImageSrc(reader.result);
-        resolve();
-      };
-    });
-  };
+  
 
+
+  //사진 여러장 넣기
   const handleAddImages = (e) => {
     const imageLists = e.target.files;
     let imageUrlLists = [...showImages];
@@ -137,52 +155,74 @@ const Write = () => {
     setShowImages(showImages.filter((l, index) => index !== id));
     console.log("dsa",showImages, id)
   };
-
+  //사진 슬라이드
+  const settings = {
+    dots: true, //carousel 밑에 지정 콘텐츠로 바로 이동할 수 있는 버튼을 뜻한다. flase 할시 사라진다.
+    infinite: true, //콘텐츠 끝까지 갔을 때 다음 콘텐츠를 처음 콘텐츠로 가져와 반복한다.
+    speed: 500,  //콘텐츠를 넘어갈 때 속도이다. 단위 (ms)이다. 1000ms = 1s
+    slidesToShow: 1, //한 화면에 보이는 콘텐츠 개수를 말한다.
+    slidesToScroll: 1 //한 번에 넘어가는 콘텐츠 수이다. 2로 정하면 2개씩 넘어간다.
+  };
 
   return (
     <WriteWrap>
       <FormWrap>
         <Title>{is_edit ? "글 수정" : "글 쓰기"}</Title>
-
         <ImgInputWrap>
           <label htmlFor="file" onChange={handleAddImages}>
             <div>이미지 첨부</div>
-          <input
-            type="file"
-            multiple
-            id="file"
-            accept="image/jpg, image/png, image/jpeg"
-            onChange={(e) => {
-              // encodeFileToBase64(e.target.files[0]);
-              setImg(e.target.files);
-            }}
-          />
+            <input
+              type="file"
+              multiple
+              id="file"
+              accept="image/jpg, image/png, image/jpeg"
+              onChange={(e) => {
+                setImg(e.target.files);
+              }}
+            />
           </label>
-          {showImages.map((image, id) => (
-            <div key={id}>
-              <Img src={image?image:"https://t1.daumcdn.net/cfile/blog/225FFE4451C3F7C219"} alt={`${image}-${id}`} />
-              {/* <button onClick={() => handleDeleteImage(id)}>sdf</button> */}
-            </div>
-          ))}
+          <Slider {...settings}>
+            {showImages.length === 0 ? <Temporary>임시 이미지</Temporary> : showImages.map((image, id) => (
+              <ImgWrap key={id}>
+                {/* <img src={image?image:"https://t1.daumcdn.net/cfile/blog/225FFE4451C3F7C219"} alt={`${image}-${id}`} /> */}
+                <Img image={image}>{`${image}-${id}`}</Img>
+                <ImgDelBtn
+                  icon={faTrashCan}
+                  size="lg"
+                  onClick={() => handleDeleteImage(id)}
+                />
+              </ImgWrap>
+            ))}
+            
+          </Slider>
         </ImgInputWrap>
         <br />
         <TextInput
           type="text"
           name="content"
           ref={text}
+          defaultValue={is_edit? board.list[id - 1]?.content : null}
           placeholder="글 내용을 입력해주세요."
         ></TextInput>
         <InputButtonWrap>
           <InputLink to="/">뒤로가기</InputLink>
-          <InputButton
-            type="button"
-            onClick={() => {
-              upLoadFB();
-              
-              // callSomethingAxios();
-            }}
-            value={is_edit ? "게시글 수정" : "게시글 작성"}
-          />
+          {is_edit ? (
+            <InputButton
+              type="button"
+              onClick={() => {
+                upLoadFB();
+              }}
+              value="게시글 수정" //수정 코드 만들어야함.
+            />
+          ) : (
+            <InputButton
+              type="button"
+              onClick={() => {
+                upLoadFB();
+              }}
+              value="게시글 작성"
+            />
+          )}
         </InputButtonWrap>
       </FormWrap>
     </WriteWrap>
@@ -220,6 +260,8 @@ const WriteWrap = styled.div`
 `;
 const ImgInputWrap = styled.div`
 border: 1px solid #d3d2d2;
+border-radius:4px;
+padding:30px;
 width:500px;
 `
 const FormWrap = styled.form`
@@ -237,15 +279,45 @@ const TextInput = styled.textarea`
   border: 1px solid #d3d2d2;
   border-radius: 6px;
 `;
-const Img = styled.img`
-  width: 500px;
+const Img = styled.div`
+  width:500px;
+  height:300px;
+  border: 1px solid #d3d2d2;
+  background-image:url(${(props) => (props.image)}) ;
+  background-position:center;
+  text-indent:-9999px;
+`;
+const Temporary = styled.div`
+  width:500px;
+  height:300px;
+  text-indent:-9999px;
+  border: 1px solid #d3d2d2;
+  background-image:url("https://i.pinimg.com/564x/65/03/f2/6503f27ab49db51a7224cd20a9d438f4.jpg");
+  background-position:center;
+`
+const ImgWrap = styled.div`
+position: relative;
+`;
+const ImgDelBtn = styled(FontAwesomeIcon)`
+position:absolute;
+right:0;
+bottom:0;
+background-color:rgba(0,0,0,0.5);
+padding:10px;
+border-radius:4px 0 0 0;
+color:white;
+transition: background-color 0.1s, transform 3s;
+&:hover {
+  color:black;
+  background-color:rgba(255,255,255,0.5);
+  }
 `;
 
 //버튼
 const InputButtonWrap = styled.div`
   width: 100%;
   height: 60px;
-  border-radius: 5px;
+  border-radius: 6px;
   border: 1px solid #d3d2d2;
   display: flex;
   justify-content: space-between;

@@ -17,9 +17,11 @@ const boardSlice = createSlice({
     },
     createBoard(state, action) {
       console.log("리듀서", action.payload);
-      // state.list.push(action.payload);
+      state.list.push(action.payload);
     },
-    updateBoard(state, action) {},
+    updateBoard(state, action) {
+      console.log("리듀서 수정", action.payload);
+    },
     reamoveBoard(state, action) {},
   },
 });

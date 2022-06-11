@@ -7,7 +7,9 @@
       "content": "내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1",
       "userId": "user1",
       "nickName": "닉네임1",
-      "imageURL": "https://img.sbs.co.kr/newsnet/etv/upload/2019/06/03/30000628847.jpg",
+      "imageURL": [
+        "https://img.sbs.co.kr/newsnet/etv/upload/2019/06/03/30000628847.jpg"
+      ],
       "date": "2021-04-23"
     },
     {
@@ -17,17 +19,101 @@
       "content": "내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2",
       "userId": "user2",
       "nickName": "닉네임2",
-      "imageURL": "https://w.namu.la/s/272afabb71533a989c5538311a12b76153e8583df72f0f7daaa28290b2f40e372f77d70c16e69ab97a73f0c5976b317100d3a9944d51d88c6d8eaa77c1dd5d1062bf92136a5d8f2433cf6620e0c10ab5e03b529c05424b30ed470eb5f3f7d66d2bc647dd763713d60f7666aee41e7f83",
+      "imageURL": [
+        "https://w.namu.la/s/272afabb71533a989c5538311a12b76153e8583df72f0f7daaa28290b2f40e372f77d70c16e69ab97a73f0c5976b317100d3a9944d51d88c6d8eaa77c1dd5d1062bf92136a5d8f2433cf6620e0c10ab5e03b529c05424b30ed470eb5f3f7d66d2bc647dd763713d60f7666aee41e7f83"
+      ],
       "date": "2021-02-21"
     },
     {
+      "id": 3,
       "articleId": 3,
       "title": "제목3",
       "content": "내용3내용3내용3내용3내용3내용3내용3내용3",
       "userId": "user13",
       "nickName": "닉네임3",
-      "imageURL": "https://newsimg.hankookilbo.com/cms/articlerelease/2021/03/25/731fb1b9-0f9f-4d64-909a-27246d430e8c.jpg",
+      "imageURL": [
+        "https://newsimg.hankookilbo.com/cms/articlerelease/2021/03/25/731fb1b9-0f9f-4d64-909a-27246d430e8c.jpg"
+      ],
       "date": "3/14/2021"
+    },
+    {
+      "content": "213123",
+      "imageURL": [
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F1.png?alt=media&token=53177d3b-ff11-4303-acd6-d67e792054b1",
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F123123.jpg?alt=media&token=d75dbabd-1edb-46fa-a43b-a1df29878dde",
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2FStric.png?alt=media&token=d30cf2e2-bb39-42c0-b7eb-22d4cb79530d"
+      ],
+      "date": "2022-06-11 20:44:25",
+      "likeCount": 0,
+      "commentCount": 0,
+      "id": 4,
+      "articleId": 4
+    },
+    {
+      "content": "가나다라마바사",
+      "imageURL": [
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F123123.jpg?alt=media&token=a6fcab7d-f9d9-494e-936e-c64fa4e142f9",
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2FStric.png?alt=media&token=815791c4-6f2a-4d2d-8229-9a865653134d"
+      ],
+      "date": "2022-06-11 20:57:08",
+      "likeCount": 0,
+      "commentCount": 0,
+      "id": 5,
+      "articleId": 5
+    },
+    {
+      "content": "들어감?",
+      "imageURL": [
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F1.png?alt=media&token=d03459ed-5132-43e7-8679-1c16d736377c",
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F123123.jpg?alt=media&token=3d19bc17-6702-481b-aa63-ab21c621004b"
+      ],
+      "date": "2022-06-11 21:02:28",
+      "likeCount": 0,
+      "commentCount": 0,
+      "id": 6,
+      "articleId": 6
+    },
+    {
+      "content": "내용.",
+      "imageURL": [
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F1.png?alt=media&token=da217c8c-0f40-48f6-9ef6-4cfa3697279d",
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F123123.jpg?alt=media&token=45294791-ab28-4cea-85f3-8d447487f248",
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2FStric.png?alt=media&token=98765c5b-b730-4004-aac5-3eb418bc3a48"
+      ],
+      "date": "2022-06-11 21:03:39",
+      "likeCount": 0,
+      "commentCount": 0,
+      "articleId": 7,
+      "id": 7
+    },
+    {
+      "content": "배열로",
+      "imageURL": [
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F1.png?alt=media&token=d2959b05-4267-4ac7-826f-754aaa897f97"
+      ],
+      "date": "2022-06-11 21:21:06",
+      "likeCount": 0,
+      "commentCount": 0,
+      "articleId": 8,
+      "id": 8
+    },
+    {
+      "content": "dsadas",
+      "imageURL": [],
+      "date": "2022-06-11 21:25:20",
+      "likeCount": 0,
+      "commentCount": 0,
+      "id": 9,
+      "articleId": 9
+    },
+    {
+      "content": "dasdasdsa",
+      "imageURL": [],
+      "date": "2022-06-11 21:26:28",
+      "likeCount": 0,
+      "commentCount": 0,
+      "id": 10,
+      "articleId": 10
     }
   ],
   "comments": [
