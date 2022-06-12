@@ -5,8 +5,9 @@ import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import BoardComment from './BoardComment';
 
-const BoardList = ({ board }) => {
+const BoardItem = ({ board }) => {
   const navigate = useNavigate();
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
@@ -14,22 +15,10 @@ const BoardList = ({ board }) => {
 
   // 각 게시글 별 댓글 갯수 값 계산 로직
   const onComment = board => {
-    console.log(comments);
     const filteredComment = comments.filter(comment => comment.articleId === board.articleId);
     return <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {filteredComment.length}개</Comment>;
   };
 
-  // 각 게시글 별 댓글 가져오기
-  const commentBox = articleId => {
-    const filteredComment = comments.filter(comment => comment.articleId === articleId);
-    return filteredComment.map(comment => (
-      <>
-        <div>
-          {comment.nickName} {comment.comment}
-        </div>
-      </>
-    ));
-  };
   return (
     <Item>
       <Text>
@@ -37,14 +26,7 @@ const BoardList = ({ board }) => {
           <Nickname>{board.nickName}</Nickname>
           <Edit>
             <Icon>
-              <FontAwesomeIcon
-                onClick={e => {
-                  e.stopPropagation();
-                  navigate(`/write/${board.articleId}`, { state: board });
-                }}
-                icon={faPencil}
-                size='lg'
-              />
+              <FontAwesomeIcon onClick={() => navigate(`/write/${board.articleId}`, { state: board })} icon={faPencil} size='lg' />
             </Icon>
             <Icon>
               <FontAwesomeIcon icon={faTrashCan} size='lg' />
@@ -62,7 +44,7 @@ const BoardList = ({ board }) => {
           <>
             {board.content.length > 30 ? (
               <Content>
-                {board.content.slice(0, 60) + '...'}
+                {board.content.slice(0, 30) + '...'}
                 <More onClick={() => setIsMore(true)}>더보기</More>
               </Content>
             ) : (
@@ -81,13 +63,7 @@ const BoardList = ({ board }) => {
         </Like>
         {onComment(board)}
       </Detail>
-      {isComment && (
-        <>
-          <span>닉네임</span>
-          <input type='text' />
-          {commentBox(board.articleId)}
-        </>
-      )}
+      {isComment && <BoardComment board={board} />}
       {!isComment && null}
     </Item>
   );
@@ -185,4 +161,4 @@ const Like = styled.div`
   }
 `;
 
-export default BoardList;
+export default BoardItem;
