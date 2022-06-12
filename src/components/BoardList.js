@@ -11,10 +11,11 @@ const BoardList = ({ board }) => {
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const comments = useSelector(state => state.comment.list);
-  const filteredComment = comments.filter(comment => comment.articleId === board.articleId);
 
   // 각 게시글 별 댓글 갯수 값 계산 로직
   const onComment = board => {
+    console.log(comments);
+    const filteredComment = comments.filter(comment => comment.articleId === board.articleId);
     return <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {filteredComment.length}개</Comment>;
   };
 
@@ -30,7 +31,7 @@ const BoardList = ({ board }) => {
     ));
   };
   return (
-    <Item key={board.articleId}>
+    <Item>
       <Text>
         <Top>
           <Nickname>{board.nickName}</Nickname>
