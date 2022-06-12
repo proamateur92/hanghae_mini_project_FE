@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from './Header';
-import BoardList from '../components/BoardList';
+import BoardItem from '../components/BoardItem';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
@@ -14,7 +14,7 @@ const Main = () => {
       <Header />
       <Container>
         <Box>
-          <List>{boards && boards.map(board => <BoardList board={board} />)}</List>
+          <List>{boards && boards.map(board => <BoardItem key={board.articleId} board={board} />)}</List>
         </Box>
       </Container>
       <WriteButton>
@@ -34,14 +34,13 @@ const Container = styled.div`
 const List = styled.div``;
 const Box = styled.div`
   padding: 20px;
-  /* @media (min-width: 499px) {
-    width: 90%;
+  width: 70%;
+  @media (max-width: 499px) {
     max-width: 440px;
   }
   @media (min-width: 500px) {
-    width: 90%;
-    max-width: 50px;
-  } */
+    max-width: 700px;
+  }
 `;
 
 const WriteButton = styled.div`
