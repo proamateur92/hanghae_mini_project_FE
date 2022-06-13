@@ -58,9 +58,9 @@ const Write = () => {
       alert("글 내용을 입력해주세요.");
       return false;
     }
-    const contents_obj = {
+    let contents_obj = {
       articleId:uuidv4(),
-      nickName: "닉네임!",
+      nickname: "닉네임!",
       content: content,
       imageURL: imageUrl,
       createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
