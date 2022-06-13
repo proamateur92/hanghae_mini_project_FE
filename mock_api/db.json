@@ -2,7 +2,7 @@
   "boards": [
     {
       "id": 1,
-      "articleId": 1,
+      "articleId": "1",
       "title": "제목1",
       "content": "내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1내용1",
       "userId": "user1",
@@ -14,7 +14,7 @@
     },
     {
       "id": 2,
-      "articleId": 2,
+      "articleId": "2",
       "title": "제목2",
       "content": "내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2내용2",
       "userId": "user2",
@@ -26,7 +26,7 @@
     },
     {
       "id": 3,
-      "articleId": 3,
+      "articleId": "3",
       "title": "제목3",
       "content": "내용3내용3내용3내용3내용3내용3내용3내용3",
       "userId": "user13",
@@ -47,7 +47,7 @@
       "likeCount": 0,
       "commentCount": 0,
       "id": 4,
-      "articleId": 4
+      "articleId": "4"
     },
     {
       "content": "가나다라마바사",
@@ -59,7 +59,7 @@
       "likeCount": 0,
       "commentCount": 0,
       "id": 5,
-      "articleId": 5
+      "articleId": "5"
     },
     {
       "content": "들어감?",
@@ -71,7 +71,7 @@
       "likeCount": 0,
       "commentCount": 0,
       "id": 6,
-      "articleId": 6
+      "articleId": "6"
     },
     {
       "content": "내용.",
@@ -83,7 +83,7 @@
       "date": "2022-06-11 21:03:39",
       "likeCount": 0,
       "commentCount": 0,
-      "articleId": 7,
+      "articleId": "7",
       "id": 7
     },
     {
@@ -94,7 +94,7 @@
       "date": "2022-06-11 21:21:06",
       "likeCount": 0,
       "commentCount": 0,
-      "articleId": 8,
+      "articleId": "8",
       "id": 8
     },
     {
@@ -104,7 +104,7 @@
       "likeCount": 0,
       "commentCount": 0,
       "id": 9,
-      "articleId": 9
+      "articleId": "9"
     },
     {
       "content": "dasdasdsa",
@@ -113,7 +113,39 @@
       "likeCount": 0,
       "commentCount": 0,
       "id": 10,
-      "articleId": 10
+      "articleId": "10"
+    },
+    {
+      "articleId": "11",
+      "nickName": "닉네임!",
+      "content": "123123uid",
+      "imageURL": [
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F1.png?alt=media&token=73b0557c-0aa2-4894-92af-648161c6368d"
+      ],
+      "createdAt": "2022-06-13 07:59:01",
+      "__v": 0,
+      "id": 11
+    },
+    {
+      "articleId": "1321321324",
+      "nickName": "닉네임!",
+      "content": "123123213123",
+      "imageURL": [],
+      "createdAt": "2022-06-13 08:08:21",
+      "__v": 0,
+      "id": 12
+    },
+    {
+      "articleId": "6be4c44a-c11b-41ae-a671-6544fd98068c",
+      "nickName": "닉네임!",
+      "content": "ㅁㄴㅇㅁㄴㅇㄴㅁㅇㄴㅁ",
+      "imageURL": [
+        [],
+        "https://firebasestorage.googleapis.com/v0/b/hanghae-mini.appspot.com/o/images%2F1.png?alt=media&token=5b8ca62d-5154-4de9-a9c9-2991271304ec"
+      ],
+      "createdAt": "2022-06-13 10:04:01",
+      "__v": 0,
+      "id": 13
     }
   ],
   "comments": [
