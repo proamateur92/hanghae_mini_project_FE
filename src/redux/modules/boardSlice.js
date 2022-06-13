@@ -9,7 +9,7 @@ export const loadBoardDB = () => {
   return async function (dispatch) {
     // 테스트 url
     try {
-      const response = await axios.get('http://localhost:5000/boards');
+      const response = await instance.get('/content');
       // const response = await axios.get('http://13.124.25.127/content');
       dispatch(loadBoard(response.data));
     } catch (error) {
@@ -37,12 +37,12 @@ export const createBoardDB = contents_obj => {
 //Update
 export const updateBoardDB = (contents_obj, id) => {
   return async function (dispatch) {
-    // await instance.patch("/boards", contents_obj, id)
-    // .then((response) => {
-    // })
-    // .catch(function(error) {
-    //       console.log("에러",error.response.data);
-    // })
+    await instance.patch(`/content/${id}`, contents_obj)
+    .then((response) => {
+    })
+    .catch(function(error) {
+          console.log("에러",error.response.data);
+    })
     dispatch(updateBoard(contents_obj, id));
   };
 };

@@ -68,7 +68,7 @@ const Write = () => {
     let contents_obj = {
       // createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       // articleId:uuidv4(),
-      _id:_post?._id,
+      // _id:_post?._id,
       nickname: "닉네임!",
       content: content,
       imageURL: imageUrl,
@@ -97,6 +97,7 @@ const Write = () => {
       ...contents_obj,
       id
     };
+    console.log("asdasdas",id)
     if(is_edit){
       //미들웨어로 디스패치
       await dispatch(updateBoardDB({ ...new_contents_obj }, id));
