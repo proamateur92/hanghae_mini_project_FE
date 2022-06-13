@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faMortarBoard, faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import BoardComment from './BoardComment';
 import { removeBoardDB } from '../redux/modules/boardSlice';
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const BoardItem = ({ board }) => {
   const dispatch = useDispatch();
@@ -14,6 +17,9 @@ const BoardItem = ({ board }) => {
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
   const comments = useSelector(state => state.comment.list);
+
+  console.log("보드",board)
+
 
   // 게시글 삭제 redux 함수 호출
   const onRemoveBoard = () => {
@@ -26,6 +32,14 @@ const BoardItem = ({ board }) => {
     return <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {filteredComment.length}개</Comment>;
   };
 
+  //사진 슬라이드
+  const settings = {
+    dots: true, 
+    infinite: true,
+    speed: 500, 
+    slidesToShow: 1,
+    slidesToScroll: 1
+  };
   return (
     <Item>
       <Text>
@@ -33,10 +47,20 @@ const BoardItem = ({ board }) => {
           <Nickname>{board.nickname}</Nickname>
           <Edit>
             <Icon>
-              <FontAwesomeIcon onClick={() => navigate(`/write/${board._id}`, { state: board })} icon={faPencil} size='lg' />
+              <FontAwesomeIcon
+                onClick={() =>
+                  navigate(`/write/${board._id}`, { state: board })
+                }
+                icon={faPencil}
+                size="lg"
+              />
             </Icon>
             <Icon>
-              <FontAwesomeIcon onClick={() => onRemoveBoard()} icon={faTrashCan} size='lg' />
+              <FontAwesomeIcon
+                onClick={() => onRemoveBoard()}
+                icon={faTrashCan}
+                size="lg"
+              />
             </Icon>
           </Edit>
         </Top>
@@ -51,7 +75,7 @@ const BoardItem = ({ board }) => {
           <>
             {board.content.length > 30 ? (
               <Content>
-                {board.content.slice(0, 30) + '...'}
+                {board.content.slice(0, 30) + "..."}
                 <More onClick={() => setIsMore(true)}>더보기</More>
               </Content>
             ) : (
@@ -61,11 +85,17 @@ const BoardItem = ({ board }) => {
         )}
       </Text>
       <ImageBox>
-        <Image src={board.imageURL} />
+        <Slider {...settings}>
+          {board.imageURL.map((image, idx) => (
+            <ImgWrap key={idx}>
+              <Image image={image}>{`${image}-${idx}`}</Image>
+            </ImgWrap>
+          ))}
+        </Slider>
       </ImageBox>
       <Detail>
         <Like>
-          <FontAwesomeIcon icon={faThumbsUp} size='lg' />
+          <FontAwesomeIcon icon={faThumbsUp} size="lg" />
           <Count>2</Count>
         </Like>
         {onComment(board)}
@@ -132,7 +162,21 @@ const Text = styled.div`
   }
 `;
 
-const Image = styled.img``;
+const Image = styled.div`
+  width:500px;
+  height:400px;
+  border: 1px solid #d3d2d2;
+  background-image:url(${(props) => (props.image)}) ;
+  background-position:center;
+  background-size:cover;
+  background-repeat:no-repeat ;
+  text-indent:-9999px;
+`
+const ImgWrap = styled.div`
+position: relative;
+background-color:black;
+`;
+
 const ImageBox = styled.div`
   width: 100%;
   font-size: 0;
