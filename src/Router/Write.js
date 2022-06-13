@@ -13,6 +13,7 @@ import { loadBoard } from "../redux/modules/boardSlice";
 //firebase
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../shared/firebase";
+import { getStorage,  updateMetadata } from "firebase/storage";
 
 //Slider
 import Slider from "react-slick";
@@ -41,6 +42,9 @@ const Write = () => {
   const [img, setImg] = React.useState("");
   const [showImages, setShowImages] = useState(is_edit?_post?.imageURL:[]);
   
+  console.log("유알엘주소",file_link_ref)
+  console.log("미리보기",showImages)
+  console.log("이미지",img)
 
   useEffect(() => {
     if (is_edit && !_post) {
@@ -48,12 +52,7 @@ const Write = () => {
       window.alert("포스트 정보가 없어요! ㅜㅜ");
       navigate("/")
       return;
-    }
-    
-    // instance.get("http://13.124.25.127/content")
-    // instance.get("http://localhost:5001/geterror")
-
-    
+    }    
   }, []);
   
   //서버에 넘겨줄 데이터 목록
@@ -61,20 +60,21 @@ const Write = () => {
     const content = text.current?.value;
     const imageUrl = file_link_ref.current;
     console.log(imageUrl);
-    if (!content) {
-      alert("글 내용을 입력해주세요.");
-      return false;
-    }
+    // if (!content) {
+    //   alert("글 내용을 입력해주세요.");
+    //   return false;
+    // }
     let contents_obj = {
       articleId:uuidv4(),
       nickname: "닉네임!",
       content: content,
-      imageURL: "imageUrl",
+      imageURL: imageUrl,
       createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       __v: 0,
     };
     return contents_obj;
   };
+  console.log("보낼목록",getInputData())
 
   //데이터를 스토리지에 올림
   const upLoadFB = async () => {
@@ -83,6 +83,7 @@ const Write = () => {
         ref(storage, `images/${img[i].name}`), //경로
         img[i] //어떤파일 올릴지
       );
+      console.log('업로드',uploded_file.ref)
       const file_url = await getDownloadURL(uploded_file.ref);
       //링크를 담는다.
       file_link_ref.current.push(file_url);
@@ -121,7 +122,9 @@ const Write = () => {
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((l, index) => index !== id));
-    console.log("dsa",showImages, id)
+    file_link_ref.current.filter((l, index) => index !== file_link_ref.current.length);
+    console.log("삭제", file_link_ref.current.length)
+    // console.log("dsa",showImages, id)
   };
 
   //사진 슬라이드
