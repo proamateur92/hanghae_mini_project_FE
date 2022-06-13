@@ -64,11 +64,9 @@ export const updateBoardDB = (contents_obj, id) => {
 // 게시글 삭제
 export const removeBoardDB = targetId => {
   return async function (dispatch) {
-    console.log(`targetId: ${targetId}`);
     try {
-      const response = await axios.delete(`http://13.124.25.127/boards/${targetId}`);
+      // await axios.delete(`http://13.124.25.127/boards/${targetId}`);
       dispatch(removeBoard(targetId));
-      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -104,7 +102,18 @@ const boardSlice = createSlice({
       });
     },
     removeBoard(state, action) {
-      return state.list.filter(board => board.articleId !== action.targetId);
+      const existingBoard = state.list.find(board => board._id === action.payload);
+      console.log(state.list);
+      if (existingBoard) {
+        const newBoard = state.list.filter(board => {
+          if (board._id !== action.payload) {
+            console.log(board);
+            return board;
+          }
+        });
+        console.log(newBoard);
+        // return state.list.filter(board => board._id !== action.payload);
+      }
     },
   },
 });
