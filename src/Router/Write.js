@@ -23,7 +23,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 //uuid
 import { v4 as uuidv4 } from 'uuid';
-
+//instance
+import instance from "../shared/axios";
 
 const Write = () => {
   const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const Write = () => {
   const file_link_ref = React.useRef(is_edit?_post?.imageURL:[]);
   const [img, setImg] = React.useState("");
   const [showImages, setShowImages] = useState(is_edit?_post?.imageURL:[]);
+  
 
   useEffect(() => {
     if (is_edit && !_post) {
@@ -47,6 +49,11 @@ const Write = () => {
       navigate("/")
       return;
     }
+    
+    // instance.get("http://13.124.25.127/content")
+    // instance.get("http://localhost:5001/geterror")
+
+    
   }, []);
   
   //서버에 넘겨줄 데이터 목록
@@ -62,7 +69,7 @@ const Write = () => {
       articleId:uuidv4(),
       nickname: "닉네임!",
       content: content,
-      imageURL: imageUrl,
+      imageURL: "imageUrl",
       createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       __v: 0,
     };
