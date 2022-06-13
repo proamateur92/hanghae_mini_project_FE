@@ -6,6 +6,7 @@ import { removeCookie, getCookie } from "../shared/cookie";
 // 쿠키 헤더에 담아서 보내실 때 getCookie  임포트 해온 다음에
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Cookies } from "react-cookie";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const Header = () => {
   };
   const closeSignupModal = () => {
     setModalSignupOpen(false);
+    window.location.reload();
   };
 
   const openLoginModal = () => {
@@ -28,28 +30,35 @@ const Header = () => {
   };
   //modal
 
+  const deleteCookie = () => {
+    //로그아웃 토큰 삭제
+    document.cookie = "is_login" + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
+    navigate("/");
+  };
+
   const [is_login, setIsLogin] = React.useState(false);
-  const loginCheck = async (user) => {
-    if (user) {
-      setIsLogin(true);
-    } else {
+  const loginCheck = () => {
+    if (getCookie("is_login") === undefined) {
       setIsLogin(false);
+    } else {
+      setIsLogin(true);
     }
   };
   React.useEffect(() => {
-    console.log(getCookie("is_login"));
-    // getCookie("is_login") 이걸로 토큰값 받아와서. header에 담아서 요청하면 될 것 같아요!
+    loginCheck();
   }, []);
 
   return (
     <Container>
       <Logo onClick={() => navigate("/")}>로고</Logo>
       <List>
-        <Item onClick={openLoginModal}>Login</Item>
+        {!is_login && <Item onClick={openSignupModal}>SignUp</Item>}
+        {!is_login && <Item onClick={openLoginModal}>Login</Item>}
+
         <ModalLogin open={modalLoginOpen} close={closeLoginModal}></ModalLogin>
         {/* <FontAwesomeIcon icon={faBars} size='2x' /> */}
-        <Item onClick={removeCookie}>Logout</Item>
-        <Item onClick={openSignupModal}>SignUp</Item>
+        {is_login && <Item onClick={deleteCookie}>Logout</Item>}
+
         <ModalSignup
           open={modalSignupOpen}
           close={closeSignupModal}

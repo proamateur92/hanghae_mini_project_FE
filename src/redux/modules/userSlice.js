@@ -8,7 +8,7 @@ export const loginUserDB = (users) => {
   return async function (dispatch) {
     // console.log(users.users);
     await axios
-      .post("http://13.124.25.127/users/login", users.users)
+      .post("http://13.209.64.124/users/login", users.users)
       .then((response) => {
         console.log(response);
         window.alert(response.data.message);
