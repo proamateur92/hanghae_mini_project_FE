@@ -35,12 +35,14 @@ const Write = () => {
   //edit_mode
   const is_edit = id ? true : false;
   const _post = is_edit ? board.list.find((p) => p._id === id)  : null; // board list articleId랑 params 아이디랑 비교해서 일치하는 배열
+
   //Ref
   const text = React.useRef(null);
   const file_link_ref = React.useRef(is_edit?_post?.imageURL:[]);
   const [img, setImg] = React.useState("");
   const [showImages, setShowImages] = useState(is_edit?_post?.imageURL:[]);
   
+  // console.log(_post._id)
   console.log("유알엘주소",file_link_ref)
   console.log("미리보기",showImages)
   console.log("이미지",img)
@@ -64,11 +66,12 @@ const Write = () => {
     //   return false;
     // }
     let contents_obj = {
+      // createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       // articleId:uuidv4(),
+      _id:_post?._id,
       nickname: "닉네임!",
       content: content,
       imageURL: imageUrl,
-      // createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       __v: 0,
     };
     return contents_obj;
@@ -85,7 +88,7 @@ const Write = () => {
       console.log('업로드',uploded_file.ref)
       const file_url = await getDownloadURL(uploded_file.ref);
       //링크를 담는다.
-      file_link_ref.current.push(file_url);
+      file_link_ref.current = [...file_link_ref.current, file_url];
     }
     //데이터를 미들웨어에 옮김
     const contents_obj = getInputData();
@@ -116,13 +119,15 @@ const Write = () => {
       imageUrlLists = imageUrlLists.slice(0, 3);
     }
     setShowImages(imageUrlLists);
-    
   };
+
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((l, index) => index !== id));
-    file_link_ref.current.filter((l, index) => index !== file_link_ref.current.length);
-    console.log("삭제", file_link_ref.current.length)
+    setImg(img.filter((l, index) => index !== id));
+    // file_link_ref.current.filter((l, index) => index !== file_link_ref.current.length);
+    console.log(img, showImages)
+    // console.log("삭제", file_link_ref.current.length)
     // console.log("dsa",showImages, id)
   };
 
