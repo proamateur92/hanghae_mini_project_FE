@@ -14,7 +14,7 @@ const Main = () => {
       <Header />
       <Container>
         <Box>
-          <List>{boards && boards.map(board => <BoardItem key={board.articleId} board={board} />)}</List>
+          <List>{boards && boards.map(board => <BoardItem key={board._id} board={board} />)}</List>
         </Box>
       </Container>
       <WriteButton>
