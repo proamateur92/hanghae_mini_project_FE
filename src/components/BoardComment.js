@@ -5,21 +5,26 @@ import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const BoardComment = ({ board }) => {
+  const dispatch = useDispatch();
   const [comment, setComment] = useState('');
   const [option, setOption] = useState(false);
 
   // 각 게시글 별 댓글 가져오기
   const comments = useSelector(state => state.comment.list);
 
+  // 댓글 입력 값 감지 함수
   const commentHandler = event => {
     setComment(event.target.value);
   };
 
+  // 댓글 저장 함수
   const submitHandler = event => {
     if (comment.trim() === '') return;
     if (event.type === 'submit') {
       event.preventDefault();
     }
+
+    // 구현할 코드 작성
 
     setComment('');
   };
