@@ -34,7 +34,7 @@ const Write = () => {
   const { id } = useParams();
   //edit_mode
   const is_edit = id ? true : false;
-  const _post = is_edit ? board.list.find((p) => p.articleId === id)  : null; // board list articleId랑 params 아이디랑 비교해서 일치하는 배열
+  const _post = is_edit ? board.list.find((p) => p._id === id)  : null; // board list articleId랑 params 아이디랑 비교해서 일치하는 배열
   //Ref
   const text = React.useRef(null);
   const file_link_ref = React.useRef(is_edit?_post?.imageURL:[]);
@@ -64,11 +64,11 @@ const Write = () => {
     //   return false;
     // }
     let contents_obj = {
-      articleId:uuidv4(),
+      // articleId:uuidv4(),
       nickname: "닉네임!",
       content: content,
       imageURL: imageUrl,
-      createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+      // createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       __v: 0,
     };
     return contents_obj;

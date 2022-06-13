@@ -24,7 +24,7 @@ export const loadBoardDB = () => {
 export const createBoardDB = contents_obj => {
   return async function (dispatch) {
     await instance
-      .get('/content', contents_obj)
+      .post('/content', contents_obj)
       .then(response => {})
       .catch(function (error) {
         console.log('에러', error.response.data);
