@@ -2,7 +2,8 @@ import styled from "styled-components";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ModalSignup, ModalLogin } from "../components/Modal"; //modal
-import { removeCookie } from "../shared/cookie";
+import { removeCookie, getCookie } from "../shared/cookie";
+// 쿠키 헤더에 담아서 보내실 때 getCookie  임포트 해온 다음에
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -26,6 +27,19 @@ const Header = () => {
     setModalLoginOpen(false);
   };
   //modal
+
+  const [is_login, setIsLogin] = React.useState(false);
+  const loginCheck = async (user) => {
+    if (user) {
+      setIsLogin(true);
+    } else {
+      setIsLogin(false);
+    }
+  };
+  React.useEffect(() => {
+    console.log(getCookie("is_login"));
+    // getCookie("is_login") 이걸로 토큰값 받아와서. header에 담아서 요청하면 될 것 같아요!
+  }, []);
 
   return (
     <Container>
