@@ -21,14 +21,14 @@ export const loadBoardDB = () => {
 };
 
 // 게시글 생성
-export const createBoardDB = (contents_obj) => {
+export const createBoardDB = contents_obj => {
   return async function (dispatch) {
-    await instance.get("/content", contents_obj)
-    .then((response) => {  
-    })
-    .catch(function(error) {
-      console.log("에러",error.response.data);
-    })
+    await instance
+      .get('/content', contents_obj)
+      .then(response => {})
+      .catch(function (error) {
+        console.log('에러', error.response.data);
+      });
     await dispatch(createBoard(contents_obj));
   };
 };
@@ -38,7 +38,7 @@ export const createBoardDB = (contents_obj) => {
 export const updateBoardDB = (contents_obj, id) => {
   return async function (dispatch) {
     // await instance.patch("/boards", contents_obj, id)
-    // .then((response) => {  
+    // .then((response) => {
     // })
     // .catch(function(error) {
     //       console.log("에러",error.response.data);
@@ -91,14 +91,7 @@ const boardSlice = createSlice({
       const existingBoard = state.list.find(board => board._id === action.payload);
       console.log(state.list);
       if (existingBoard) {
-        const newBoard = state.list.filter(board => {
-          if (board._id !== action.payload) {
-            console.log(board);
-            return board;
-          }
-        });
-        console.log(newBoard);
-        // return state.list.filter(board => board._id !== action.payload);
+        state.list = state.list.filter(board => board._id !== action.payload);
       }
     },
   },
