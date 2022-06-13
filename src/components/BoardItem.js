@@ -6,8 +6,10 @@ import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import BoardComment from './BoardComment';
+import { removeBoardDB } from '../redux/modules/boardSlice';
 
 const BoardItem = ({ board }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
@@ -17,6 +19,10 @@ const BoardItem = ({ board }) => {
   const onComment = board => {
     const filteredComment = comments.filter(comment => comment.articleId === board.articleId);
     return <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {filteredComment.length}개</Comment>;
+  };
+
+  const onRemove = targetId => {
+    dispatch(removeBoardDB(targetId));
   };
 
   return (
@@ -29,7 +35,7 @@ const BoardItem = ({ board }) => {
               <FontAwesomeIcon onClick={() => navigate(`/write/${board.articleId}`, { state: board })} icon={faPencil} size='lg' />
             </Icon>
             <Icon>
-              <FontAwesomeIcon icon={faTrashCan} size='lg' />
+              <FontAwesomeIcon onClick={() => onRemove(board.articleId)} icon={faTrashCan} size='lg' />
             </Icon>
           </Edit>
         </Top>
