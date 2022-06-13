@@ -2,6 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ModalSignup, ModalLogin } from "../components/Modal"; //modal
+import { removeCookie } from "../shared/cookie";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -25,6 +26,7 @@ const Header = () => {
     setModalLoginOpen(false);
   };
   //modal
+
   return (
     <Container>
       <Logo onClick={() => navigate("/")}>로고</Logo>
@@ -32,24 +34,12 @@ const Header = () => {
         <Item onClick={openLoginModal}>Login</Item>
         <ModalLogin open={modalLoginOpen} close={closeLoginModal}></ModalLogin>
         {/* <FontAwesomeIcon icon={faBars} size='2x' /> */}
-        <Item>Logout</Item>
+        <Item onClick={removeCookie}>Logout</Item>
         <Item onClick={openSignupModal}>SignUp</Item>
         <ModalSignup
           open={modalSignupOpen}
           close={closeSignupModal}
         ></ModalSignup>
-        {/* <Btn onClick={openSignupModal}>modal test</Btn>
-        <ModalSignup
-          open={modalSignupOpen}
-          close={closeSignupModal}
-          header="Modal heading"
-        ></ModalSignup>
-        <Btn onClick={openLoginModal}>modal test</Btn>
-        <ModalLogin
-          open={modalLoginOpen}
-          close={closeLoginModal}
-          header="Modal heading"
-        ></ModalLogin> */}
       </List>
     </Container>
   );
