@@ -8,9 +8,9 @@ import instance from '../../shared/axios';
 export const loadBoardDB = () => {
   return async function (dispatch) {
     // 테스트 url
-    // const response = await axios.get('http://localhost:5000/boards');
     try {
-      const response = await axios.get('http://13.124.25.127/content');
+      const response = await axios.get('http://localhost:5000/boards');
+      // const response = await axios.get('http://13.124.25.127/content');
       dispatch(loadBoard(response.data));
     } catch (error) {
       // 게시글 불러오지 못할 때
@@ -51,7 +51,8 @@ export const updateBoardDB = (contents_obj, id) => {
 export const removeBoardDB = targetId => {
   return async function (dispatch) {
     try {
-      // await axios.delete(`http://13.124.25.127/boards/${targetId}`);
+      await axios.delete(`localhost:5000/content/${targetId}`);
+      // await axios.delete(`http://13.124.25.127/content/${targetId}`);
       dispatch(removeBoard(targetId));
     } catch (error) {
       console.log(error);
