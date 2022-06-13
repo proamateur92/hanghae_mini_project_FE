@@ -14,7 +14,6 @@ import { loadBoard } from "../redux/modules/boardSlice";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../shared/firebase";
 import { getStorage,  updateMetadata } from "firebase/storage";
-
 //Slider
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";

@@ -3,21 +3,6 @@ import axios from 'axios';
 import instance from '../../shared/axios';
 
 //미들웨어
-//Create
-// export const createBoardDB = (contents_obj) => {
-//   return async function (dispatch) {
-//     console.log(contents_obj)
-//     await axios.post("http://13.124.25.127/content", contents_obj, {
-//       headers: { "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JJZCI6IjYyYTM3MzY5ZTM0MzhhMmMzYzAwMmNhNyIsImlhdCI6MTY1NTA4NDk2NX0.EfcmqfIbJPw3-Xob4-EDL15DxQIxdcJZO7QH9vwJgkM" },
-//     })
-//     .then((response) => {
-//       })
-//     .catch(function(error) {
-//         console.log("에러",error.response.data);
-// })
-//     await dispatch(createBoard(contents_obj));
-//   };
-// };
 
 // 게시글 불러오기
 export const loadBoardDB = () => {
@@ -36,27 +21,28 @@ export const loadBoardDB = () => {
 };
 
 // 게시글 생성
-export const createBoardDB = contents_obj => {
+export const createBoardDB = (contents_obj) => {
   return async function (dispatch) {
-    await instance.get('http://13.124.25.127/content', contents_obj);
+    await instance.get("/content", contents_obj)
+    .then((response) => {  
+    })
+    .catch(function(error) {
+      console.log("에러",error.response.data);
+    })
     await dispatch(createBoard(contents_obj));
   };
 };
 
 // 게시글 수정
+//Update
 export const updateBoardDB = (contents_obj, id) => {
   return async function (dispatch) {
-    await axios
-      .patch('http://13.124.25.127/content', contents_obj, id, {
-        headers: {
-          Authorization:
-            'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JJZCI6IjYyYTM3MzY5ZTM0MzhhMmMzYzAwMmNhNyIsImlhdCI6MTY1NTA4NDk2NX0.EfcmqfIbJPw3-Xob4-EDL15DxQIxdcJZO7QH9vwJgkM',
-        },
-      })
-      .then(response => {})
-      .catch(function (error) {
-        console.log('에러', error.response.data);
-      });
+    // await instance.patch("/boards", contents_obj, id)
+    // .then((response) => {  
+    // })
+    // .catch(function(error) {
+    //       console.log("에러",error.response.data);
+    // })
     dispatch(updateBoard(contents_obj, id));
   };
 };
