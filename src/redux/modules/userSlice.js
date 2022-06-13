@@ -1,27 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { setCookie } from "../../shared/cookie";
 
 //미들웨어
-//Create
-export const createUserDB = (user_data) => {
+//login
+export const loginUserDB = (users) => {
   return async function (dispatch) {
-    console.log(user_data);
+    // console.log(users.users);
     await axios
-      .post("http://13.124.25.127/users/signup", user_data)
+      .post("http://13.124.25.127/users/login", users.users)
       .then((response) => {
-        window.alert(response.data.result);
+        console.log(response);
+        window.alert(response.data.message);
+        const accessToken = response.data.token;
+        console.log(accessToken);
+        setCookie("is_login", `${accessToken}`);
       })
       .catch(function (error) {
-        console.log("에러", error.response.data);
+        window.alert(error.response.data.errorMessage);
       });
-    await dispatch(createUser(user_data));
   };
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState: {
+    //is_login 넣어서 함수,
     list: [],
+    //is_login
   },
 
   reducers: {
@@ -29,8 +35,7 @@ const userSlice = createSlice({
     // changeName: (state, action) => {
     //   state.name = action.payload;
     // },
-    loadUser: (state, action) => {},
-    createUser(state, action) {
+    loginUser: (state, action) => {
       state.list.push(action.payload);
     },
     // updateUser(state, action) {},
@@ -38,6 +43,6 @@ const userSlice = createSlice({
   },
 });
 
-export const boardActions = userSlice.actions;
-export const { loadUser, createUser } = userSlice.actions;
+export const userActions = userSlice.actions;
+export const { loginUser } = userSlice.actions;
 export default userSlice.reducer;

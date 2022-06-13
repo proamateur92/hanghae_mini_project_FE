@@ -1,12 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import "../assets/css/modal.css";
-import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginUserDB } from "../redux/modules/userSlice";
 
 //Signup Modal
 const ModalSignup = (props) => {
-  const navigate = useNavigate;
   const email_ref = React.useRef(null);
   const password_ref = React.useRef(null);
   const confirmPassword_ref = React.useRef(null);
@@ -31,7 +32,7 @@ const ModalSignup = (props) => {
     return _reg.test(nickname);
   };
 
-  const signup = async () => {
+  const signupCheck = async () => {
     //벨리데이션 필수!
     if (
       email_ref.current.value === "" ||
@@ -60,7 +61,6 @@ const ModalSignup = (props) => {
       window.alert("비밀번호가 일치하지 않습니다.");
       return;
     } else {
-      // display:"none"
     }
   };
 
@@ -146,7 +146,7 @@ const ModalSignup = (props) => {
               </Input>
               <Btn
                 onClick={() => {
-                  signup();
+                  signupCheck();
                   SignupAxios();
                   close();
                 }}
@@ -163,9 +163,9 @@ const ModalSignup = (props) => {
 
 //Login Modal
 const ModalLogin = (props) => {
-  const navigate = useNavigate();
   const email_ref = React.useRef(null);
   const password_ref = React.useRef(null);
+  const dispatch = useDispatch();
 
   //벨리데이션 마지막에 살리기
   const emailCheck = (email) => {
@@ -174,7 +174,7 @@ const ModalLogin = (props) => {
     return _reg.test(email);
   };
 
-  const login = async () => {
+  const loginCheck = async () => {
     //벨리데이션 필수!
     if (email_ref.current.value === "" || password_ref.current.value === "") {
       window.alert("아이디와 비밀번호를 입력하세요!");
@@ -185,32 +185,33 @@ const ModalLogin = (props) => {
       window.alert("이메일 형식이 맞지 않습니다!");
       return;
     } else {
-      navigate("/");
     }
+    let users = {
+      email: email_ref.current.value,
+      password: password_ref.current.value,
+    };
+    await dispatch(loginUserDB({ users }));
   };
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close } = props;
 
-  // const LoginAxios = () => {
-  //   //post
-  //   let userdata = {
-  //     email: email_ref.currnet.value,
-  //     nickname: nickName_ref.current.value,
-  //     password: password_ref.current.value,
-  //     confirmPassword: confirmPassword_ref.current.value,
-  //   };
-  //   axios
-  //     .post("api", userdata)
-  //     //api,{데이터}, {config}
-  //     .then((response) => {
-  //       console.log(response);
-  //     });
-  // };
-  // //axios가 알아서 json화해서 요청을 보내기 때문
+  // const LoginAxios = async () => {
+  //post
 
-  // React.useEffect(() => {
-  //   LoginAxios();
-  // });
+  // await axios
+  //   .post("http://13.124.25.127/users/login", users)
+  //   //api,{데이터}, {config}
+  //   .then((response) => {
+  //     console.log(response);
+  //     window.alert(response.data.message);
+  //     const accessToken = response.data.token;
+  //     console.log(accessToken);
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //     window.alert(error.response.data.errorMessage);
+  //   });
+  //
 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -249,7 +250,8 @@ const ModalLogin = (props) => {
               </Input>
               <Btn
                 onClick={() => {
-                  login();
+                  loginCheck();
+                  close();
                   // LoginAxios();
                 }}
               >
