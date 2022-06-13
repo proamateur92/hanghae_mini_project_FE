@@ -2,7 +2,7 @@ import axios from "axios";
 
 //인스턴스 생성
 const instance = axios.create({
-    baseURL:"http://13.124.25.127",
+    baseURL:"http://13.209.64.124",
     headers:{"Content-Type":"application/json"}
 });
 //토큰값

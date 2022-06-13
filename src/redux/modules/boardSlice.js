@@ -77,16 +77,20 @@ const boardSlice = createSlice({
     },
     createBoard(state, action) {
       console.log('리듀서', action.payload);
-      state.list.push(action.payload);
+      // state.list.unshift(action.payload); 
+      state.list.push(action.payload)
+        // state.list.sort((a, b) => {
+        // return a.createdAt - b.createdAt;});
     },
     updateBoard(state, action) {
       const newState = state.list.filter((l, idx) => {
-        return l.id !== parseInt(action.payload.id);
+        // return l.id !== parseInt(action.payload.id);
+        return l.id !== action.payload.id;
       });
       const newwState = [...newState, action.payload];
-      state.list = newwState.sort(function (a, b) {
-        return a.id - b.id;
-      });
+      state.list = newwState
+        // .sort(function (a, b) {
+        // return a.createdAt - b.createdAt;});
     },
     removeBoard(state, action) {
       const existingBoard = state.list.find(board => board._id === action.payload);
