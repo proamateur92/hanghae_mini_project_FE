@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loadBoard } from '../redux/modules/boardSlice';
+import { loadBoardDB } from '../redux/modules/boardSlice';
 import Detail from './Detail';
 import Login from './Login';
 import Main from './Main';
@@ -12,21 +12,6 @@ import { Routes, Route } from 'react-router-dom';
 const Router = () => {
   const dispatch = useDispatch();
 
-  const loadBoardDB = () => {
-    return async function (dispatch) {
-      // 테스트 url
-      // const response = await axios.get('http://localhost:5000/boards');
-      try {
-        const response = await axios.get('http://13.124.25.127/content');
-        dispatch(loadBoard(response.data));
-      } catch (error) {
-        // 게시글 불러오지 못할 때
-        // 멘토링 때 물어보기
-      }
-      // console.log(response);
-    };
-  };
-
   // const loadCommentDB = () => {
   // return async function (dispatch) {
   // 테스트 url
@@ -35,7 +20,7 @@ const Router = () => {
   // };
   // };
 
-  // 컴포넌트 생성 시 댓글 불러오기 함수 실행
+  // 게시글 불러오기 redux 함수 호출
   useEffect(() => {
     dispatch(loadBoardDB());
     // dispatch(loadCommentDB());
