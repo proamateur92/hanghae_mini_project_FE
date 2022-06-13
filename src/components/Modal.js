@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import "../assets/css/modal.css";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 //Signup Modal
 const ModalSignup = (props) => {
@@ -12,18 +13,18 @@ const ModalSignup = (props) => {
   const nickname_ref = React.useRef(null);
 
   //벨리데이션 마지막에 열기
-  // const emailCheck = (email) => {
-  //   let _reg =
-  //     /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
-  //   //이메일 형식으로!
-  //   return _reg.test(email);
-  // };
-  // const passwordCheck = (password) => {
-  //   let _reg =
-  //     /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*#?&])[0-9a-zA-Z@$!%*#?&]{3,10}$/;
-  //   //비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로
-  //   return _reg.test(password);
-  // };
+  const emailCheck = (email) => {
+    let _reg =
+      /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
+    //이메일 형식으로!
+    return _reg.test(email);
+  };
+  const passwordCheck = (password) => {
+    let _reg =
+      /^(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*#?&])[0-9a-zA-Z@$!%*#?&]{3,10}$/;
+    //비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로
+    return _reg.test(password);
+  };
   const nicknameCheck = (nickname) => {
     let _reg = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|]{3,8}$/;
     //닉네임은 3~8자 한글,영어,숫자
@@ -41,16 +42,16 @@ const ModalSignup = (props) => {
       return;
     }
     // 벨리데이션 (마지막에 열기)
-    // if (!emailCheck(email_ref.current.value)) {
-    //   window.alert("이메일 형식이 맞지 않습니다!");
-    //   return;
-    // }
-    // if (!passwordCheck(password_ref.current.value)) {
-    //   window.alert(
-    //     "비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로 작성하세요!"
-    //   );
-    //   return;
-    // }
+    if (!emailCheck(email_ref.current.value)) {
+      window.alert("이메일 형식이 맞지 않습니다!");
+      return;
+    }
+    if (!passwordCheck(password_ref.current.value)) {
+      window.alert(
+        "비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로 작성하세요!"
+      );
+      return;
+    }
     if (!nicknameCheck(nickname_ref.current.value)) {
       window.alert("닉네임은 3 ~ 8자 한글,영문,숫자!");
       return;
@@ -59,34 +60,34 @@ const ModalSignup = (props) => {
       window.alert("비밀번호가 일치하지 않습니다.");
       return;
     } else {
-      navigate("/");
+      // display:"none"
     }
   };
 
   // 모달 열기, 닫기를 부모로부터 받아옴
   const { open, close } = props;
 
-  // const SignupAxios = () => {
-  //   // 백엔드에 보내줄 데이터들
-  //   //post
-  //   let userdata = {
-  //     email: email_ref.currnet.value,
-  //     nickname: nickName_ref.current.value,
-  //     password: password_ref.current.value,
-  //     confirmPassword: confirmPassword_ref.current.value,
-  //   };
-  //   axios
-  //     .post("받은데이터api", userdata)
-  //     //api,{데이터}, {config}
-  //     .then((response) => {
-  //       console.log(response);
-  //     });
-  // };
-  //axios가 알아서 json화해서 요청을 보내기 때문
-
-  // React.useEffect(() => {
-  //   SignupAxios();
-  // });
+  //회원가입 데이터 서버에 보내기!
+  const SignupAxios = async () => {
+    // 서버에 보내줄 데이터들
+    //post
+    let users = {
+      email: email_ref.current.value,
+      nickname: nickname_ref.current.value,
+      password: password_ref.current.value,
+      confirmPassword: confirmPassword_ref.current.value,
+    };
+    await axios
+      .post("http://13.124.25.127/users/signup", users)
+      //api,{데이터}, {config}
+      .then((response) => {
+        window.alert("회원가입 성공");
+      })
+      .catch(function (error) {
+        // console.log(error.response.data.errorMessage);
+        window.alert(error.response.data.errorMessage);
+      });
+  };
 
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
@@ -146,7 +147,8 @@ const ModalSignup = (props) => {
               <Btn
                 onClick={() => {
                   signup();
-                  // SignupAxios();
+                  SignupAxios();
+                  close();
                 }}
               >
                 회원가입
@@ -166,11 +168,11 @@ const ModalLogin = (props) => {
   const password_ref = React.useRef(null);
 
   //벨리데이션 마지막에 살리기
-  // const emailCheck = (email) => {
-  //   let _reg =
-  //     /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
-  //   return _reg.test(email);
-  // };
+  const emailCheck = (email) => {
+    let _reg =
+      /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
+    return _reg.test(email);
+  };
 
   const login = async () => {
     //벨리데이션 필수!
@@ -179,11 +181,10 @@ const ModalLogin = (props) => {
       return;
     }
     //벨리데이션 마지막에 살리기
-    // if (!emailCheck(email_ref.current.value)) {
-    //   window.alert("이메일 형식이 맞지 않습니다!");
-    //   return;
-    // }
-    else {
+    if (!emailCheck(email_ref.current.value)) {
+      window.alert("이메일 형식이 맞지 않습니다!");
+      return;
+    } else {
       navigate("/");
     }
   };
