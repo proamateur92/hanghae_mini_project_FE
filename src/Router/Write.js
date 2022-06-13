@@ -8,13 +8,12 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 //redux
 import { useDispatch, useSelector } from "react-redux";
-import { createBoard, updateBoard } from "../redux/modules/boardSlice";
+import { createBoardDB, updateBoardDB } from "../redux/modules/boardSlice";
 import { loadBoard } from "../redux/modules/boardSlice";
 //firebase
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { storage } from "../shared/firebase";
-//axios
-import axios from "axios";
+
 //Slider
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
@@ -22,7 +21,8 @@ import "slick-carousel/slick/slick-theme.css";
 //fontAwesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
-
+//uuid
+import { v4 as uuidv4 } from 'uuid';
 
 
 const Write = () => {
@@ -33,13 +33,12 @@ const Write = () => {
   const { id } = useParams();
   //edit_mode
   const is_edit = id ? true : false;
-  const _post = is_edit ? board.list.find((p) => p.id  === parseInt(id))  : null;
+  const _post = is_edit ? board.list.find((p) => p.articleId === id)  : null; // board list articleId랑 params 아이디랑 비교해서 일치하는 배열
   //Ref
   const text = React.useRef(null);
-  //img_Ref
-  const file_link_ref = React.useRef([]);
+  const file_link_ref = React.useRef(is_edit?_post?.imageURL:[]);
   const [img, setImg] = React.useState("");
-  const [showImages, setShowImages] = useState(is_edit?[...board.list[id-1]?.imageURL]:[]);
+  const [showImages, setShowImages] = useState(is_edit?_post?.imageURL:[]);
 
   useEffect(() => {
     if (is_edit && !_post) {
@@ -49,7 +48,7 @@ const Write = () => {
       return;
     }
   }, []);
-
+  
   //서버에 넘겨줄 데이터 목록
   const getInputData = () => {
     const content = text.current?.value;
@@ -60,13 +59,13 @@ const Write = () => {
       return false;
     }
     const contents_obj = {
+      articleId:uuidv4(),
+      nickName: "닉네임!",
       content: content,
       imageURL: imageUrl,
-      date: moment().format("YYYY-MM-DD HH:mm:ss"),
-      likeCount: 0,
-      commentCount: 0,
+      createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
+      __v: 0,
     };
-    // console.log(imageURL);
     return contents_obj;
   };
 
@@ -81,7 +80,7 @@ const Write = () => {
       //링크를 담는다.
       file_link_ref.current.push(file_url);
     }
-    //데이터를 리덕스에 옮김
+    //데이터를 미들웨어에 옮김
     const contents_obj = getInputData();
     if (!contents_obj) return;
     const new_contents_obj = {
@@ -89,35 +88,13 @@ const Write = () => {
       id
     };
     if(is_edit){
+      //미들웨어로 디스패치
       await dispatch(updateBoardDB({ ...new_contents_obj }, id));
     } else {
       await dispatch(createBoardDB({ ...new_contents_obj }));
     }
+    await navigate(-1);
   };
-
-  //미들웨어
-  //생성
-  const createBoardDB = (contents_obj) => {
-    return async function (dispatch) {
-      await axios
-        .post("http://localhost:5000/boards", contents_obj)
-        .then((response) => {
-        });
-      dispatch(createBoard(contents_obj));
-      navigate(-1);
-    };
-  };
-  //수정
-  const updateBoardDB = (contents_obj, id) => {
-  return async function (dispatch) {
-    await axios
-        // .post("http://localhost:5000/boards", contents_obj)
-        // .then((response) => {
-          // console.log("aa",response)
-        // });
-    dispatch(updateBoard(contents_obj, id));
-  };
-};
 
   //사진 여러장 넣기
   const handleAddImages = (e) => {
@@ -139,6 +116,7 @@ const Write = () => {
     setShowImages(showImages.filter((l, index) => index !== id));
     console.log("dsa",showImages, id)
   };
+
   //사진 슬라이드
   const settings = {
     dots: true, //carousel 밑에 지정 콘텐츠로 바로 이동할 수 있는 버튼을 뜻한다. flase 할시 사라진다.
@@ -148,22 +126,14 @@ const Write = () => {
     slidesToScroll: 1 //한 번에 넘어가는 콘텐츠 수이다. 2로 정하면 2개씩 넘어간다.
   };
 
-
-  // const LoadBoardDB = () => {
-  //   return async function (dispatch) {
-  //     await axios.get("http://localhost:5000/boards").then((response) => {
-  //       console.log(response.data);
-  //       dispatch(loadBoard(response.data));
-  //     }); //혹시라도 데이터를 더 넣어야하거나 헤더 컨피그 설정 추가하고싶으면 두번째 인자에 넣음
-  //   };
-  // };
   return (
     <WriteWrap>
       <FormWrap>
         <Title>{is_edit ? "글 수정" : "글 쓰기"}</Title>
         <ImgInputWrap>
           <label htmlFor="file" onChange={handleAddImages}>
-            <div>이미지 첨부</div>
+            <ImageBtn>이미지 첨부</ImageBtn>
+            {/* <p>3장까지만 첨부 가능</p> */}
             <input
               type="file"
               multiple
@@ -175,14 +145,15 @@ const Write = () => {
             />
           </label>
           <Slider {...settings}>
-            {showImages.length === 0 ? <Temporary>임시 이미지</Temporary> : showImages.map((image, id) => (
-              <ImgWrap key={id}>
+            { showImages?.length === 0  ?  <Temporary>임시 이미지</Temporary> : showImages?.length === undefined ? 
+            null : showImages.map((image, idx) => (
+              <ImgWrap key={idx}>
                 {/* <img src={image?image:"https://t1.daumcdn.net/cfile/blog/225FFE4451C3F7C219"} alt={`${image}-${id}`} /> */}
-                <Img image={image}>{`${image}-${id}`}</Img>
+                <Img image={image}>{`${image}-${idx}`}</Img> 
                 <ImgDelBtn
                   icon={faTrashCan}
                   size="lg"
-                  onClick={() => handleDeleteImage(id)}
+                  onClick={() => handleDeleteImage(idx)}
                 />
               </ImgWrap>
             ))}
@@ -194,7 +165,7 @@ const Write = () => {
           type="text"
           name="content"
           ref={text}
-          defaultValue={is_edit? board.list[id - 1]?.content : null}
+          defaultValue={is_edit? _post?.content : null}
           placeholder="글 내용을 입력해주세요."
         ></TextInput>
         <InputButtonWrap>
@@ -226,12 +197,14 @@ export default Write;
 
 //Wrap
 const WriteWrap = styled.div`
+
   display: flex;
   box-sizing: border-box;
   flex-direction: column;
   align-items: center;
   align-content: center;
   margin: 0 auto;
+  margin-top:5vh;
   width: 50%;
   label {
     display: inline-block;
@@ -252,22 +225,29 @@ const WriteWrap = styled.div`
   }
 `;
 const ImgInputWrap = styled.div`
-border: 1px solid #d3d2d2;
-border-radius:4px;
-padding:30px;
+/* border: 1px solid #d3d2d2; */
+/* border-top:1px solid #d3d2d2; */
+/* border-bottom:1px solid #d3d2d2; ; */
+/* border-radius:4px; */
+padding:0 30px ; 
 width:500px;
 `
 const FormWrap = styled.form`
   text-align: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 `;
 //font
 const Title = styled.h1`
   color: #c61b43;
+  width:90%;
+  border-bottom:1px solid #d3d2d2; ;
+  padding:20px 0;
+  margin:0 auto;
 `;
 
 //input
 const TextInput = styled.textarea`
-  width: 100%;
+  width: 90%;
   height: 200px;
   border: 1px solid #d3d2d2;
   border-radius: 6px;
@@ -278,6 +258,8 @@ const Img = styled.div`
   border: 1px solid #d3d2d2;
   background-image:url(${(props) => (props.image)}) ;
   background-position:center;
+  background-size:contain;
+  background-repeat:no-repeat ;
   text-indent:-9999px;
 `;
 const Temporary = styled.div`
@@ -290,6 +272,7 @@ const Temporary = styled.div`
 `
 const ImgWrap = styled.div`
 position: relative;
+background-color:black;
 `;
 const ImgDelBtn = styled(FontAwesomeIcon)`
 position:absolute;
@@ -305,16 +288,24 @@ transition: background-color 0.1s, transform 3s;
   background-color:rgba(255,255,255,0.5);
   }
 `;
+//사진 첨부 버튼
+const ImageBtn = styled.div`
+padding:10px 20px;
+border-radius:4px;
+border:1px solid #e8e4da;
+margin: 20px 0;
+`
 
 //버튼
 const InputButtonWrap = styled.div`
   width: 100%;
   height: 60px;
-  border-radius: 6px;
+  /* border-radius: 6px; */
   border: 1px solid #d3d2d2;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top:20px;
 `;
 const InputLink = styled(Link)`
   color: white;
