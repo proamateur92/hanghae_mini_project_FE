@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import BoardComment from './BoardComment';
 import { removeBoardDB } from '../redux/modules/boardSlice';
+import { loadComment } from '../redux/modules/commentSlice';
 
 const BoardItem = ({ board }) => {
   const dispatch = useDispatch();
@@ -15,27 +16,48 @@ const BoardItem = ({ board }) => {
   const [isComment, setIsComment] = useState(false);
   const comments = useSelector(state => state.comment.list);
 
+  // 해당 게시글 댓글 가져오기
+  // const loadCommentDB = () => {
+  //   return async function (dispatch) {
+  //     테스트 url
+  //     const response = await axios.get('http://localhost:5000/boards');
+  //     try {
+  //       const response = await axios.get(`http://13.124.25.127/content/${board._id}`);
+  //       console.log(response);
+  //       dispatch(loadComment(response.data));
+  //     } catch (error) {
+  //       멘토링 때 물어보기
+  //     }
+  //   };
+  // };
+
+  // 컴포넌트 생성 시 댓글 불러오기 함수 실행
+  useEffect(() => {
+    // dispatch(loadCommentDB());
+  }, []);
+
+  // 게시글 삭제 redux 함수 호출
+  const onRemoveBoard = () => {
+    dispatch(removeBoardDB(board._id));
+  };
+
   // 각 게시글 별 댓글 갯수 값 계산 로직
   const onComment = board => {
     const filteredComment = comments.filter(comment => comment.articleId === board.articleId);
     return <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {filteredComment.length}개</Comment>;
   };
 
-  const onRemove = targetId => {
-    dispatch(removeBoardDB(targetId));
-  };
-
   return (
     <Item>
       <Text>
         <Top>
-          <Nickname>{board.nickName}</Nickname>
+          <Nickname>{board.nickname}</Nickname>
           <Edit>
             <Icon>
-              <FontAwesomeIcon onClick={() => navigate(`/write/${board.articleId}`, { state: board })} icon={faPencil} size='lg' />
+              <FontAwesomeIcon onClick={() => navigate(`/write/${board._id}`, { state: board })} icon={faPencil} size='lg' />
             </Icon>
             <Icon>
-              <FontAwesomeIcon onClick={() => onRemove(board.articleId)} icon={faTrashCan} size='lg' />
+              <FontAwesomeIcon onClick={() => onRemoveBoard()} icon={faTrashCan} size='lg' />
             </Icon>
           </Edit>
         </Top>
@@ -91,6 +113,7 @@ const Top = styled.div`
   margin-bottom: 15px;
   ${Icon} {
     margin-left: 15px;
+    cursor: pointer;
   }
   ${Icon}:hover {
     transform: scale(1.1);
