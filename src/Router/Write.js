@@ -39,13 +39,13 @@ const Write = () => {
   //Ref
   const text = React.useRef(null);
   const file_link_ref = React.useRef(is_edit?_post?.imageURL:[]);
-  const [img, setImg] = React.useState("");
+  const [imageFB, setImageFB] = React.useState("");
   const [showImages, setShowImages] = useState(is_edit?_post?.imageURL:[]);
   
   // console.log(_post._id)
   console.log("유알엘주소",file_link_ref)
   console.log("미리보기",showImages)
-  console.log("이미지",img)
+  console.log("이미지",imageFB)
 
   useEffect(() => {
     if (is_edit && !_post) {
@@ -68,7 +68,7 @@ const Write = () => {
     let contents_obj = {
       // createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
       // articleId:uuidv4(),
-      // _id:_post?._id,
+      _id:_post?._id,
       nickname: "닉네임!",
       content: content,
       imageURL: imageUrl,
@@ -80,10 +80,10 @@ const Write = () => {
 
   //데이터를 스토리지에 올림
   const upLoadFB = async () => {
-    for (let i = 0; i < img.length; i++) {
+    for (let i = 0; i < imageFB.length; i++) {
       const uploded_file = await uploadBytes(
-        ref(storage, `images/${img[i].name}`), //경로
-        img[i] //어떤파일 올릴지
+        ref(storage, `images/${imageFB[i].name}`), //경로
+        imageFB[i] //어떤파일 올릴지
       );
       console.log('업로드',uploded_file.ref)
       const file_url = await getDownloadURL(uploded_file.ref);
@@ -125,13 +125,10 @@ const Write = () => {
   // X버튼 클릭 시 이미지 삭제
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((l, index) => index !== id));
-    setImg(img.filter((l, index) => index !== id));
-    // file_link_ref.current.filter((l, index) => index !== file_link_ref.current.length);
-    console.log(img, showImages)
-    // console.log("삭제", file_link_ref.current.length)
-    // console.log("dsa",showImages, id)
+    let del = file_link_ref.current.filter((l, index) => l !== file_link_ref.current[id]);
+    file_link_ref.current = [...del];
   };
-
+  
   //사진 슬라이드
   const settings = {
     dots: true, //carousel 밑에 지정 콘텐츠로 바로 이동할 수 있는 버튼을 뜻한다. flase 할시 사라진다.
@@ -155,7 +152,7 @@ const Write = () => {
               id="file"
               accept="image/jpg, image/png, image/jpeg"
               onChange={(e) => {
-                setImg(e.target.files);
+                setImageFB(e.target.files);
               }}
             />
           </label>
