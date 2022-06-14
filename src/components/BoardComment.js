@@ -1,6 +1,7 @@
 import axios from 'axios';
+import instance from '../shared/axios';
 import React, { useState } from 'react';
-import CommentEdit from './CommentEdit';
+import CommentItem from './CommentItem';
 import styled from 'styled-components';
 
 const BoardComment = ({ board, comment }) => {
@@ -19,15 +20,16 @@ const BoardComment = ({ board, comment }) => {
     }
 
     const commentData = {
-      nickname: 'admin99',
-      contentId: `${board.id}`,
+      // nickname: 'admin99',
+      // contentId: `${board._id}`,
       comment: `${commentValue}`,
     };
 
     console.log(commentData);
-
+    // 댓글 추가하기
     try {
-      await axios.post(`http://13.209.64.124/comment/${board._id}`, commentData);
+      const response = await instance.post(`/comment/${board._id}`, commentData);
+      console.log(response.data);
     } catch (error) {
       console.log('통신실패');
     }
@@ -43,11 +45,7 @@ const BoardComment = ({ board, comment }) => {
         </Post>
       </InputBox>
       {comment.map(comm => (
-        <CommentItem key={comm._id}>
-          <span>{comm.nickname}</span>
-          <span>{comm.comment}</span>
-          <CommentEdit key={comm.commentId} comments={comm}></CommentEdit>
-        </CommentItem>
+        <CommentItem key={comm._id} comm={comm} />
       ))}
       <CommentBox key={comment.id}></CommentBox>
     </Container>
@@ -86,9 +84,6 @@ const Post = styled.span`
   color: ${props => (props.mode === 'off' ? '#bfdffb' : '#58b9fa')};
   font-weight: bold;
   cursor: pointer;
-`;
-const CommentItem = styled.div`
-  display: flex;
 `;
 
 const CommentBox = styled.div`

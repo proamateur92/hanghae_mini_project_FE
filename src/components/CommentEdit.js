@@ -1,46 +1,63 @@
-import axios from 'axios';
-
-import React, { useState } from 'react';
+import instance from '../shared/axios';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const CommentEdit = ({ comments }) => {
+const CommentEdit = ({ comments, onEdit, off }) => {
   const [option, setOption] = useState(false);
-  const { commentId, contentId, comment } = comments;
-  const handleUpdate = async () => {
-    console.log('댓글 수정');
-    console.log(contentId);
-    console.log(commentId);
-    console.log(comment);
-    // try {
-    //   await axios.patch(`http://13.209.64.124/comment/${commentId}/${comment._id}`);
-    // } catch (error) {
-    //   console.log('통신실패');
-    // }
+  const [cancel, setCancel] = useState(false);
+
+  useEffect(() => {
+    if (!off) {
+      setOption(false);
+      setCancel(false);
+    }
+  }, [off]);
+
+  const { commentId, contentId } = comments;
+
+  const availeWrite = () => {
+    setCancel(true);
+    setOption(false);
+    onEdit(true);
   };
+
+  const reset = () => {
+    setCancel(false);
+    onEdit(false);
+  };
+
+  // 댓글 수정, 삭제 글자 보이기
+  const commentItem = () => {
+    return !cancel ? (
+      <div>
+        <span onClick={() => availeWrite()}>수정</span>
+        <span onClick={() => handleRemove()}>삭제</span>
+      </div>
+    ) : (
+      <div>
+        <span onClick={() => reset()}>취소</span>
+      </div>
+    );
+  };
+
+  // 댓글 삭제
   const handleRemove = async () => {
     console.log('댓글 삭제');
-    console.log(contentId);
-    console.log(commentId);
-    console.log(comment);
-    // try {
-    //   await axios.delete(`http://13.209.64.124/comment/${board._id}/${comment._id}`);
-    // } catch (error) {
-    //   console.log('통신실패');
-    // }
+    setOption(false);
+    try {
+      await instance.delete(`/comment/${contentId}/${commentId}`);
+    } catch (error) {
+      console.log('통신실패');
+    }
   };
   return (
     <>
-      <Icon onClick={() => setOption(prev => !prev)}>
+      <Icon onClick={() => setOption(true)}>
         <FontAwesomeIcon icon={faEllipsis} size='sm' />
       </Icon>
-      {option && (
-        <Option>
-          <span onClick={handleUpdate}>수정</span>
-          <span onClick={handleRemove}>삭제</span>
-        </Option>
-      )}
+      {option && <Option>{commentItem()}</Option>}
       {!option && null}
     </>
   );
