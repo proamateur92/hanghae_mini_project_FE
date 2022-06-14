@@ -195,24 +195,6 @@ const ModalLogin = (props) => {
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close } = props;
 
-  // const LoginAxios = async () => {
-  //post
-
-  // await axios
-  //   .post("http://13.124.25.127/users/login", users)
-  //   //api,{데이터}, {config}
-  //   .then((response) => {
-  //     console.log(response);
-  //     window.alert(response.data.message);
-  //     const accessToken = response.data.token;
-  //     console.log(accessToken);
-  //   })
-  //   .catch(function (error) {
-  //     console.log(error);
-  //     window.alert(error.response.data.errorMessage);
-  //   });
-  //
-
   return (
     // 모달이 열릴때 openModal 클래스가 생성된다.
     <div className={open ? "openModal modal" : "modal"}>
