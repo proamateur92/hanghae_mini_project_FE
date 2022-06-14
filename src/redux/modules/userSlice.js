@@ -10,20 +10,11 @@ export const loginUserDB = (users) => {
     await axios
       .post("http://13.209.64.124/users/login", users.users)
       .then((response) => {
-        // console.log(response.config.data, "config 데이터");
-        // console.log(response.data, "데이터");
-        console.log(response, "데이터");
         window.alert(response.data.message);
         const accessToken = response.data.token;
-        // console.log(accessToken);
         setCookie("is_login", `${accessToken}`);
-        console.log(response.data.nickname, response.data.email);
-        const data = {
-          email: response.data.email,
-          nickname: response.data.nickname,
-        };
-        console.log(data, "1");
-        dispatch(saveUser(data));
+        const nickname = response.data.nickname;
+        setCookie("nickname", `${nickname}`);
       })
       .catch(function (error) {
         window.alert(error.response.data.errorMessage);

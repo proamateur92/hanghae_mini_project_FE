@@ -10,7 +10,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Header = () => {
   const navigate = useNavigate();
-  // const userData = useSelector((state) => state.user.list);
   //modal
   const [modalSignupOpen, setModalSignupOpen] = React.useState(false);
   const [modalLoginOpen, setModalLoginOpen] = React.useState(false);
@@ -34,6 +33,7 @@ const Header = () => {
   const deleteCookie = () => {
     //로그아웃 토큰 삭제
     document.cookie = "is_login" + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
+    document.cookie = "nickname" + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
   };
 
   const [is_login, setIsLogin] = React.useState(false);
@@ -46,9 +46,6 @@ const Header = () => {
   };
   React.useEffect(() => {
     loginCheck();
-    // console.log(getCookie("is_login"), "쿠키다!");
-    // console.log(userData);
-    // }, [userData]);
   }, []);
 
   return (
