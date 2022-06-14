@@ -1,25 +1,25 @@
 import styled from "styled-components";
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ModalSignup, ModalLogin } from "../components/Modal"; //modal
 // 쿠키 헤더에 담아서 보내실 때 getCookie  임포트 해온 다음에
 import { getCookie } from "../shared/cookie";
-import { useSelector } from "react-redux";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useSelector } from "react-redux";
 
 const Header = () => {
   const navigate = useNavigate();
   //modal
   const [modalSignupOpen, setModalSignupOpen] = React.useState(false);
   const [modalLoginOpen, setModalLoginOpen] = React.useState(false);
+  const user = useSelector((state) => state.user);
 
   const openSignupModal = () => {
     setModalSignupOpen(true);
   };
   const closeSignupModal = () => {
     setModalSignupOpen(false);
-    window.location.reload();
   };
 
   const openLoginModal = () => {
@@ -30,23 +30,23 @@ const Header = () => {
   };
   //modal
 
+  const [is_login, setIsLogin] = React.useState(false);
+
   const deleteCookie = () => {
     //로그아웃 토큰 삭제
     document.cookie = "is_login" + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
     document.cookie = "nickname" + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
+    setIsLogin(false);
+    window.location.reload();
   };
 
-  const [is_login, setIsLogin] = React.useState(false);
-  const loginCheck = () => {
-    if (getCookie("is_login") === undefined) {
-      setIsLogin(false);
-    } else {
+  useEffect(() => {
+    if (user.isLogin) {
       setIsLogin(true);
+    } else {
+      setIsLogin(false);
     }
-  };
-  React.useEffect(() => {
-    loginCheck();
-  }, []);
+  }, [user]);
 
   return (
     <Container>
@@ -56,7 +56,8 @@ const Header = () => {
         {!is_login && <Item onClick={openLoginModal}>Login</Item>}
 
         <ModalLogin open={modalLoginOpen} close={closeLoginModal}></ModalLogin>
-        {/* <FontAwesomeIcon icon={faBars} size='2x' /> */}
+        {/* <FontAwesomeIcon icon={faBars} size="2x" /> */}
+        {is_login && <div>{getCookie("nickname")}님 안녕하세요!</div>}
         {is_login && <Item onClick={deleteCookie}>Logout</Item>}
 
         <ModalSignup
