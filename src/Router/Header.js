@@ -2,7 +2,7 @@ import styled from "styled-components";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ModalSignup, ModalLogin } from "../components/Modal"; //modal
-import { removeCookie, getCookie } from "../shared/cookie";
+import { getCookie } from "../shared/cookie";
 // 쿠키 헤더에 담아서 보내실 때 getCookie  임포트 해온 다음에
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,7 +33,6 @@ const Header = () => {
   const deleteCookie = () => {
     //로그아웃 토큰 삭제
     document.cookie = "is_login" + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
-    navigate("/");
   };
 
   const [is_login, setIsLogin] = React.useState(false);
@@ -46,6 +45,7 @@ const Header = () => {
   };
   React.useEffect(() => {
     loginCheck();
+    // console.log(getCookie("is_login"), "쿠키다!");
   }, []);
 
   return (
