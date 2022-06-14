@@ -10,7 +10,9 @@ export const loginUserDB = (users) => {
     await axios
       .post("http://13.209.64.124/users/login", users.users)
       .then((response) => {
-        console.log(response);
+        // console.log(response.config.data, "config 데이터");
+        // console.log(response.data, "데이터");
+        console.log(response, "데이터");
         window.alert(response.data.message);
         const accessToken = response.data.token;
         console.log(accessToken);
