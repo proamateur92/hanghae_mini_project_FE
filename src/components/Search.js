@@ -11,7 +11,7 @@ const Serch = () => {
     const getInputData = () => {
         const content = search;
         let contents_obj = {
-            value : content
+            content
         }
         return contents_obj
     }
