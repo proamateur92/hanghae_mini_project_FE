@@ -5,18 +5,30 @@ import styled from 'styled-components';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const CommentEdit = ({ board, comment }) => {
+const CommentEdit = ({ comments }) => {
   const [option, setOption] = useState(false);
-  const handleUpdate = () => {
+  const { commentId, contentId, comment } = comments;
+  const handleUpdate = async () => {
     console.log('댓글 수정');
+    console.log(contentId);
+    console.log(commentId);
+    console.log(comment);
+    // try {
+    //   await axios.patch(`http://13.209.64.124/comment/${commentId}/${comment._id}`);
+    // } catch (error) {
+    //   console.log('통신실패');
+    // }
   };
   const handleRemove = async () => {
     console.log('댓글 삭제');
-    try {
-      await axios.delete(`http://13.124.25.127/comment/${board._id}/${comment._id}`);
-    } catch (error) {
-      console.log('통신실패');
-    }
+    console.log(contentId);
+    console.log(commentId);
+    console.log(comment);
+    // try {
+    //   await axios.delete(`http://13.209.64.124/comment/${board._id}/${comment._id}`);
+    // } catch (error) {
+    //   console.log('통신실패');
+    // }
   };
   return (
     <>

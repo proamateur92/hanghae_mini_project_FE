@@ -4,7 +4,6 @@ import CommentEdit from './CommentEdit';
 import styled from 'styled-components';
 
 const BoardComment = ({ board, comment }) => {
-  console.log(comment);
   const [commentValue, setCommentValue] = useState('');
 
   // 댓글 입력 값 감지 함수
@@ -43,14 +42,13 @@ const BoardComment = ({ board, comment }) => {
           게시
         </Post>
       </InputBox>
-      {comment.length &&
-        comment.map(comm => (
-          <CommentItem key={comm._id}>
-            <span>{comm.nickname}</span>
-            <span>{comm.comment}</span>
-            <CommentEdit key={comm.commentId} board={board} comment={comment}></CommentEdit>
-          </CommentItem>
-        ))}
+      {comment.map(comm => (
+        <CommentItem key={comm._id}>
+          <span>{comm.nickname}</span>
+          <span>{comm.comment}</span>
+          <CommentEdit key={comm.commentId} comments={comm}></CommentEdit>
+        </CommentItem>
+      ))}
       <CommentBox key={comment.id}></CommentBox>
     </Container>
   );
