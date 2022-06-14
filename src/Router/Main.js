@@ -2,6 +2,7 @@ import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from './Header';
 import BoardItem from '../components/BoardItem';
+import Search from '../components/Search';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
@@ -14,6 +15,7 @@ const Main = () => {
   return (
     <>
       <Header />
+      <Search/>
       <Container>
         <Box>
           <List>{boards && boards.map(board => <BoardItem key={board._id} board={board} />)}</List>

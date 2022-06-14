@@ -60,6 +60,17 @@ export const removeBoardDB = targetId => {
   };
 };
 
+// 게시글 검색
+export const searchBoardDB = (search_data) => {
+  return async function (dispatch) {
+    await instance.get(`/content/search`, search_data)
+    .catch(function (error) {
+      console.log('에러', error.response.data);
+    });
+  await dispatch(searchBoard(search_data));
+  };
+};
+
 const boardSlice = createSlice({
   name: 'board',
   initialState: {
@@ -99,9 +110,12 @@ const boardSlice = createSlice({
         state.list = state.list.filter(board => board._id !== action.payload);
       }
     },
+    searchBoard(state, action) {
+      console.log(action.payload);
+    },
   },
 });
 
 // export const boardActions = boardSlice.actions;
-export const { loadBoard, createBoard, updateBoard, removeBoard } = boardSlice.actions;
+export const { loadBoard, createBoard, updateBoard, removeBoard, searchBoard } = boardSlice.actions;
 export default boardSlice.reducer;
