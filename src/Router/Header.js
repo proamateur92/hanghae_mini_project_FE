@@ -2,14 +2,15 @@ import styled from "styled-components";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { ModalSignup, ModalLogin } from "../components/Modal"; //modal
-import { getCookie } from "../shared/cookie";
 // 쿠키 헤더에 담아서 보내실 때 getCookie  임포트 해온 다음에
+import { getCookie } from "../shared/cookie";
+import { useSelector } from "react-redux";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Cookies } from "react-cookie";
 
 const Header = () => {
   const navigate = useNavigate();
+  // const userData = useSelector((state) => state.user.list);
   //modal
   const [modalSignupOpen, setModalSignupOpen] = React.useState(false);
   const [modalLoginOpen, setModalLoginOpen] = React.useState(false);
@@ -46,6 +47,8 @@ const Header = () => {
   React.useEffect(() => {
     loginCheck();
     // console.log(getCookie("is_login"), "쿠키다!");
+    // console.log(userData);
+    // }, [userData]);
   }, []);
 
   return (

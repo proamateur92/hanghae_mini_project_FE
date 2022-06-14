@@ -15,8 +15,15 @@ export const loginUserDB = (users) => {
         console.log(response, "데이터");
         window.alert(response.data.message);
         const accessToken = response.data.token;
-        console.log(accessToken);
+        // console.log(accessToken);
         setCookie("is_login", `${accessToken}`);
+        console.log(response.data.nickname, response.data.email);
+        const data = {
+          email: response.data.email,
+          nickname: response.data.nickname,
+        };
+        console.log(data, "1");
+        dispatch(saveUser(data));
       })
       .catch(function (error) {
         window.alert(error.response.data.errorMessage);
@@ -42,9 +49,12 @@ const userSlice = createSlice({
     },
     // updateUser(state, action) {},
     // removeUser(state, action) {},
+    saveUser(state, action) {
+      state.list.push(action.payload);
+    },
   },
 });
 
 export const userActions = userSlice.actions;
-export const { loginUser } = userSlice.actions;
+export const { loginUser, saveUser } = userSlice.actions;
 export default userSlice.reducer;
