@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getCookie } from "../shared/cookie";
 
 //인스턴스 생성
 const instance = axios.create({
@@ -6,8 +7,9 @@ const instance = axios.create({
   headers: { "Content-Type": "application/json" },
 });
 //토큰값
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JJZCI6IjYyYTY4Mjk4ZjdlOGNkOTZlZjhmNTYxNiIsImlhdCI6MTY1NTEzNTg2NX0.T-RJn1iIcT4zkB3rCZK9wUe2IyVOZn7LZz6lp2B2vps";
+const token = getCookie("is_login");
+// 임시토큰
+// "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JJZCI6IjYyYTY4Mjk4ZjdlOGNkOTZlZjhmNTYxNiIsImlhdCI6MTY1NTEzNTg2NX0.T-RJn1iIcT4zkB3rCZK9wUe2IyVOZn7LZz6lp2B2vps";
 
 //요청 가로채기
 instance.interceptors.request.use(
