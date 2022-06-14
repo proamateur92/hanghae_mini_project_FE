@@ -11,14 +11,15 @@ const Main = () => {
 
   // redux로부터 게시글 정보 받아오기
   const boards = useSelector(state => state.board.list);
-
+  console.log(boards)
   return (
     <>
       <Header />
       <Search/>
       <Container>
         <Box>
-          <List>{boards && boards.map(board => <BoardItem key={board._id} board={board} />)}</List>
+          {/* <List>{boards && boards.map(board => <BoardItem key={board._id} board={board} />)}</List> */}
+          <List><BoardItem board={boards}></BoardItem></List>
         </Box>
       </Container>
       <WriteButton>

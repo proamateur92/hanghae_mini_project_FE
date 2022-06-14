@@ -51,7 +51,7 @@ export const updateBoardDB = (contents_obj, id) => {
 export const removeBoardDB = targetId => {
   return async function (dispatch) {
     try {
-      await instance.delete(`/content/${targetId}`);
+      await instance.delete(`/content/${targetId}`)
       // await axios.delete(`http://13.124.25.127/content/${targetId}`);
       dispatch(removeBoard(targetId));
     } catch (error) {
@@ -60,19 +60,20 @@ export const removeBoardDB = targetId => {
   };
 };
 
-
-
-
 // 게시글 검색
 export const searchBoardDB = (search_data) => {
   return async function (dispatch) {
-    console.log(search_data)
-    await instance.get("/content/search", {params: {value:search_data.content}})
-    .then(response => {})
-    .catch(function (error) {
-      console.log('에러', error.response.data);
-    });
-  await dispatch(searchBoard(search_data));
+    try {
+      await instance.get("/content/search", {params: {value:search_data.value}})
+      .then((response) => {
+        // file_link_ref.current = [...file_link_ref.current, file_url];
+        // search = [...response.data.SearchContent];
+        dispatch(searchBoard([...response.data.SearchContent]));
+      })
+    } 
+    catch (error) {
+      console.log(error);
+    };
   };
 };
 
@@ -80,6 +81,7 @@ const boardSlice = createSlice({
   name: 'board',
   initialState: {
     list: [],
+    searchList: [],
   },
 
   reducers: {
@@ -116,8 +118,12 @@ const boardSlice = createSlice({
       }
     },
     searchBoard(state, action) {
-      console.log(action.payload);
-    },
+      // console.log(action.payload)
+        // const search_data = [...action.payload]
+        console.log(action.payload)
+        // state.searchList.push(action.payload);
+        state.searchList = action.payload;
+      },
   },
 });
 
