@@ -60,22 +60,40 @@ const Write = () => {
   const getInputData = () => {
     const content = text.current?.value;
     const imageUrl = file_link_ref.current;
+    const CreateAt = moment().format("YYYY-MM-DD HH:mm:ss");
+    const updateAt = moment().format("YYYY-MM-DD HH:mm:ss");
     console.log(imageUrl);
     // if (!content) {
     //   alert("글 내용을 입력해주세요.");
     //   return false;
     // }
-    let contents_obj = {
-      // createdAt: moment().format("YYYY-MM-DD HH:mm:ss"),
-      // articleId:uuidv4(),
-      _id:_post?._id,
-      nickname: "닉네임!",
-      content: content,
-      imageURL: imageUrl,
-      __v: 0,
-    };
-    return contents_obj;
+    if (is_edit) {
+      let contents_obj = {
+        updateAt,
+        CreateAt:_post?.CreateAt,
+        _id:_post?._id,
+        nickname: "닉네임!",
+        content: content,
+        imageURL: imageUrl,
+        __v: 0,
+      };
+      return contents_obj
+    } else {
+      let contents_obj = {
+        CreateAt,
+        updateAt,
+        _id:_post?._id,
+        nickname: "닉네임!",
+        content: content,
+        imageURL: imageUrl,
+        __v: 0,
+      };
+      return contents_obj
+    }
+    // console.log(contents_obj)
+    // return contents_obj;
   };
+
   console.log("보낼목록",getInputData())
 
   //데이터를 스토리지에 올림
