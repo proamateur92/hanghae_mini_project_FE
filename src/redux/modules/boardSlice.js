@@ -51,7 +51,7 @@ export const updateBoardDB = (contents_obj, id) => {
 export const removeBoardDB = targetId => {
   return async function (dispatch) {
     try {
-      await axios.delete(`localhost:5000/content/${targetId}`);
+      await instance.delete(`/content/${targetId}`);
       // await axios.delete(`http://13.124.25.127/content/${targetId}`);
       dispatch(removeBoard(targetId));
     } catch (error) {
@@ -60,10 +60,15 @@ export const removeBoardDB = targetId => {
   };
 };
 
+
+
+
 // 게시글 검색
 export const searchBoardDB = (search_data) => {
   return async function (dispatch) {
-    await instance.get(`/content/search`, search_data)
+    console.log(search_data)
+    await instance.get("/content/search", {params: {value:search_data.content}})
+    .then(response => {})
     .catch(function (error) {
       console.log('에러', error.response.data);
     });
