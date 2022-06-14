@@ -1,63 +1,57 @@
+import axios from 'axios';
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import CommentEdit from './CommentEdit';
 import styled from 'styled-components';
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const BoardComment = ({ board }) => {
-  const dispatch = useDispatch();
-  const [comment, setComment] = useState('');
-  const [option, setOption] = useState(false);
-
-  // 각 게시글 별 댓글 가져오기
-  const comments = useSelector(state => state.comment.list);
+const BoardComment = ({ board, comment }) => {
+  console.log(comment);
+  const [commentValue, setCommentValue] = useState('');
 
   // 댓글 입력 값 감지 함수
   const commentHandler = event => {
-    setComment(event.target.value);
+    setCommentValue(event.target.value);
   };
 
   // 댓글 저장 함수
-  const submitHandler = event => {
-    if (comment.trim() === '') return;
+  const submitHandler = async event => {
+    if (commentValue.trim() === '') return;
     if (event.type === 'submit') {
       event.preventDefault();
     }
 
-    // 구현할 코드 작성
+    const commentData = {
+      nickname: 'admin99',
+      contentId: `${board.id}`,
+      comment: `${commentValue}`,
+    };
 
-    setComment('');
-  };
+    console.log(commentData);
 
-  const commentBox = articleId => {
-    const filteredComment = comments.filter(comment => comment.articleId === articleId);
-    return filteredComment.map(comment => (
-      <CommentBox key={comment.id}>
-        <span>{comment.nickName}</span>
-        <div>{comment.comment}</div>
-        <Icon onClick={() => setOption(prev => !prev)}>
-          <FontAwesomeIcon icon={faEllipsis} size='sm' />
-        </Icon>
-        {option && (
-          <>
-            <span>수정</span>
-            <span>삭제</span>
-          </>
-        )}
-        {!option && null}
-      </CommentBox>
-    ));
+    try {
+      await axios.post(`http://13.209.64.124/comment/${board._id}`, commentData);
+    } catch (error) {
+      console.log('통신실패');
+    }
+    setCommentValue('');
   };
 
   return (
     <Container>
       <InputBox onSubmit={submitHandler}>
-        <input value={comment} onChange={commentHandler} type='text' placeholder='댓글을 입력하세요' />
-        <Post mode={comment ? '' : 'off'} onClick={submitHandler}>
+        <input value={commentValue} onChange={commentHandler} type='text' placeholder='댓글을 입력하세요' />
+        <Post mode={commentValue ? '' : 'off'} onClick={submitHandler}>
           게시
         </Post>
       </InputBox>
-      {commentBox(board.articleId)}
+      {comment.length &&
+        comment.map(comm => (
+          <CommentItem key={comm._id}>
+            <span>{comm.nickname}</span>
+            <span>{comm.comment}</span>
+            <CommentEdit key={comm.commentId} board={board} comment={comment}></CommentEdit>
+          </CommentItem>
+        ))}
+      <CommentBox key={comment.id}></CommentBox>
     </Container>
   );
 };
@@ -82,7 +76,6 @@ const InputBox = styled.form`
     margin: 0 20px;
     padding-bottom: 2px;
     font-size: 16px;
-    text-align: center;
     transition: 0.4s;
   }
   input:focus {
@@ -96,8 +89,10 @@ const Post = styled.span`
   font-weight: bold;
   cursor: pointer;
 `;
+const CommentItem = styled.div`
+  display: flex;
+`;
 
-const Icon = styled.div``;
 const CommentBox = styled.div`
   display: flex;
   align-items: center;
@@ -111,16 +106,6 @@ const CommentBox = styled.div`
     background-color: #f0f2f5;
     padding: 10px 15px;
     border-radius: 10px;
-  }
-  ${Icon} {
-    margin-left: 10px;
-    padding: 2px 5px;
-    border-radius: 10px;
-    background-color: #fff;
-    cursor: pointer;
-  }
-  ${Icon}:hover {
-    background-color: #f0f2f5;
   }
 `;
 

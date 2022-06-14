@@ -18,8 +18,6 @@ const Router = () => {
   useEffect(() => {
     dispatch(loadBoardDB());
     dispatch(searchBoardDB());
-    dispatch(loadCommentDB());
-    dispatch(loadLikeDB());
   }, []);
 
   return (

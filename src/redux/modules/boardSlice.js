@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createSlice } from '@reduxjs/toolkit';
 import instance from '../../shared/axios';
 
 //미들웨어
@@ -9,8 +9,8 @@ export const loadBoardDB = () => {
   return async function (dispatch) {
     // 테스트 url
     try {
-      const response = await instance.get('/content');
-      // const response = await axios.get('http://13.124.25.127/content');
+      // const response = await instance.get('/content');
+      const response = await axios.get('http://13.209.64.124/content');
       dispatch(loadBoard(response.data));
     } catch (error) {
       // 게시글 불러오지 못할 때
@@ -37,12 +37,12 @@ export const createBoardDB = contents_obj => {
 //Update
 export const updateBoardDB = (contents_obj, id) => {
   return async function (dispatch) {
-    await instance.patch(`/content/${id}`, contents_obj)
-    .then((response) => {
-    })
-    .catch(function(error) {
-          console.log("에러",error.response.data);
-    })
+    await instance
+      .patch(`/content/${id}`, contents_obj)
+      .then(response => {})
+      .catch(function (error) {
+        console.log('에러', error.response.data);
+      });
     dispatch(updateBoard(contents_obj, id));
   };
 };
@@ -51,8 +51,8 @@ export const updateBoardDB = (contents_obj, id) => {
 export const removeBoardDB = targetId => {
   return async function (dispatch) {
     try {
-      await instance.delete(`/content/${targetId}`)
-      // await axios.delete(`http://13.124.25.127/content/${targetId}`);
+      // await axios.delete(`localhost:5000/content/${targetId}`);
+      await instance.delete(`http://13.209.64.124/content/${targetId}`);
       dispatch(removeBoard(targetId));
     } catch (error) {
       console.log(error);
@@ -61,19 +61,17 @@ export const removeBoardDB = targetId => {
 };
 
 // 게시글 검색
-export const searchBoardDB = (search_data) => {
+export const searchBoardDB = search_data => {
   return async function (dispatch) {
     try {
-      await instance.get("/content/search", {params: {value:search_data.value}})
-      .then((response) => {
+      await instance.get('/content/search', { params: { value: search_data.value } }).then(response => {
         // file_link_ref.current = [...file_link_ref.current, file_url];
         // search = [...response.data.SearchContent];
         dispatch(searchBoard([...response.data.SearchContent]));
-      })
-    } 
-    catch (error) {
-      console.log(error);
-    };
+      });
+    } catch (error) {
+      // console.log(error);
+    }
   };
 };
 
@@ -95,10 +93,10 @@ const boardSlice = createSlice({
     },
     createBoard(state, action) {
       console.log('리듀서', action.payload);
-      // state.list.unshift(action.payload); 
-      state.list.push(action.payload)
-        // state.list.sort((a, b) => {
-        // return a.createdAt - b.createdAt;});
+      // state.list.unshift(action.payload);
+      state.list.push(action.payload);
+      // state.list.sort((a, b) => {
+      // return a.createdAt - b.createdAt;});
     },
     updateBoard(state, action) {
       const newState = state.list.filter((l, idx) => {
@@ -106,9 +104,9 @@ const boardSlice = createSlice({
         return l.id !== action.payload.id;
       });
       const newwState = [...newState, action.payload];
-      state.list = newwState
-        // .sort(function (a, b) {
-        // return a.createdAt - b.createdAt;});
+      state.list = newwState;
+      // .sort(function (a, b) {
+      // return a.createdAt - b.createdAt;});
     },
     removeBoard(state, action) {
       const existingBoard = state.list.find(board => board._id === action.payload);
@@ -119,11 +117,11 @@ const boardSlice = createSlice({
     },
     searchBoard(state, action) {
       // console.log(action.payload)
-        // const search_data = [...action.payload]
-        console.log(action.payload)
-        // state.searchList.push(action.payload);
-        state.searchList = action.payload;
-      },
+      // const search_data = [...action.payload]
+      console.log(action.payload);
+      // state.searchList.push(action.payload);
+      state.searchList = action.payload;
+    },
   },
 });
 

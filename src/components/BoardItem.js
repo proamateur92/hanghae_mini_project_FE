@@ -1,184 +1,100 @@
+import axios from 'axios';
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
-import { faMortarBoard, faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import BoardComment from './BoardComment';
 import { removeBoardDB } from '../redux/modules/boardSlice';
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const BoardItem = ({ board }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [commentValue, setCommentValue] = useState([]);
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
-  const boards = useSelector(state => state.board.list);
-  const comments = useSelector(state => state.comment.list);
-  const search_data = useSelector(state => state.board.searchList);
 
+  // 댓글 가져오기
+  const getComment = async () => {
+    const response = await axios.get(`http://13.209.64.124/comment/${board._id}`);
+    setCommentValue(response.data.comment);
+  };
+
+  useEffect(() => {
+    getComment();
+  }, []);
 
   // 게시글 삭제 redux 함수 호출
   const onRemoveBoard = () => {
     dispatch(removeBoardDB(board._id));
   };
 
-  // 각 게시글 별 댓글 갯수 값 계산 로직
-  const onComment = board => {
-    const filteredComment = comments.filter(comment => comment.contentId === board._id);
-    return <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {filteredComment.length}개</Comment>;
-  };
-
   //사진 슬라이드
   const settings = {
-    dots: true, 
+    dots: true,
     infinite: true,
-    speed: 500, 
+    speed: 500,
     slidesToShow: 1,
-    slidesToScroll: 1
+    slidesToScroll: 1,
   };
-
-  const SerchMap = search_data.map((l, idx) => {
-    return (
-      <>
-      <Item>
-            <Text>
-              <Top>
-                <Nickname>{l.nickname}</Nickname>
-                <Edit>
-                  <Icon>
-                    <FontAwesomeIcon
-                      onClick={() =>
-                        navigate(`/write/${l._id}`, { state: board })
-                      }
-                      icon={faPencil}
-                      size="lg"
-                    />
-                  </Icon>
-                  <Icon>
-                    <FontAwesomeIcon
-                      onClick={() => onRemoveBoard()}
-                      icon={faTrashCan}
-                      size="lg"
-                    />
-                  </Icon>
-                </Edit>
-              </Top>
-              {isMore ? (
-                <>
-                  <Content>
-                    <HighLight>{l.content}</HighLight>
-                    <More onClick={() => setIsMore(false)}>접기</More>
-                  </Content>
-                </>
-              ) : (
-                <>
-                  {l.content.length > 30 ? (
-                    <Content>
-                      {l.content.slice(0, 30) + "..."}
-                      <More onClick={() => setIsMore(true)}>더보기</More>
-                    </Content>
-                  ) : (
-                    <Content><HighLight>{l.content}</HighLight></Content>
-                  )}
-                </>
-              )}
-            </Text>
-            <ImageBox>
-              <Slider {...settings}>
-                {l.imageURL.map((image, idx) => (
-                  <ImgWrap key={idx}>
-                    <Image image={image}>{`${image}-${idx}`}</Image>
-                  </ImgWrap>
-                ))}
-              </Slider>
-            </ImageBox>
-            <Detail>
-              <Like>
-                <FontAwesomeIcon icon={faThumbsUp} size="lg" />
-                <Count>2</Count>
-              </Like>
-              {onComment(board)}
-            </Detail>
-            {isComment && <BoardComment board={board} />}
-            {!isComment && null}
-          </Item>
-          
-        </>
-    )});
-
   return (
-    <>
-    {SerchMap}<ShadowBr/>
-    <h3>전체 게시글</h3>
-      {boards && boards.map(board => (
-      <Item key={board._id}>
-        <Text>
-          <Top>
-            <Nickname>{board.nickname}</Nickname>
-            <Edit>
-              <Icon>
-                <FontAwesomeIcon
-                  onClick={() =>
-                    navigate(`/write/${board._id}`, { state: board })
-                  }
-                  icon={faPencil}
-                  size="lg"
-                />
-              </Icon>
-              <Icon>
-                <FontAwesomeIcon
-                  onClick={() => onRemoveBoard()}
-                  icon={faTrashCan}
-                  size="lg"
-                />
-              </Icon>
-            </Edit>
-          </Top>
-          {isMore ? (
-            <>
+    <Item>
+      <Text>
+        <Top>
+          <Nickname>{board.nickname}</Nickname>
+          <Edit>
+            <Icon>
+              <FontAwesomeIcon onClick={() => navigate(`/write/${board._id}`, { state: board })} icon={faPencil} size='lg' />
+            </Icon>
+            <Icon>
+              <FontAwesomeIcon onClick={() => onRemoveBoard()} icon={faTrashCan} size='lg' />
+            </Icon>
+          </Edit>
+        </Top>
+        {isMore ? (
+          <>
+            <Content>
+              {board.content}
+              <More onClick={() => setIsMore(false)}>접기</More>
+            </Content>
+          </>
+        ) : (
+          <>
+            {board.content.length > 30 ? (
               <Content>
-                {board.content}
-                <More onClick={() => setIsMore(false)}>접기</More>
+                {board.content.slice(0, 30) + '...'}
+                <More onClick={() => setIsMore(true)}>더보기</More>
               </Content>
-            </>
-          ) : (
-            <>
-              {board.content.length > 30 ? (
-                <Content>
-                  {board.content.slice(0, 30) + "..."}
-                  <More onClick={() => setIsMore(true)}>더보기</More>
-                </Content>
-              ) : (
-                <Content>{board.content}</Content>
-              )}
-            </>
-          )}
-        </Text>
-        <ImageBox>
-          <Slider {...settings}>
-            {board.imageURL.map((image, idx) => (
-              <ImgWrap key={idx}>
-                <Image image={image}>{`${image}-${idx}`}</Image>
-              </ImgWrap>
-            ))}
-          </Slider>
-        </ImageBox>
-        <Detail>
-          <Like>
-            <FontAwesomeIcon icon={faThumbsUp} size="lg" />
-            <Count>2</Count>
-          </Like>
-          {onComment(board)}
-        </Detail>
-        {isComment && <BoardComment board={board} />}
-        {!isComment && null}
-      </Item>
-    ))}
-  </>
+            ) : (
+              <Content>{board.content}</Content>
+            )}
+          </>
+        )}
+      </Text>
+      <ImageBox>
+        <Slider {...settings}>
+          {board.imageURL.map((image, idx) => (
+            <ImgWrap key={idx}>
+              <Image image={image}>{`${image}-${idx}`}</Image>
+            </ImgWrap>
+          ))}
+        </Slider>
+      </ImageBox>
+      <Detail>
+        <Like>
+          <FontAwesomeIcon icon={faThumbsUp} size='lg' />
+          <Count>2</Count>
+        </Like>
+        <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {commentValue.length}개</Comment>
+      </Detail>
+      {isComment && <BoardComment key={board._id} board={board} comment={commentValue} />}
+      {!isComment && null}
+    </Item>
   );
 };
 
@@ -239,18 +155,18 @@ const Text = styled.div`
 `;
 
 const Image = styled.div`
-  width:500px;
-  height:400px;
+  width: 500px;
+  height: 400px;
   border: 1px solid #d3d2d2;
-  background-image:url(${(props) => (props.image)}) ;
-  background-position:center;
-  background-size:cover;
-  background-repeat:no-repeat ;
-  text-indent:-9999px;
-`
+  background-image: url(${props => props.image});
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  text-indent: -9999px;
+`;
 const ImgWrap = styled.div`
-position: relative;
-background-color:black;
+  position: relative;
+  background-color: black;
 `;
 
 const ImageBox = styled.div`
@@ -290,14 +206,14 @@ const Like = styled.div`
 `;
 
 const HighLight = styled.p`
-background-color:yellow;
-display:inline;
-`
+  background-color: yellow;
+  display: inline;
+`;
 const ShadowBr = styled.div`
-width:100%;
-background-color:#e0e0e0;
-height:1px;
-box-shadow: 0 1px 8px rgba(0, 0, 0, 1);
-`
+  width: 100%;
+  background-color: #e0e0e0;
+  height: 1px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 1);
+`;
 
 export default BoardItem;
