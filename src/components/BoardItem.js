@@ -16,9 +16,9 @@ const BoardItem = ({ board }) => {
   const navigate = useNavigate();
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
+  const boards = useSelector(state => state.board.list);
   const comments = useSelector(state => state.comment.list);
-
-  console.log("보드",board)
+  const search_data = useSelector(state => state.board.searchList);
 
 
   // 게시글 삭제 redux 함수 호출
@@ -40,74 +40,150 @@ const BoardItem = ({ board }) => {
     slidesToShow: 1,
     slidesToScroll: 1
   };
+
+  const SerchMap = search_data.map((l, idx) => {
+    return (
+      <>
+      <Item>
+            <Text>
+              <Top>
+                <Nickname>{l.nickname}</Nickname>
+                <Edit>
+                  <Icon>
+                    <FontAwesomeIcon
+                      onClick={() =>
+                        navigate(`/write/${l._id}`, { state: board })
+                      }
+                      icon={faPencil}
+                      size="lg"
+                    />
+                  </Icon>
+                  <Icon>
+                    <FontAwesomeIcon
+                      onClick={() => onRemoveBoard()}
+                      icon={faTrashCan}
+                      size="lg"
+                    />
+                  </Icon>
+                </Edit>
+              </Top>
+              {isMore ? (
+                <>
+                  <Content>
+                    <HighLight>{l.content}</HighLight>
+                    <More onClick={() => setIsMore(false)}>접기</More>
+                  </Content>
+                </>
+              ) : (
+                <>
+                  {l.content.length > 30 ? (
+                    <Content>
+                      {l.content.slice(0, 30) + "..."}
+                      <More onClick={() => setIsMore(true)}>더보기</More>
+                    </Content>
+                  ) : (
+                    <Content><HighLight>{l.content}</HighLight></Content>
+                  )}
+                </>
+              )}
+            </Text>
+            <ImageBox>
+              <Slider {...settings}>
+                {l.imageURL.map((image, idx) => (
+                  <ImgWrap key={idx}>
+                    <Image image={image}>{`${image}-${idx}`}</Image>
+                  </ImgWrap>
+                ))}
+              </Slider>
+            </ImageBox>
+            <Detail>
+              <Like>
+                <FontAwesomeIcon icon={faThumbsUp} size="lg" />
+                <Count>2</Count>
+              </Like>
+              {onComment(board)}
+            </Detail>
+            {isComment && <BoardComment board={board} />}
+            {!isComment && null}
+          </Item>
+          
+        </>
+    )});
+
   return (
-    <Item>
-      <Text>
-        <Top>
-          <Nickname>{board.nickname}</Nickname>
-          <Edit>
-            <Icon>
-              <FontAwesomeIcon
-                onClick={() =>
-                  navigate(`/write/${board._id}`, { state: board })
-                }
-                icon={faPencil}
-                size="lg"
-              />
-            </Icon>
-            <Icon>
-              <FontAwesomeIcon
-                onClick={() => onRemoveBoard()}
-                icon={faTrashCan}
-                size="lg"
-              />
-            </Icon>
-          </Edit>
-        </Top>
-        {isMore ? (
-          <>
-            <Content>
-              {board.content}
-              <More onClick={() => setIsMore(false)}>접기</More>
-            </Content>
-          </>
-        ) : (
-          <>
-            {board.content.length > 30 ? (
+    <>
+    {SerchMap}<ShadowBr/>
+    <h3>전체 게시글</h3>
+      {boards && boards.map(board => (
+      <Item key={board._id}>
+        <Text>
+          <Top>
+            <Nickname>{board.nickname}</Nickname>
+            <Edit>
+              <Icon>
+                <FontAwesomeIcon
+                  onClick={() =>
+                    navigate(`/write/${board._id}`, { state: board })
+                  }
+                  icon={faPencil}
+                  size="lg"
+                />
+              </Icon>
+              <Icon>
+                <FontAwesomeIcon
+                  onClick={() => onRemoveBoard()}
+                  icon={faTrashCan}
+                  size="lg"
+                />
+              </Icon>
+            </Edit>
+          </Top>
+          {isMore ? (
+            <>
               <Content>
-                {board.content.slice(0, 30) + "..."}
-                <More onClick={() => setIsMore(true)}>더보기</More>
+                {board.content}
+                <More onClick={() => setIsMore(false)}>접기</More>
               </Content>
-            ) : (
-              <Content>{board.content}</Content>
-            )}
-          </>
-        )}
-      </Text>
-      <ImageBox>
-        <Slider {...settings}>
-          {board.imageURL.map((image, idx) => (
-            <ImgWrap key={idx}>
-              <Image image={image}>{`${image}-${idx}`}</Image>
-            </ImgWrap>
-          ))}
-        </Slider>
-      </ImageBox>
-      <Detail>
-        <Like>
-          <FontAwesomeIcon icon={faThumbsUp} size="lg" />
-          <Count>2</Count>
-        </Like>
-        {onComment(board)}
-      </Detail>
-      {isComment && <BoardComment board={board} />}
-      {!isComment && null}
-    </Item>
+            </>
+          ) : (
+            <>
+              {board.content.length > 30 ? (
+                <Content>
+                  {board.content.slice(0, 30) + "..."}
+                  <More onClick={() => setIsMore(true)}>더보기</More>
+                </Content>
+              ) : (
+                <Content>{board.content}</Content>
+              )}
+            </>
+          )}
+        </Text>
+        <ImageBox>
+          <Slider {...settings}>
+            {board.imageURL.map((image, idx) => (
+              <ImgWrap key={idx}>
+                <Image image={image}>{`${image}-${idx}`}</Image>
+              </ImgWrap>
+            ))}
+          </Slider>
+        </ImageBox>
+        <Detail>
+          <Like>
+            <FontAwesomeIcon icon={faThumbsUp} size="lg" />
+            <Count>2</Count>
+          </Like>
+          {onComment(board)}
+        </Detail>
+        {isComment && <BoardComment board={board} />}
+        {!isComment && null}
+      </Item>
+    ))}
+  </>
   );
 };
 
 const Item = styled.div`
-  margin: 100px 0;
+  margin: 50px 0;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
@@ -212,5 +288,16 @@ const Like = styled.div`
     margin-left: 5px;
   }
 `;
+
+const HighLight = styled.p`
+background-color:yellow;
+display:inline;
+`
+const ShadowBr = styled.div`
+width:100%;
+background-color:#e0e0e0;
+height:1px;
+box-shadow: 0 1px 8px rgba(0, 0, 0, 1);
+`
 
 export default BoardItem;
