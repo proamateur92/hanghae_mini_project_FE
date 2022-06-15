@@ -18,30 +18,23 @@ const BoardItem = ({ board }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [commentValue, setCommentValue] = useState([]);
-  const [likeValue, setLikeValue] = useState([]);
+  const [likeNum, setLikeNum] = useState([]);
   const [activeLike, setActiveLike] = useState([]);
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
 
   useEffect(() => {
     const load = async () => {
-      // 댓글 가져오기
+      // 댓글 리스트 가져오기
       const boardResponse = await instance.get(`/comment/${board._id}`);
       setCommentValue(boardResponse.data.comment);
 
-      // 좋아요 가져오기
+      // 좋아요 리스트 가져오기
       const likeResponse = await instance.get(`/like/${board._id}`);
 
-      // 게시글에 대한 유저 정보가 있으면 true, 없으면 false
-      let matchLike = [];
-
-      console.log(likeResponse);
-      // for (let like of likeResponse) {
-      //   console.log(like.data.nickname);
-      // }
-
-      // setActiveLike(Boolean(matchLike));
-      setLikeValue(likeResponse.data);
+      // 좋아요 개수 출력
+      const likeNums = likeResponse.data.filter(like => like.contentId === board._id);
+      setLikeNum(likeNums.length);
     };
     load();
   }, [board]);
@@ -138,7 +131,7 @@ const BoardItem = ({ board }) => {
       <Detail>
         <Like>
           <FontAwesomeIcon icon={faThumbsUp} size='lg' activeLike={activeLike} />
-          <Count>{likeValue.length}</Count>
+          <Count>{likeNum}</Count>
         </Like>
         <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {commentValue.length}개</Comment>
       </Detail>
