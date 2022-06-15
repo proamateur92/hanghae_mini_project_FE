@@ -18,18 +18,26 @@ const BoardItem = ({ board }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [commentValue, setCommentValue] = useState([]);
+  const [likeNum, setLikeNum] = useState([]);
+  const [activeLike, setActiveLike] = useState([]);
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
 
-  // 댓글 가져오기
   useEffect(() => {
     const load = async () => {
-      const response = await instance.get(`/comment/${board._id}`);
-      setCommentValue(response.data.comment);
-    };
+      // 댓글 리스트 가져오기
+      const boardResponse = await instance.get(`/comment/${board._id}`);
+      setCommentValue(boardResponse.data.comment);
 
+      // 좋아요 리스트 가져오기
+      const likeResponse = await instance.get(`/like/${board._id}`);
+
+      // 좋아요 개수 출력
+      const likeNums = likeResponse.data.filter(like => like.contentId === board._id);
+      setLikeNum(likeNums.length);
+    };
     load();
-  }, []);
+  }, [board]);
 
   // 게시글 삭제 redux 함수 호출
   const onRemoveBoard = () => {
@@ -57,6 +65,7 @@ const BoardItem = ({ board }) => {
   const handleRemoveComment = targetId => {
     // console.log('삭제할 댓글 정보');
     const commentData = commentValue.filter(list => list.commentId !== targetId);
+
     // console.log(commentData);
     setCommentValue(commentData);
   };
@@ -121,8 +130,8 @@ const BoardItem = ({ board }) => {
       </ImageBox>
       <Detail>
         <Like>
-          <FontAwesomeIcon icon={faThumbsUp} size='lg' />
-          <Count>2</Count>
+          <FontAwesomeIcon icon={faThumbsUp} size='lg' activeLike={activeLike} />
+          <Count>{likeNum}</Count>
         </Like>
         <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {commentValue.length}개</Comment>
       </Detail>
@@ -237,9 +246,9 @@ const Detail = styled.div`
 
 const Count = styled.span``;
 const Like = styled.div`
-  color: #000;
+  color: ${props => (props.activeLike ? '#076be1' : '#000')};
   &:hover {
-    color: #076be1;
+    color: ${props => (props.activeLike ? '#000' : '#076be1')};
     transform: scale(1.1);
     font-weight: bold;
   }
