@@ -10,7 +10,7 @@ const Main = () => {
   const navigate = useNavigate();
 
   // redux로부터 게시글 정보 받아오기
-  const boards = useSelector(state => state.board.list);
+  const boards = useSelector(state => state.board?.list);
   return (
     <>
       <Header />

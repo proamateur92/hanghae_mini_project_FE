@@ -90,13 +90,17 @@ const boardSlice = createSlice({
     loadBoard: (state, action) => {
       // console.log(action.payload);
       state.list.push(...action.payload);
+      state.list.sort((a, b) =>
+        new Date(b.CreateAt) - new Date(a.CreateAt)
+      );
     },
     createBoard(state, action) {
       console.log('리듀서', action.payload);
       // state.list.unshift(action.payload);
       state.list.push(action.payload);
-      // state.list.sort((a, b) => {
-      // return a.createdAt - b.createdAt;});
+      state.list.sort((a, b) =>
+        new Date(b.CreateAt) - new Date(a.CreateAt)
+      );
     },
     updateBoard(state, action) {
       const newState = state.list.filter((l, idx) => {
@@ -105,8 +109,9 @@ const boardSlice = createSlice({
       });
       const newwState = [...newState, action.payload];
       state.list = newwState;
-      // .sort(function (a, b) {
-      // return a.createdAt - b.createdAt;});
+      state.list.sort((a, b) =>
+      new Date(b.CreateAt) - new Date(a.CreateAt)
+      );
     },
     removeBoard(state, action) {
       const existingBoard = state.list.find(board => board._id === action.payload);
