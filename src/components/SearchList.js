@@ -22,8 +22,6 @@ const SearchList = ({ board }) => {
     const [isComment, setIsComment] = useState(false);
 
     const search_data = useSelector((state) => state.board.searchList);
-    
-
 
     // 댓글 가져오기
   // useEffect(() => {
@@ -72,28 +70,6 @@ const SearchList = ({ board }) => {
               <Text>
                 <Top>
                   <Nickname>{board.nickname}</Nickname>
-                  <Edit>
-                    {USER_NICKNAME === board.nickname ? (
-                      <>
-                        <Icon>
-                          <FontAwesomeIcon
-                            onClick={() =>
-                              navigate(`/write/${board._id}`, { state: board })
-                            }
-                            icon={faPencil}
-                            size="lg"
-                          />
-                        </Icon>
-                        <Icon>
-                          <FontAwesomeIcon
-                            onClick={() => onRemoveBoard()}
-                            icon={faTrashCan}
-                            size="lg"
-                          />
-                        </Icon>
-                      </>
-                    ) : null}
-                  </Edit>
                 </Top>
                 {isMore ? (
                   <>
@@ -124,15 +100,6 @@ const SearchList = ({ board }) => {
                   ))}
                 </Slider>
               </ImageBox>
-              <Detail>
-                <Like>
-                  <FontAwesomeIcon icon={faThumbsUp} size="lg" />
-                  <Count>2</Count>
-                </Like>
-                <Comment onClick={() => setIsComment((prev) => !prev)}>
-                  댓글 {commentValue.length}개
-                </Comment>
-              </Detail>
               {/* {isComment && (
                 <BoardComment
                   key={[board[0]?._id]}

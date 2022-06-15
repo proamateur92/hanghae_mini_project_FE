@@ -161,10 +161,10 @@ const Write = () => {
   return (
     <WriteWrap>
       <FormWrap>
-        <Title>{is_edit ? "글 수정" : "글 쓰기"}</Title>
+        <Title>{is_edit ? "Update" : "Write"}</Title>
         <ImgInputWrap>
           <label htmlFor="file" onChange={handleAddImages}>
-            <ImageBtn>이미지 첨부</ImageBtn>
+            <ImageBtn>image</ImageBtn>
             {/* <p>3장까지만 첨부 가능</p> */}
             <input
               type="file"

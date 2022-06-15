@@ -34,6 +34,7 @@ const Serch = () => {
         const upLoad_obj = getInputData();
         if(!upLoad_obj) return;
         dispatch(searchBoardDB(upLoad_obj));
+        setSearch("")
     }
 
     return (
@@ -64,6 +65,8 @@ export default Serch;
 const Container = styled.form`
   display:flex;
   justify-content:center;
+  margin-top:120px;
+  margin-bottom:80px;
 `;
 
 const SearchText = styled.input`

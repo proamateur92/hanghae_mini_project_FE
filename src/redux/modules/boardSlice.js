@@ -70,7 +70,7 @@ export const searchBoardDB = search_data => {
         dispatch(searchBoard([...response.data.SearchContent]));
       });
     } catch (error) {
-      console.log(error.request.response);
+      console.log(error.request);
       alert('해당 게시물이 없습니다.');
     }
   };

@@ -77,7 +77,8 @@ const Header = () => {
 
 //로고
 const Logo = styled.div`
-  width:100px;
+  width:50px;
+  padding:10px;
   margin-left:1vw;
   cursor: pointer;
   img{
@@ -86,10 +87,14 @@ const Logo = styled.div`
   }
 `;
 
-const List = styled.div``;
-const Item = styled.div``;
+const List = styled.div`
+margin-right:1vw;
+`;
+const Item = styled.div`
+`;
 const Title = styled.div`
   color: white;
+  font-size:14px;
   font-weight: bolder;
 `;
 const Container = styled.div`
@@ -111,8 +116,9 @@ const Container = styled.div`
     align-items: center;
   }
   ${Item} {
-    margin-left: 20px;
-    font-size: 24px;
+    margin-left: 10px;
+    font-size: 14px;
+    font-weight:bold;
     color: white;
     cursor: pointer;
     &:hover {
