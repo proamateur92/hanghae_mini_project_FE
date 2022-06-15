@@ -33,7 +33,7 @@ const ModalSignup = (props) => {
   };
 
   const signupCheck = async () => {
-    //벨리데이션 필수!
+    //벨리데이션
     if (
       email_ref.current.value === "" ||
       password_ref.current.value === "" ||
@@ -42,7 +42,6 @@ const ModalSignup = (props) => {
       window.alert("빈칸을 전부 채워주세요!");
       return;
     }
-    // 벨리데이션 (마지막에 열기)
     if (!emailCheck(email_ref.current.value)) {
       window.alert("이메일 형식이 맞지 않습니다!");
       return;
@@ -70,7 +69,6 @@ const ModalSignup = (props) => {
   //회원가입 데이터 서버에 보내기!
   const SignupAxios = async () => {
     // 서버에 보내줄 데이터들
-    //post
     let users = {
       email: email_ref.current.value,
       nickname: nickname_ref.current.value,
@@ -78,19 +76,19 @@ const ModalSignup = (props) => {
       confirmPassword: confirmPassword_ref.current.value,
     };
     await axios
+      //서버에 users 인풋 값 보내주기
       .post("http://13.124.25.127/users/signup", users)
-      //api,{데이터}, {config}
       .then((response) => {
         window.alert("회원가입 성공");
       })
       .catch(function (error) {
-        // console.log(error.response.data.errorMessage);
+        //회원가입 실패 시 에러메시지 alert
         window.alert(error.response.data.errorMessage);
       });
   };
 
   return (
-    // 모달이 열릴때 openModal 클래스가 생성된다.
+    // 모달창이 열릴때 openModal 클래스가 생성된다.
     <div className={open ? "openModal modal" : "modal"}>
       {open ? (
         <section>
@@ -167,7 +165,6 @@ const ModalLogin = (props) => {
   const password_ref = React.useRef(null);
   const dispatch = useDispatch();
 
-  //벨리데이션 마지막에 살리기
   const emailCheck = (email) => {
     let _reg =
       /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
@@ -175,12 +172,11 @@ const ModalLogin = (props) => {
   };
 
   const loginCheck = async () => {
-    //벨리데이션 필수!
+    //벨리데이션
     if (email_ref.current.value === "" || password_ref.current.value === "") {
       window.alert("아이디와 비밀번호를 입력하세요!");
       return;
     }
-    //벨리데이션 마지막에 살리기
     if (!emailCheck(email_ref.current.value)) {
       window.alert("이메일 형식이 맞지 않습니다!");
       return;
@@ -196,7 +192,7 @@ const ModalLogin = (props) => {
   const { open, close } = props;
 
   return (
-    // 모달이 열릴때 openModal 클래스가 생성된다.
+    // 모달창이 열릴때 openModal 클래스가 생성된다.
     <div className={open ? "openModal modal" : "modal"}>
       {open ? (
         <section>
@@ -234,7 +230,6 @@ const ModalLogin = (props) => {
                 onClick={() => {
                   loginCheck();
                   close();
-                  // LoginAxios();
                 }}
               >
                 로그인

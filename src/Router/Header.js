@@ -11,10 +11,12 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const navigate = useNavigate();
   //modal
+  //modal창 useState로 열고 닫힘
   const [modalSignupOpen, setModalSignupOpen] = React.useState(false);
   const [modalLoginOpen, setModalLoginOpen] = React.useState(false);
   const user = useSelector((state) => state.user);
 
+  // 실행 시 modal창 state 변경
   const openSignupModal = () => {
     setModalSignupOpen(true);
   };
@@ -30,16 +32,20 @@ const Header = () => {
   };
   //modal
 
+  //로그인 체크 state로 상태 변경
   const [is_login, setIsLogin] = React.useState(false);
 
   const deleteCookie = () => {
-    //로그아웃 토큰 삭제
+    //로그아웃 시 토큰 삭제
     document.cookie = "is_login" + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
     document.cookie = "nickname" + "=; expires=Thu, 01 Jan 1999 00:00:10 GMT;";
+    //로그아웃 시 is_login false로 변경
     setIsLogin(false);
+    //로그아웃 시 페이지 새로고침
     window.location.reload();
   };
 
+  // 컴포넌트 렌더링 시 로그인 여부 체크
   useEffect(() => {
     if (user.isLogin) {
       setIsLogin(true);

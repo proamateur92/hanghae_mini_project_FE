@@ -3,14 +3,13 @@ import Router from "./Router/Router";
 import { ThemeProvider, createGlobalStyle } from "styled-components";
 import React, { useEffect } from "react";
 import { getCookie } from "./shared/cookie";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { loginUser } from "./redux/modules/userSlice";
-// import { cookieCheckDB } from "./redux/modules/userSlice";
 
 function App() {
   const dispatch = useDispatch();
 
+  //useEffect로 쿠키에 토큰 있을시 로그인 체크
   useEffect(() => {
     if (getCookie("is_login") !== undefined) {
       dispatch(loginUser(true));
