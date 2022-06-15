@@ -37,6 +37,7 @@ export const createBoardDB = contents_obj => {
 //Update
 export const updateBoardDB = (contents_obj, id) => {
   return async function (dispatch) {
+    console.log("업데이트",contents_obj)
     await instance
       .patch(`/content/${id}`, contents_obj)
       .then(response => {})
@@ -70,7 +71,8 @@ export const searchBoardDB = search_data => {
         dispatch(searchBoard([...response.data.SearchContent]));
       });
     } catch (error) {
-      // console.log(error);
+      console.log(error.request.response);
+      alert("해당 게시물이 없습니다.");
     }
   };
 };
