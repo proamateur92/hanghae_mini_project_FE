@@ -9,10 +9,12 @@ import { useNavigate } from 'react-router-dom';
 import BoardComment from './BoardComment';
 import { removeBoardDB } from '../redux/modules/boardSlice';
 import Slider from 'react-slick';
+import { getCookie } from '../shared/cookie';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const BoardItem = ({ board }) => {
+  const USER_NICKNAME = getCookie('nickname');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [commentValue, setCommentValue] = useState([]);
@@ -20,14 +22,13 @@ const BoardItem = ({ board }) => {
   const [isComment, setIsComment] = useState(false);
 
   // 댓글 가져오기
-  const getComment = async () => {
-    const response = await instance.get(`/comment/${board._id}`);
-    setCommentValue(response.data.comment);
-  };
-
-  // 컴포넌트 호출 시 댓글 가져오기 함수 호출
   useEffect(() => {
-    getComment();
+    const load = async () => {
+      const response = await instance.get(`/comment/${board._id}`);
+      setCommentValue(response.data.comment);
+    };
+
+    load();
   }, []);
 
   // 게시글 삭제 redux 함수 호출
@@ -77,12 +78,16 @@ const BoardItem = ({ board }) => {
         <Top>
           <Nickname>{board.nickname}</Nickname>
           <Edit>
-            <Icon>
-              <FontAwesomeIcon onClick={() => navigate(`/write/${board._id}`, { state: board })} icon={faPencil} size='lg' />
-            </Icon>
-            <Icon>
-              <FontAwesomeIcon onClick={() => onRemoveBoard()} icon={faTrashCan} size='lg' />
-            </Icon>
+            {USER_NICKNAME === board.nickname ? (
+              <>
+                <Icon>
+                  <FontAwesomeIcon onClick={() => navigate(`/write/${board._id}`, { state: board })} icon={faPencil} size='lg' />
+                </Icon>
+                <Icon>
+                  <FontAwesomeIcon onClick={() => onRemoveBoard()} icon={faTrashCan} size='lg' />
+                </Icon>
+              </>
+            ) : null}
           </Edit>
         </Top>
         {isMore ? (
