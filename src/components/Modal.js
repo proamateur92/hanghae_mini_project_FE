@@ -77,7 +77,7 @@ const ModalSignup = (props) => {
     };
     await axios
       //서버에 users 인풋 값 보내주기
-      .post("http://13.124.25.127/users/signup", users)
+      .post("http://13.209.64.124/users/signup", users)
       .then((response) => {
         window.alert("회원가입 성공");
       })
