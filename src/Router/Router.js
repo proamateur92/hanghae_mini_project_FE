@@ -16,7 +16,6 @@ const Router = () => {
 
   // 게시글 불러오기 redux 함수 호출
   useEffect(() => {
-    dispatch(loadBoardDB());
     dispatch(searchBoardDB());
   }, []);
 
