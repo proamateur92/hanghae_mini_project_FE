@@ -25,7 +25,8 @@ import { faTrashCan } from "@fortawesome/free-regular-svg-icons";
 import { v4 as uuidv4 } from 'uuid';
 //instance
 import instance from "../shared/axios";
-
+//cookie
+import { getCookie } from '../shared/cookie';
 const Write = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,10 +43,8 @@ const Write = () => {
   const [imageFB, setImageFB] = React.useState("");
   const [showImages, setShowImages] = useState(is_edit?_post?.imageURL:[]);
   
-  // console.log(_post._id)
-  console.log("유알엘주소",file_link_ref)
-  console.log("미리보기",showImages)
-  console.log("이미지",imageFB)
+  //cokie
+  const user_name = localStorage.getItem("nickname")
 
   useEffect(() => {
     if (is_edit && !_post) {
@@ -62,6 +61,7 @@ const Write = () => {
     const imageUrl = file_link_ref.current;
     const CreateAt = moment().format("YYYY-MM-DD HH:mm:ss");
     const updateAt = moment().format("YYYY-MM-DD HH:mm:ss");
+    const userName = user_name
     console.log(imageUrl);
     // if (!content) {
     //   alert("글 내용을 입력해주세요.");
@@ -72,7 +72,7 @@ const Write = () => {
         updateAt,
         CreateAt:_post?.CreateAt,
         _id:_post?._id,
-        nickname: "닉네임!",
+        nickname: userName,
         content: content,
         imageURL: imageUrl,
         __v: 0,
@@ -83,7 +83,7 @@ const Write = () => {
         CreateAt,
         updateAt,
         _id:_post?._id,
-        nickname: "닉네임!",
+        nickname: userName,
         content: content,
         imageURL: imageUrl,
         __v: 0,
