@@ -29,25 +29,6 @@ const Login = () => {
     }
   };
 
-  // const callSomethingAxios = () => {
-  //   //post
-  //   let userdata = {
-  //     email: email_ref.currnet.value,
-  //     password: password_ref.current.value,
-  //   };
-  //   axios
-  //     .post("api", userdata)
-  //     //api,{데이터}, {config}
-  //     .then((response) => {
-  //       console.log(response);
-  //     });
-  // };
-  // //axios가 알아서 json화해서 요청을 보내기 때문
-
-  // React.useEffect(() => {
-  //   callSomethingAxios();
-  // });
-
   return (
     <Container>
       <LoginWrap>
