@@ -4,11 +4,11 @@ import { setCookie } from "../../shared/cookie";
 
 //미들웨어
 //login
-export const loginUserDB = (users) => {
+export const loginUserDB = ({ users, close }) => {
   return async function (dispatch) {
     await axios
       //서버에 데이터 값 넣기
-      .post("http://13.209.64.124/users/login", users.users)
+      .post("http://13.209.64.124/users/login", users)
       .then((response) => {
         const accessToken = response.data.token;
         //서버에서 받은 토큰 저장
@@ -18,6 +18,8 @@ export const loginUserDB = (users) => {
         // 저장된 토큰으로 login 여부 확인
         if (accessToken) {
           dispatch(loginUser(true));
+          //토근 들어왔을 때 모달close 함수 실행
+          close();
         }
       })
       .catch(function (error) {
