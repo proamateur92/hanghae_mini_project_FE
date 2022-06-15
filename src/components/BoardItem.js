@@ -142,7 +142,7 @@ const BoardItem = ({ board }) => {
 };
 
 const Item = styled.div`
-  margin: 50px 0;
+  margin-bottom:20px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);

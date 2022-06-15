@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import Header from './Header';
 import BoardItem from '../components/BoardItem';
 import Search from '../components/Search';
+import SearchList from '../components/SearchList';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
@@ -20,6 +21,17 @@ const Main = () => {
   const [isLoading, setIsLoading] = useState(false);
   const boards = useSelector(state => state.board?.list);
 
+  const search_data = useSelector((state) => state.board.searchList);
+  
+  // const [abc, setAbc] = useState([]);
+  // console.log(abc)
+  
+  // useEffect(() => {
+  //   setAbc(search_data)  
+  // }, [search_data]);
+
+
+  console.log(boards)
   // 컴포넌트 호출 될 때 초기화
   useEffect(() => {
     const load = async () => {
@@ -34,15 +46,26 @@ const Main = () => {
       {isLoading && (
         <>
           <Header />
-          <Search />
           <Container>
             <Box>
-              <List>{boards && boards.map(board => <BoardItem key={Math.random()} board={board} />)}</List>
+              <Search />
+                <>
+                  <SearchList board={search_data}/>
+                  <ShadowBr />
+                </>
+                <SubTitle>전체 게시글</SubTitle>
+              <List>
+                {boards && boards.map((board) => (<BoardItem key={Math.random()} board={board} />))}
+              </List>
             </Box>
           </Container>
           {USER_LOGIN && (
             <WriteButton>
-              <FontAwesomeIcon onClick={() => navigate('/write')} icon={faSquarePlus} size='3x' />
+              <FontAwesomeIcon
+                onClick={() => navigate("/write")}
+                icon={faSquarePlus}
+                size="3x"
+              />
             </WriteButton>
           )}
         </>
@@ -81,6 +104,15 @@ const WriteButton = styled.div`
     transform: scale(1.1);
     color: #58b9fa;
   }
+`;
+const SubTitle = styled.h3`
+`;
+
+const ShadowBr = styled.div`
+width:96%;
+margin:0 auto;
+background-color:#e0e0e0;
+height:1px;
 `;
 
 export default Main;
