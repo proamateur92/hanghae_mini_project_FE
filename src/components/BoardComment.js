@@ -1,12 +1,10 @@
-import axios from 'axios';
 import instance from '../shared/axios';
 import React, { useState } from 'react';
 import CommentItem from './CommentItem';
 import styled from 'styled-components';
 
-const BoardComment = ({ board, comment }) => {
+const BoardComment = ({ board, comment, onAddComment, onUpdateContent, onRemoveContent }) => {
   const [commentValue, setCommentValue] = useState('');
-
   // 댓글 입력 값 감지 함수
   const commentHandler = event => {
     setCommentValue(event.target.value);
@@ -25,15 +23,22 @@ const BoardComment = ({ board, comment }) => {
       comment: `${commentValue}`,
     };
 
-    console.log(commentData);
     // 댓글 추가하기
     try {
       const response = await instance.post(`/comment/${board._id}`, commentData);
-      console.log(response.data);
+      onAddComment(response.data.contentcomment);
     } catch (error) {
       console.log('통신실패');
     }
     setCommentValue('');
+  };
+
+  const updateContent = (targetId, newComment) => {
+    onUpdateContent(targetId, newComment);
+  };
+
+  const removeContent = targetId => {
+    onRemoveContent(targetId);
   };
 
   return (
@@ -45,7 +50,7 @@ const BoardComment = ({ board, comment }) => {
         </Post>
       </InputBox>
       {comment.map(comm => (
-        <CommentItem key={comm._id} comm={comm} />
+        <CommentItem handleUpdateContent={updateContent} handleRemoveContent={removeContent} key={comm._id} comm={comm} />
       ))}
       <CommentBox key={comment.id}></CommentBox>
     </Container>

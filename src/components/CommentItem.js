@@ -3,7 +3,7 @@ import { useState } from 'react';
 import styled from 'styled-components';
 import CommentEdit from './CommentEdit';
 
-const CommentItem = ({ comm }) => {
+const CommentItem = ({ comm, handleUpdateContent, handleRemoveContent }) => {
   const [commentValue, setCommentValue] = useState(comm.comment);
   const [activeInput, setActiveInput] = useState(false);
 
@@ -17,21 +17,20 @@ const CommentItem = ({ comm }) => {
     setCommentValue(comm.comment);
   };
 
-  // 댓글 저장 함수
+  // 댓글 게시 함수
   const submitHandler = async event => {
     event.preventDefault();
 
     if (commentValue.trim() === '') return;
 
     const commentData = {
-      // nickname: 'admin99',
-      // contentId: `${comm.contentId}`,
       comment: `${commentValue}`,
     };
 
     try {
       // 게시글 아이디, 댓글 아이디
       await instance.patch(`/comment/${comm.contentId}/${comm.commentId}`, commentData);
+      handleUpdateContent(comm.commentId, commentValue);
     } catch (error) {
       console.log('통신실패');
       return;
@@ -44,11 +43,22 @@ const CommentItem = ({ comm }) => {
     setActiveInput(result);
   };
 
+  const excuteRemoveComment = targetId => {
+    handleRemoveContent(targetId);
+  };
+
   return (
     <Container key={comm._id} onSubmit={submitHandler}>
       <span>{comm.nickname}</span>
       {!activeInput ? <span>{comm.comment}</span> : <input type='text' onChange={commentHandler} value={commentValue} />}
-      <CommentEdit key={comm.commentId} off={activeInput} onEdit={handleNewContent} onCancel={resetNewContent} comments={comm}></CommentEdit>
+      <CommentEdit
+        key={comm.commentId}
+        callRemoveComment={excuteRemoveComment}
+        off={activeInput}
+        onEdit={handleNewContent}
+        onCancel={resetNewContent}
+        comments={comm}
+      ></CommentEdit>
     </Container>
   );
 };

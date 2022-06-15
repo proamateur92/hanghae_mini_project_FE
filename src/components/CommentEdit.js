@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const CommentEdit = ({ comments, onEdit, off }) => {
+const CommentEdit = ({ comments, onEdit, off, callRemoveComment }) => {
   const [option, setOption] = useState(false);
   const [cancel, setCancel] = useState(false);
 
@@ -19,7 +19,6 @@ const CommentEdit = ({ comments, onEdit, off }) => {
 
   const availeWrite = () => {
     setCancel(true);
-    setOption(false);
     onEdit(true);
   };
 
@@ -44,17 +43,17 @@ const CommentEdit = ({ comments, onEdit, off }) => {
 
   // 댓글 삭제
   const handleRemove = async () => {
-    console.log('댓글 삭제');
     setOption(false);
     try {
       await instance.delete(`/comment/${contentId}/${commentId}`);
+      callRemoveComment(commentId);
     } catch (error) {
       console.log('통신실패');
     }
   };
   return (
     <>
-      <Icon onClick={() => setOption(true)}>
+      <Icon onClick={() => setOption(prev => !prev)}>
         <FontAwesomeIcon icon={faEllipsis} size='sm' />
       </Icon>
       {option && <Option>{commentItem()}</Option>}
@@ -83,4 +82,5 @@ const Option = styled.div`
     background-color: red;
   }
 `;
+
 export default CommentEdit;

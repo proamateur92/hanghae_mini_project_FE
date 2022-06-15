@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 import Header from './Header';
@@ -6,7 +7,10 @@ import Search from '../components/Search';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
+import { getCookie } from '../shared/cookie';
+
 const Main = () => {
+  const USER_NICKNAME = getCookie('nickname');
   const navigate = useNavigate();
 
   // redux로부터 게시글 정보 받아오기
