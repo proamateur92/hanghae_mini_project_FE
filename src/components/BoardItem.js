@@ -1,4 +1,4 @@
-import axios from 'axios';
+import instance from '../shared/axios';
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
@@ -21,10 +21,11 @@ const BoardItem = ({ board }) => {
 
   // 댓글 가져오기
   const getComment = async () => {
-    const response = await axios.get(`http://13.209.64.124/comment/${board._id}`);
+    const response = await instance.get(`/comment/${board._id}`);
     setCommentValue(response.data.comment);
   };
 
+  // 컴포넌트 호출 시 댓글 가져오기 함수 호출
   useEffect(() => {
     getComment();
   }, []);
@@ -32,6 +33,31 @@ const BoardItem = ({ board }) => {
   // 게시글 삭제 redux 함수 호출
   const onRemoveBoard = () => {
     dispatch(removeBoardDB(board._id));
+  };
+
+  // 댓글 추가 - state 반영
+  const handleAddComment = newComment => {
+    // console.log('추가할 댓글 정보');
+    // console.log(newComment);
+    setCommentValue([newComment, ...commentValue]);
+  };
+
+  // 댓글 수정 - state 반영
+  const handleUpdateComment = (targetId, newComment) => {
+    // console.log('수정할 수정 정보');
+    // console.log(targetId, newComment);
+    // console.log(commentData);
+    const commentData = commentValue.map(list => (list.commentId === targetId ? { ...list, comment: newComment } : list));
+    // console.log(commentData);
+    setCommentValue(commentData);
+  };
+
+  // 댓글 삭제 - state 반영
+  const handleRemoveComment = targetId => {
+    // console.log('삭제할 댓글 정보');
+    const commentData = commentValue.filter(list => list.commentId !== targetId);
+    // console.log(commentData);
+    setCommentValue(commentData);
   };
 
   //사진 슬라이드
@@ -42,6 +68,9 @@ const BoardItem = ({ board }) => {
     slidesToShow: 1,
     slidesToScroll: 1,
   };
+
+  // console.log('댓글목록 정보');
+  // console.log(commentValue);
   return (
     <Item>
       <Text>
@@ -92,7 +121,16 @@ const BoardItem = ({ board }) => {
         </Like>
         <Comment onClick={() => setIsComment(prev => !prev)}>댓글 {commentValue.length}개</Comment>
       </Detail>
-      {isComment && <BoardComment key={board._id} board={board} comment={commentValue} />}
+      {isComment && (
+        <BoardComment
+          key={board._id}
+          onAddComment={handleAddComment}
+          onUpdateContent={handleUpdateComment}
+          onRemoveContent={handleRemoveComment}
+          board={board}
+          comment={commentValue}
+        />
+      )}
       {!isComment && null}
     </Item>
   );
@@ -203,17 +241,6 @@ const Like = styled.div`
   ${Count} {
     margin-left: 5px;
   }
-`;
-
-const HighLight = styled.p`
-  background-color: yellow;
-  display: inline;
-`;
-const ShadowBr = styled.div`
-  width: 100%;
-  background-color: #e0e0e0;
-  height: 1px;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 1);
 `;
 
 export default BoardItem;
