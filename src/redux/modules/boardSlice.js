@@ -4,13 +4,18 @@ import instance from '../../shared/axios';
 //미들웨어
 
 // 게시글 불러오기
-export const loadBoardDB = () => {
-  return async function (dispatch) {
+export const loadBoardDB = (page) => {
+  return async function (dispatch, getState) {
+    console.log(page)
     // 테스트 url
     try {
-      const response = await instance.get('/content');
+      const response = await instance.get(`/content/`);
+      // const response = await instance.get(`/content/`, { params: { page:2 } });
+      
       // const response = await axios.get('http://13.209.64.124/content');
-      dispatch(loadBoard(response.data));
+      const data = getState().board.list
+      const newstate = [...data, ...response.data];
+      dispatch(loadBoard(newstate));
     } catch (error) {
       // 게시글 불러오지 못할 때
       // 멘토링 때 물어보기
@@ -91,6 +96,7 @@ const boardSlice = createSlice({
     loadBoard: (state, action) => {
       // console.log(action.payload);
       state.list = [...action.payload];
+      // state.list.sort((a, b) => new Date(b.CreateAt) - new Date(a.CreateAt));
     },
     createBoard(state, action) {
       console.log('리듀서', action.payload);
@@ -115,10 +121,6 @@ const boardSlice = createSlice({
       }
     },
     searchBoard(state, action) {
-      // console.log(action.payload)
-      // const search_data = [...action.payload]
-      console.log(action.payload);
-      // state.searchList.push(action.payload);
       state.searchList = action.payload;
     },
   },

@@ -7,7 +7,7 @@ import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
 import BoardComment from './BoardComment';
-import { removeBoardDB } from '../redux/modules/boardSlice';
+import { removeBoardDB, searchBoardDB } from '../redux/modules/boardSlice';
 import Slider from 'react-slick';
 import { getCookie } from '../shared/cookie';
 import 'slick-carousel/slick/slick.css';
@@ -23,30 +23,10 @@ const SearchList = ({ board }) => {
 
     const search_data = useSelector((state) => state.board.searchList);
 
-    // 댓글 가져오기
-  // useEffect(() => {
-  //   const load = async () => {
-  //     const response = await instance.get(`/comment/${[board[0]?._id]}`);
-  //     setCommentValue(response.data.comment);
-  //   };
-  //   load();
-  // }, []);
-
   // 게시글 삭제 redux 함수 호출
   const onRemoveBoard = () => {
     dispatch(removeBoardDB(board._id));
   };
-
-  // // 댓글 추가 - state 반영
-  // const handleAddComment = newComment => {
-  //   setCommentValue([newComment, ...commentValue]);
-  // };
-
-  // // 댓글 수정 - state 반영
-  // const handleUpdateComment = (targetId, newComment) => {
-  //   const commentData = commentValue.map(list => (list.commentId === targetId ? { ...list, comment: newComment } : list));
-  //   setCommentValue(commentData);
-  // };
 
   // 댓글 삭제 - state 반영
   const handleRemoveComment = targetId => {
@@ -100,17 +80,6 @@ const SearchList = ({ board }) => {
                   ))}
                 </Slider>
               </ImageBox>
-              {/* {isComment && (
-                <BoardComment
-                  key={[board[0]?._id]}
-                  onAddComment={handleAddComment}
-                  onUpdateContent={handleUpdateComment}
-                  onRemoveContent={handleRemoveComment}
-                  board={board}
-                  comment={commentValue}
-                />
-              )}
-              {!isComment && null} */}
             </Item>
           ))}
       </>
