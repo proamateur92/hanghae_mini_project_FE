@@ -13,7 +13,7 @@ const ModalSignup = (props) => {
   const confirmPassword_ref = React.useRef(null);
   const nickname_ref = React.useRef(null);
 
-  //벨리데이션 마지막에 열기
+  //벨리데이션
   const emailCheck = (email) => {
     let _reg =
       /^[0-9a-zA-Z]([-_.0-9a-zA-Z])*@[0-9a-zA-Z]([-_.0-9a-zA-Z])*.([a-zA-Z])*/;
@@ -32,37 +32,6 @@ const ModalSignup = (props) => {
     return _reg.test(nickname);
   };
 
-  const signupCheck = async () => {
-    //벨리데이션
-    if (
-      email_ref.current.value === "" ||
-      password_ref.current.value === "" ||
-      nickname_ref.current.value === ""
-    ) {
-      window.alert("빈칸을 전부 채워주세요!");
-      return;
-    }
-    if (!emailCheck(email_ref.current.value)) {
-      window.alert("이메일 형식이 맞지 않습니다!");
-      return;
-    }
-    if (!passwordCheck(password_ref.current.value)) {
-      window.alert(
-        "비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로 작성하세요!"
-      );
-      return;
-    }
-    if (!nicknameCheck(nickname_ref.current.value)) {
-      window.alert("닉네임은 3 ~ 8자 한글,영문,숫자!");
-      return;
-    }
-    if (password_ref.current.value !== confirmPassword_ref.current.value) {
-      window.alert("비밀번호가 일치하지 않습니다.");
-      return;
-    } else {
-    }
-  };
-
   // 모달 열기, 닫기를 부모로부터 받아옴
   const { open, close } = props;
 
@@ -75,13 +44,41 @@ const ModalSignup = (props) => {
       password: password_ref.current.value,
       confirmPassword: confirmPassword_ref.current.value,
     };
+
     await axios
       //서버에 users 인풋 값 보내주기
       .post("http://13.209.64.124/users/signup", users)
       .then((response) => {
         window.alert("회원가입 성공");
+        close();
       })
       .catch(function (error) {
+        if (
+          email_ref.current.value === "" ||
+          password_ref.current.value === "" ||
+          nickname_ref.current.value === ""
+        ) {
+          window.alert("빈칸을 전부 채워주세요!");
+          return;
+        }
+        if (!emailCheck(email_ref.current.value)) {
+          window.alert("이메일 형식이 맞지 않습니다!");
+          return;
+        }
+        if (!passwordCheck(password_ref.current.value)) {
+          window.alert(
+            "비밀번호는 3 ~ 10자 영문, 숫자 및 특수문자조합으로 작성하세요!"
+          );
+          return;
+        }
+        if (!nicknameCheck(nickname_ref.current.value)) {
+          window.alert("닉네임은 3 ~ 8자 한글,영문,숫자!");
+          return;
+        }
+        if (password_ref.current.value !== confirmPassword_ref.current.value) {
+          window.alert("비밀번호가 일치하지 않습니다.");
+          return;
+        }
         //회원가입 실패 시 에러메시지 alert
         window.alert(error.response.data.errorMessage);
       });
@@ -139,9 +136,7 @@ const ModalSignup = (props) => {
               </Input>
               <Btn
                 onClick={() => {
-                  signupCheck();
                   SignupAxios();
-                  close();
                 }}
               >
                 회원가입
@@ -156,6 +151,7 @@ const ModalSignup = (props) => {
 
 //Login Modal
 const ModalLogin = (props) => {
+  // 컴포넌트 렌더링 시 로그인 여부 체크
   const email_ref = React.useRef(null);
   const password_ref = React.useRef(null);
   const dispatch = useDispatch();
@@ -166,7 +162,7 @@ const ModalLogin = (props) => {
     return _reg.test(email);
   };
 
-  const loginCheck = async () => {
+  const loginCheck = () => {
     //벨리데이션
     if (email_ref.current.value === "" || password_ref.current.value === "") {
       window.alert("아이디와 비밀번호를 입력하세요!");
@@ -181,7 +177,8 @@ const ModalLogin = (props) => {
       email: email_ref.current.value,
       password: password_ref.current.value,
     };
-    await dispatch(loginUserDB({ users }));
+    //dispatch 할 때 users 데이터와 close 함수 전달 (함수전달 가능, 함수 전달 할 땐 괄호 없어야함.)
+    dispatch(loginUserDB({ users, close }));
   };
   // 열기, 닫기, 모달 헤더 텍스트를 부모로부터 받아옴
   const { open, close } = props;
@@ -202,7 +199,6 @@ const ModalLogin = (props) => {
               <SignupHeader>
                 <SignupTitle>LOG IN</SignupTitle>
               </SignupHeader>
-
               <Input>
                 <label htmlFor="email">ID</label>
                 <input id="email" type="email" ref={email_ref} required></input>
@@ -220,11 +216,9 @@ const ModalLogin = (props) => {
                 ></input>
                 <MiniTitle>3 ~ 10자 영문, 숫자 및 특수문자조합</MiniTitle>
               </Input>
-
               <Btn
                 onClick={() => {
                   loginCheck();
-                  close();
                 }}
               >
                 로그인
