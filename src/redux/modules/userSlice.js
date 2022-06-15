@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { setCookie } from "../../shared/cookie";
+import { getCookie, setCookie } from "../../shared/cookie";
 
 //미들웨어
 //login
@@ -9,6 +9,7 @@ export const loginUserDB = (users) => {
     await axios
       .post("http://13.209.64.124/users/login", users.users)
       .then((response) => {
+        console.log(response, "이거확인");
         const accessToken = response.data.token;
         setCookie("is_login", `${accessToken}`);
         const nickname = response.data.nickname;
