@@ -1,10 +1,14 @@
 import instance from '../shared/axios';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CommentItem from './CommentItem';
 import styled from 'styled-components';
+import { getCookie } from '../shared/cookie';
 
 const BoardComment = ({ board, comment, onAddComment, onUpdateContent, onRemoveContent }) => {
   const [commentValue, setCommentValue] = useState('');
+  const [activeComment, setActiveComment] = useState(false);
+  const USER_LOGIN = getCookie('is_login');
+
   // 댓글 입력 값 감지 함수
   const commentHandler = event => {
     setCommentValue(event.target.value);
@@ -12,6 +16,8 @@ const BoardComment = ({ board, comment, onAddComment, onUpdateContent, onRemoveC
 
   // 댓글 저장 함수
   const submitHandler = async event => {
+    if (!USER_LOGIN) alert('로그인이 필요한 기능입니다.');
+
     if (commentValue.trim() === '') return;
     if (event.type === 'submit') {
       event.preventDefault();
@@ -46,64 +52,50 @@ const BoardComment = ({ board, comment, onAddComment, onUpdateContent, onRemoveC
       <InputBox onSubmit={submitHandler}>
         <input value={commentValue} onChange={commentHandler} type='text' placeholder='댓글을 입력하세요' />
         <Post mode={commentValue ? '' : 'off'} onClick={submitHandler}>
-          게시
+          <span>게시</span>
         </Post>
       </InputBox>
       {comment.map(comm => (
         <CommentItem handleUpdateContent={updateContent} handleRemoveContent={removeContent} key={comm._id} comm={comm} />
       ))}
-      <CommentBox key={comment.id}></CommentBox>
     </Container>
   );
 };
 
 const Container = styled.div`
   padding: 20px;
+  margin-bottom: 20px;
 `;
 
 const InputBox = styled.form`
   display: flex;
-  justify-content: center;
+  align-items: center;
   margin-bottom: 10px;
   span {
     font-weight: bold;
     font-size: 14px;
   }
   input {
-    width: 70%;
+    width: 80%;
     outline: none;
     border: none;
-    border-bottom: 1px solid #ccc;
-    margin: 0 20px;
     padding-bottom: 2px;
-    font-size: 16px;
     transition: 0.4s;
-  }
-  input:focus {
-    border-bottom: 1.5px solid #bfdffb;
+    font-size: 18px;
+    background-color: #f0f2f5;
+    padding: 8px 10px;
+    margin-right: 5px;
+    border-radius: 15px;
   }
 `;
 
-const Post = styled.span`
+const Post = styled.div`
   color: #bfdffb;
   color: ${props => (props.mode === 'off' ? '#bfdffb' : '#58b9fa')};
   font-weight: bold;
   cursor: pointer;
-`;
-
-const CommentBox = styled.div`
-  display: flex;
-  align-items: center;
-  margin: 20px 0px;
   span {
-    font-size: 14px;
-    font-weight: bold;
-  }
-  div {
-    margin-left: 15px;
-    background-color: #f0f2f5;
-    padding: 10px 15px;
-    border-radius: 10px;
+    font-size: 17px;
   }
 `;
 

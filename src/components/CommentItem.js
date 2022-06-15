@@ -35,7 +35,6 @@ const CommentItem = ({ comm, handleUpdateContent, handleRemoveContent }) => {
       console.log('통신실패');
       return;
     }
-
     setActiveInput(false);
   };
 
@@ -49,8 +48,8 @@ const CommentItem = ({ comm, handleUpdateContent, handleRemoveContent }) => {
 
   return (
     <Container key={comm._id} onSubmit={submitHandler}>
-      <span>{comm.nickname}</span>
-      {!activeInput ? <span>{comm.comment}</span> : <input type='text' onChange={commentHandler} value={commentValue} />}
+      <Nickname>{comm.nickname}</Nickname>
+      {!activeInput ? <CommentBody>{comm.comment}</CommentBody> : <CommentInput type='text' onChange={commentHandler} value={commentValue} />}
       <CommentEdit
         key={comm.commentId}
         callRemoveComment={excuteRemoveComment}
@@ -63,8 +62,33 @@ const CommentItem = ({ comm, handleUpdateContent, handleRemoveContent }) => {
   );
 };
 
+const Nickname = styled.span``;
+
+const CommentBody = styled.span``;
+const CommentInput = styled.input``;
 const Container = styled.form`
+  height: 30px;
   display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  ${CommentBody} {
+    display: block;
+    font-size: 18px;
+  }
+  ${CommentInput} {
+    outline: none;
+    border: none;
+    font-size: 18px;
+    background-color: #f0f2f5;
+    padding: 8px 10px;
+    border-radius: 15px;
+    width: 40%;
+  }
+  ${Nickname} {
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: bold;
+  }
 `;
 
 export default CommentItem;

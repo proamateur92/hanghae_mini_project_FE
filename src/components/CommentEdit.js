@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { faEllipsis } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { getCookie } from '../shared/cookie';
 
 const CommentEdit = ({ comments, onEdit, off, callRemoveComment }) => {
+  const USER_NICKNAME = getCookie('nickname');
   const [option, setOption] = useState(false);
   const [cancel, setCancel] = useState(false);
 
@@ -15,7 +17,7 @@ const CommentEdit = ({ comments, onEdit, off, callRemoveComment }) => {
     }
   }, [off]);
 
-  const { commentId, contentId } = comments;
+  const { commentId, contentId, nickname } = comments;
 
   const availeWrite = () => {
     setCancel(true);
@@ -30,14 +32,14 @@ const CommentEdit = ({ comments, onEdit, off, callRemoveComment }) => {
   // 댓글 수정, 삭제 글자 보이기
   const commentItem = () => {
     return !cancel ? (
-      <div>
+      <OptionDetail>
         <span onClick={() => availeWrite()}>수정</span>
         <span onClick={() => handleRemove()}>삭제</span>
-      </div>
+      </OptionDetail>
     ) : (
-      <div>
+      <OptionDetail>
         <span onClick={() => reset()}>취소</span>
-      </div>
+      </OptionDetail>
     );
   };
 
@@ -53,9 +55,11 @@ const CommentEdit = ({ comments, onEdit, off, callRemoveComment }) => {
   };
   return (
     <>
-      <Icon onClick={() => setOption(prev => !prev)}>
-        <FontAwesomeIcon icon={faEllipsis} size='sm' />
-      </Icon>
+      {USER_NICKNAME === nickname ? (
+        <Icon onClick={() => setOption(prev => !prev)}>
+          <FontAwesomeIcon icon={faEllipsis} size='sm' />
+        </Icon>
+      ) : null}
       {option && <Option>{commentItem()}</Option>}
       {!option && null}
     </>
@@ -73,13 +77,20 @@ const Icon = styled.div`
   }
 `;
 
-const Option = styled.div`
+const Option = styled.div``;
+const OptionDetail = styled.div`
+  display: flex;
   span {
-    cursor: pointer;
+    font-size: 14px;
+    padding: 5px 8px;
     margin-left: 5px;
+    border-radius: 15px;
+    cursor: pointer;
   }
   span:hover {
-    background-color: red;
+    cursor: pointer;
+    background-color: #f0f2f5;
+  }
   }
 `;
 
