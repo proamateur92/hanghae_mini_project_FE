@@ -1,8 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loadBoardDB, searchBoardDB } from '../redux/modules/boardSlice';
-import { loadCommentDB } from '../redux/modules/commentSlice';
+import { searchBoardDB } from '../redux/modules/boardSlice';
 import { loadLikeDB } from '../redux/modules/likeSlice';
 import Login from './Login';
 import Main from './Main';
