@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { searchBoardDB } from '../redux/modules/boardSlice';
+import { loadBoardDB } from '../redux/modules/boardSlice';
 import { loadLikeDB } from '../redux/modules/likeSlice';
 import Login from './Login';
 import Main from './Main';
@@ -15,9 +15,9 @@ const Router = () => {
 
   // 게시글 불러오기 redux 함수 호출
   useEffect(() => {
-    dispatch(searchBoardDB());
+    dispatch(loadBoardDB());
   }, []);
-
+  
   return (
     <Routes>
       <Route path='/' element={<Main />} />

@@ -34,7 +34,7 @@ const Serch = () => {
         const upLoad_obj = getInputData();
         if(!upLoad_obj) return;
         dispatch(searchBoardDB(upLoad_obj));
-        setSearch("")
+        // setSearch("")
     }
 
     return (
