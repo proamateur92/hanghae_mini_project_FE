@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { createSlice } from '@reduxjs/toolkit';
 import instance from '../../shared/axios';
 
@@ -9,8 +8,8 @@ export const loadBoardDB = () => {
   return async function (dispatch) {
     // 테스트 url
     try {
-      // const response = await instance.get('/content');
-      const response = await axios.get('http://13.209.64.124/content');
+      const response = await instance.get('/content');
+      // const response = await axios.get('http://13.209.64.124/content');
       dispatch(loadBoard(response.data));
     } catch (error) {
       // 게시글 불러오지 못할 때
@@ -53,7 +52,7 @@ export const removeBoardDB = targetId => {
   return async function (dispatch) {
     try {
       // await axios.delete(`localhost:5000/content/${targetId}`);
-      await instance.delete(`http://13.209.64.124/content/${targetId}`);
+      await instance.delete(`/content/${targetId}`);
       dispatch(removeBoard(targetId));
     } catch (error) {
       console.log(error);

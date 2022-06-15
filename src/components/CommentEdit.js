@@ -91,7 +91,6 @@ const OptionDetail = styled.div`
     cursor: pointer;
     background-color: #f0f2f5;
   }
-  }
 `;
 
 export default CommentEdit;
