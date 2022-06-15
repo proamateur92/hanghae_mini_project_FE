@@ -1,18 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-// 댓글 가져오기
-export const loadCommentDB = () => {
-  return async function (dispatch) {
-    try {
-      const response = await axios.get(`http://13.209.64.124/comment/`);
-      dispatch(loadComment(response.data.comment));
-    } catch (error) {
-      // 멘토링 때 물어보기
-    }
-  };
-};
-
 // 댓글 추가
 export const createCommentDB = targetId => {
   return async function (dispatch) {
