@@ -37,7 +37,7 @@ export const createBoardDB = contents_obj => {
 //Update
 export const updateBoardDB = (contents_obj, id) => {
   return async function (dispatch) {
-    console.log("업데이트",contents_obj)
+    console.log('업데이트', contents_obj);
     await instance
       .patch(`/content/${id}`, contents_obj)
       .then(response => {})
@@ -72,7 +72,7 @@ export const searchBoardDB = search_data => {
       });
     } catch (error) {
       console.log(error.request.response);
-      alert("해당 게시물이 없습니다.");
+      alert('해당 게시물이 없습니다.');
     }
   };
 };
@@ -91,18 +91,13 @@ const boardSlice = createSlice({
     // },
     loadBoard: (state, action) => {
       // console.log(action.payload);
-      state.list.push(...action.payload);
-      state.list.sort((a, b) =>
-        new Date(b.CreateAt) - new Date(a.CreateAt)
-      );
+      state.list = [...action.payload];
     },
     createBoard(state, action) {
       console.log('리듀서', action.payload);
       // state.list.unshift(action.payload);
       state.list.push(action.payload);
-      state.list.sort((a, b) =>
-        new Date(b.CreateAt) - new Date(a.CreateAt)
-      );
+      state.list.sort((a, b) => new Date(b.CreateAt) - new Date(a.CreateAt));
     },
     updateBoard(state, action) {
       const newState = state.list.filter((l, idx) => {
@@ -111,9 +106,7 @@ const boardSlice = createSlice({
       });
       const newwState = [...newState, action.payload];
       state.list = newwState;
-      state.list.sort((a, b) =>
-      new Date(b.CreateAt) - new Date(a.CreateAt)
-      );
+      state.list.sort((a, b) => new Date(b.CreateAt) - new Date(a.CreateAt));
     },
     removeBoard(state, action) {
       const existingBoard = state.list.find(board => board._id === action.payload);
