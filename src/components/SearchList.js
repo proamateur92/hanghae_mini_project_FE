@@ -14,7 +14,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const SearchList = ({ board }) => {
-    console.log("!",[board[0]?._id])
     const USER_NICKNAME = getCookie("nickname");
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -27,32 +26,29 @@ const SearchList = ({ board }) => {
 
 
     // 댓글 가져오기
-  useEffect(() => {
-    const load = async () => {
-      const response = await instance.get(`/comment/${[board[0]?._id]}`);
-      setCommentValue(response.data.comment);
-    };
-
-    load();
-  }, []);
+  // useEffect(() => {
+  //   const load = async () => {
+  //     const response = await instance.get(`/comment/${[board[0]?._id]}`);
+  //     setCommentValue(response.data.comment);
+  //   };
+  //   load();
+  // }, []);
 
   // 게시글 삭제 redux 함수 호출
   const onRemoveBoard = () => {
     dispatch(removeBoardDB(board._id));
   };
 
-  // 댓글 추가 - state 반영
-  const handleAddComment = newComment => {
-    // console.log('추가할 댓글 정보');
-    // console.log(newComment);
-    setCommentValue([newComment, ...commentValue]);
-  };
+  // // 댓글 추가 - state 반영
+  // const handleAddComment = newComment => {
+  //   setCommentValue([newComment, ...commentValue]);
+  // };
 
-  // 댓글 수정 - state 반영
-  const handleUpdateComment = (targetId, newComment) => {
-    const commentData = commentValue.map(list => (list.commentId === targetId ? { ...list, comment: newComment } : list));
-    setCommentValue(commentData);
-  };
+  // // 댓글 수정 - state 반영
+  // const handleUpdateComment = (targetId, newComment) => {
+  //   const commentData = commentValue.map(list => (list.commentId === targetId ? { ...list, comment: newComment } : list));
+  //   setCommentValue(commentData);
+  // };
 
   // 댓글 삭제 - state 반영
   const handleRemoveComment = targetId => {
@@ -137,7 +133,7 @@ const SearchList = ({ board }) => {
                   댓글 {commentValue.length}개
                 </Comment>
               </Detail>
-              {isComment && (
+              {/* {isComment && (
                 <BoardComment
                   key={[board[0]?._id]}
                   onAddComment={handleAddComment}
@@ -147,7 +143,7 @@ const SearchList = ({ board }) => {
                   comment={commentValue}
                 />
               )}
-              {!isComment && null}
+              {!isComment && null} */}
             </Item>
           ))}
       </>

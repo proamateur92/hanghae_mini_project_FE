@@ -48,12 +48,15 @@ const Write = () => {
 
   useEffect(() => {
     if (is_edit && !_post) {
-      console.log("포스트 정보가 없어요! ㅜㅜ");
       window.alert("포스트 정보가 없어요! ㅜㅜ");
       navigate("/")
       return;
     }    
+    
   }, []);
+
+  
+  
   
   //서버에 넘겨줄 데이터 목록
   const getInputData = () => {
@@ -63,10 +66,7 @@ const Write = () => {
     const updateAt = moment().format("YYYY-MM-DD HH:mm:ss");
     const userName = user_name
     console.log(imageUrl);
-    // if (!content) {
-    //   alert("글 내용을 입력해주세요.");
-    //   return false;
-    // }
+
     if (is_edit) {
       let contents_obj = {
         updateAt,
@@ -90,11 +90,8 @@ const Write = () => {
       };
       return contents_obj
     }
-    // console.log(contents_obj)
     // return contents_obj;
   };
-
-  console.log("보낼목록",getInputData())
 
   //데이터를 스토리지에 올림
   const upLoadFB = async () => {
@@ -108,14 +105,19 @@ const Write = () => {
       //링크를 담는다.
       file_link_ref.current = [...file_link_ref.current, file_url];
     }
+
     //데이터를 미들웨어에 옮김
     const contents_obj = getInputData();
     if (!contents_obj) return;
     const new_contents_obj = {
       ...contents_obj,
       id
-    };
-    console.log("asdasdas",id)
+    };  
+    if (!contents_obj.content) {
+      alert("글 내용을 입력해주세요.");
+      return false;
+    }
+
     if(is_edit){
       //미들웨어로 디스패치
       await dispatch(updateBoardDB({ ...new_contents_obj }, id));

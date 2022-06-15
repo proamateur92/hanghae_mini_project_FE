@@ -56,7 +56,7 @@ const Header = () => {
 
   return (
     <Container>
-      <Logo onClick={() => navigate("/")}>로고</Logo>
+      <Logo onClick={() => navigate("/")}><img src="logo.png" alt="로고" /></Logo>
       <List>
         {!is_login && <Item onClick={openSignupModal}>SignUp</Item>}
         {!is_login && <Item onClick={openLoginModal}>Login</Item>}
@@ -75,15 +75,17 @@ const Header = () => {
   );
 };
 
+//로고
 const Logo = styled.div`
-  color: #fff;
-  font-size: 36px;
-  font-weight: bold;
+  width:100px;
+  margin-left:1vw;
   cursor: pointer;
-  &:hover {
-    color: #ccc;
+  img{
+    width:100%;
+    height:100%;
   }
 `;
+
 const List = styled.div``;
 const Item = styled.div``;
 const Title = styled.div`
@@ -94,11 +96,15 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: ${(props) => props.theme.color.primary};
+  background-color:black;
+  position:fixed;
+  width:100%;
+  z-index:100;
   @media (max-width: 499px) {
-    padding: 30px;
+    /* padding: 30px; */
   }
   @media (min-width: 500px) {
-    padding: 25px;
+    /* padding: 25px; */
   }
   ${List} {
     display: flex;
