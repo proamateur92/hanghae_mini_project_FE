@@ -63,7 +63,7 @@ const Header = () => {
 
         <ModalLogin open={modalLoginOpen} close={closeLoginModal}></ModalLogin>
         {/* <FontAwesomeIcon icon={faBars} size="2x" /> */}
-        {is_login && <div>{getCookie("nickname")}님 안녕하세요!</div>}
+        {is_login && <Title>{getCookie("nickname")}님 안녕하세요!</Title>}
         {is_login && <Item onClick={deleteCookie}>Logout</Item>}
 
         <ModalSignup
@@ -84,9 +84,12 @@ const Logo = styled.div`
     color: #ccc;
   }
 `;
-
 const List = styled.div``;
 const Item = styled.div``;
+const Title = styled.div`
+  color: white;
+  font-weight: bolder;
+`;
 const Container = styled.div`
   display: flex;
   justify-content: space-between;

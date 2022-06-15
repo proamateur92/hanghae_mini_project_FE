@@ -106,35 +106,30 @@ const ModalSignup = (props) => {
               <Input>
                 <label htmlFor="email">ID</label>
                 <input id="email" type="email" ref={email_ref} required></input>
-                <br />
-                <p>이메일로 아이디를 작성해주세요!</p>
+                <MiniTitle>이메일로 아이디를 작성해주세요!</MiniTitle>
               </Input>
-
               <Input>
                 <label htmlFor="nickName">NickName</label>
-                <br />
                 <input
                   id="nickName"
                   type="name"
                   ref={nickname_ref}
                   required
                 ></input>
-                <p>3 ~ 8자 한글,영문,숫자로 작성</p>
+                <MiniTitle>3 ~ 8자 한글,영문,숫자로 작성</MiniTitle>
               </Input>
               <Input>
                 <label htmlFor="password">PW</label>
-
                 <input
                   id="password"
                   type="password"
                   ref={password_ref}
                   required
                 ></input>
-                <p>3 ~ 10자 영문, 숫자 및 특수문자조합</p>
+                <MiniTitle>3 ~ 10자 영문, 숫자 및 특수문자조합</MiniTitle>
               </Input>
               <Input>
                 <label htmlFor="confirmPassword">PW CHECK</label>
-                <br />
                 <input
                   id="confirmPassword"
                   type="password"
@@ -210,10 +205,9 @@ const ModalLogin = (props) => {
 
               <Input>
                 <label htmlFor="email">ID</label>
-
                 <input id="email" type="email" ref={email_ref} required></input>
-                <br />
-                <p>이메일로 아이디를 작성해주세요!</p>
+
+                <MiniTitle>이메일로 아이디를 작성해주세요!</MiniTitle>
               </Input>
 
               <Input>
@@ -224,8 +218,9 @@ const ModalLogin = (props) => {
                   ref={password_ref}
                   required
                 ></input>
-                <p>3 ~ 10자 영문, 숫자 및 특수문자조합</p>
+                <MiniTitle>3 ~ 10자 영문, 숫자 및 특수문자조합</MiniTitle>
               </Input>
+
               <Btn
                 onClick={() => {
                   loginCheck();
@@ -268,17 +263,16 @@ const SignupWrap = styled.div`
 const Input = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 10px 0;
+  margin: 5px 0;
   color: #e07575;
   font-size: 1.2rem;
-  width: 50%;
-  p {
-    color: #999494;
-    font-size: 13px;
+  width: 60%;
+  label {
+    margin-bottom: 10px;
   }
   input {
     width: 100%;
-    height: 20px;
+    height: 30px;
     border: none;
     border-bottom: 2px solid #ffcaca;
   }
@@ -286,6 +280,11 @@ const Input = styled.div`
     outline: none;
     border-bottom: 2px solid #e07575;
   }
+`;
+const MiniTitle = styled.p`
+  margin-top: 10px;
+  color: #999494;
+  font-size: 13px;
 `;
 
 const Btn = styled.button`
