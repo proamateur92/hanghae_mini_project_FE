@@ -50,14 +50,7 @@
   - Axios
   
 - **Front-end Library**
-  - react-router-dom
-  - react-redux
-  - react-slick
-  - moment
-  - styled-components
-  - intersection-observer
-  - fortawesome
-  - | 라이브러리명      | 내용                                    | 참고 |
+| 라이브러리명      | 내용                                    | 참고 |
 | :-------------------- | :-------------------------------------- | :--- |
 | axios                 | 서버통신                                |      |
 | react-router-dom      | 렌더링                                  |      |
