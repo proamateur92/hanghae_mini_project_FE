@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { getCookie } from "./shared/cookie";
 import { useDispatch } from "react-redux";
 import { loginUser } from "./redux/modules/userSlice";
+import "./assets/css/main.css"
 
 function App() {
   const dispatch = useDispatch();

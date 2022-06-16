@@ -56,15 +56,15 @@ const Header = () => {
 
   return (
     <Container>
-      <Logo onClick={() => navigate("/")}><img src="logo.png" alt="로고" /></Logo>
+      <Logo onClick={() => navigate("/")}><img src="logo3.png" alt="로고" /></Logo>
       <List>
-        {!is_login && <Item onClick={openSignupModal}>SignUp</Item>}
-        {!is_login && <Item onClick={openLoginModal}>Login</Item>}
+        {!is_login && <Item onClick={openSignupModal}>회원가입</Item>}
+        {!is_login && <Item onClick={openLoginModal}>로그인</Item>}
 
         <ModalLogin open={modalLoginOpen} close={closeLoginModal}></ModalLogin>
         {/* <FontAwesomeIcon icon={faBars} size="2x" /> */}
         {is_login && <Title>{getCookie("nickname")}님 안녕하세요!</Title>}
-        {is_login && <Item onClick={deleteCookie}>Logout</Item>}
+        {is_login && <Item onClick={deleteCookie}>로그아웃</Item>}
 
         <ModalSignup
           open={modalSignupOpen}
@@ -81,6 +81,7 @@ const Logo = styled.div`
   padding:10px;
   margin-left:1vw;
   cursor: pointer;
+  /* transform:rotate(0.9turn); */
   img{
     width:100%;
     height:100%;

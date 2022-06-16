@@ -45,7 +45,7 @@ const Serch = () => {
           <SearchText
             type="text"
             value={search}
-            placeholder="검색 하세요."
+            placeholder="Search"
             onChange={onChangeSearch}
             // onkeypress={()=>{
               // if( event.keyCode == 13 ) {
@@ -70,21 +70,23 @@ const Container = styled.form`
 `;
 
 const SearchText = styled.input`
-  width:100%;
+  width:60%;
   box-sizing: border-box;
   height:50px;
   border:none;
-  border:1px solid #7d7d7d;
-  /* padding: 0; */
+  box-shadow: 2px 1px 5px gray;
   margin:0;
-  border-radius:5px 0 0 5px;
+  border-radius:20px;
   padding-left:20px;
+  margin-right:20px;
+  font-size:20px;
 `;
 const SearchBtn = styled.button`
   background-color:transparent;
   cursor:pointer;
-  border:1px solid #7d7d7d;
-  border-radius:0 5px 5px 0;
+  border:none;
+  border-radius:50%;
+  box-shadow: 2px 1px 5px gray;
   height:50px;
   width:50px;
   color:#7d7d7d;
