@@ -9,8 +9,8 @@ export const loadBoardDB = (page) => {
     console.log(page)
     // 테스트 url
     try {
-      const response = await instance.get(`/content/`);
-      // const response = await instance.get(`/content/`, { params: { page:2 } });
+      // const response = await instance.get(`/content/`);
+      const response = await instance.get(`/content/`, { params: {page} });
       
       // const response = await axios.get('http://13.209.64.124/content');
       const data = getState().board.list

@@ -7,6 +7,7 @@ import Header from './Header';
 import BoardItem from '../components/BoardItem';
 import Search from '../components/Search';
 import SearchList from '../components/SearchList';
+import Loder from '../components/Loder';
 import { faSquarePlus } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useNavigate } from 'react-router-dom';
@@ -20,22 +21,43 @@ const Main = () => {
   // redux로부터 게시글 정보 받아오기
   const [isLoading, setIsLoading] = useState(false);
   const boards = useSelector(state => state.board?.list);
-
   const search_data = useSelector((state) => state.board.searchList);
-  
-  // const [abc, setAbc] = useState([]);
-  // console.log(abc)
-  
-  // useEffect(() => {
-  //   setAbc(search_data)  
-  // }, [search_data]);
 
+  // //무한 스크롤
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [target, setTarget] = useState(null);
+  const [page, setPage] = useState(4)
+
+  console.log(process.env.REACT_APP_MY_NAME)
 
   console.log(boards)
+    
+  const onIntersect = async ([entry], observer) => {
+    if (entry.isIntersecting) {
+      observer.unobserve(entry.target);
+      await dispatch(loadBoardDB(page)) 
+    }
+  };
+  useEffect(() => {
+    let observer;
+    if (target) {
+      setPage(page+4)
+      observer = new IntersectionObserver(onIntersect, {
+        threshold: 0.5,
+      });
+      observer.observe(target);
+    }
+    return () => {
+      observer && observer.disconnect();
+    };
+
+  }, [target]);
+
+{/* <><div ref={i === boards.length - 1 ? setTarget : null} ></div> */}
+
   // 컴포넌트 호출 될 때 초기화
   useEffect(() => {
     const load = async () => {
-      await dispatch(loadBoardDB());
       setIsLoading(true);
     };
     load();
@@ -55,7 +77,8 @@ const Main = () => {
                 </>
                 <SubTitle>전체 게시글</SubTitle>
               <List>
-                {boards && boards.map((board) => (<BoardItem key={Math.random()} board={board} />))}
+                {boards && boards.map((board, i) => (<><BoardItem key={Math.random()} board={board}/>
+                <div ref={i === boards.length - 1 ? setTarget : null} >{isLoaded && <Loder/>}</div></>))}
               </List>
             </Box>
           </Container>
