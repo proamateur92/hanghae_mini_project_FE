@@ -109,7 +109,6 @@ const Write = () => {
       //링크를 담는다.
       file_link_ref.current = [...file_link_ref.current, file_url];
     }
-
     //데이터를 미들웨어에 옮김
     const contents_obj = getInputData();
     if (!contents_obj) return;
@@ -121,7 +120,6 @@ const Write = () => {
       alert("글 내용을 입력해주세요.");
       return false;
     }
-
     if(is_edit){
       //미들웨어로 디스패치
       await dispatch(updateBoardDB({ ...new_contents_obj }, id));

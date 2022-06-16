@@ -34,7 +34,6 @@ export const createBoardDB = contents_obj => {
         console.log('에러', error.response.data);
       });
       console.log(contents_obj)
-      // debugger;
     await dispatch(createBoard(contents_obj));
   };
 };
