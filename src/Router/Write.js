@@ -66,7 +66,7 @@ const Write = () => {
     const updateAt = moment().format("YYYY-MM-DD HH:mm:ss");
     const userName = user_name
     console.log(imageUrl);
-
+    
     if (is_edit) {
       let contents_obj = {
         updateAt,
@@ -92,6 +92,8 @@ const Write = () => {
     }
     // return contents_obj;
   };
+  
+  
 
   //데이터를 스토리지에 올림
   const upLoadFB = async () => {
@@ -146,9 +148,11 @@ const Write = () => {
   const handleDeleteImage = (id) => {
     setShowImages(showImages.filter((l, index) => index !== id));
     let del = file_link_ref.current.filter((l, index) => l !== file_link_ref.current[id]);
-    file_link_ref.current = [...del];
+    file_link_ref.current = [...del];  
+    let img = [...imageFB]
+    setImageFB(img.filter((l, index) => l !== imageFB[id]));
   };
-  
+
   //사진 슬라이드
   const settings = {
     dots: true, //carousel 밑에 지정 콘텐츠로 바로 이동할 수 있는 버튼을 뜻한다. flase 할시 사라진다.
