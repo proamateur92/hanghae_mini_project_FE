@@ -53,14 +53,14 @@ const CommentItem = ({ comm, handleUpdateContent, handleRemoveContent }) => {
         {!activeInput ? <CommentBody>{comm.comment}</CommentBody> : <CommentInput type='text' onChange={commentHandler} value={commentValue} />}
       </NameCommentWrap>
       <div>
-      <CommentEdit
-        key={comm.commentId}
-        callRemoveComment={excuteRemoveComment}
-        off={activeInput}
-        onEdit={handleNewContent}
-        onCancel={resetNewContent}
-        comments={comm}
-      ></CommentEdit>
+        <CommentEdit
+          key={comm.commentId}
+          callRemoveComment={excuteRemoveComment}
+          off={activeInput}
+          onEdit={handleNewContent}
+          onCancel={resetNewContent}
+          comments={comm}
+        ></CommentEdit>
       </div>
     </Container>
   );
@@ -71,14 +71,15 @@ const Nickname = styled.span``;
 const CommentBody = styled.span``;
 const CommentInput = styled.input``;
 const NameCommentWrap = styled.div`
-  display:flex;
+  display: flex;
+  align-items: center;
 `;
 const Container = styled.form`
   height: 30px;
   display: flex;
   align-items: center;
-  justify-content:space-between;
-  padding:0 5px;
+  justify-content: space-between;
+  padding: 0 5px;
   margin-bottom: 10px;
   ${CommentBody} {
     display: block;
