@@ -35,7 +35,7 @@ const Write = () => {
   const { id } = useParams();
   //edit_mode
   const is_edit = id ? true : false;
-  const _post = is_edit ? board.list.find((p) => p._id === id)  : null; // board list articleId랑 params 아이디랑 비교해서 일치하는 배열
+  const _post = is_edit ? board.list.find((p) => p._id === id)  : null;  // board list articleId랑 params 아이디랑 비교해서 일치하는 배열값 변수에 담음
 
   //Ref
   const text = React.useRef(null);
@@ -47,9 +47,9 @@ const Write = () => {
   const user_name = localStorage.getItem("nickname")
 
   useEffect(() => {
-    if (is_edit && !_post) {
+    if (is_edit && !_post) { //is_edit모드, _post정보가 비어있으면 
       window.alert("포스트 정보가 없어요! ㅜㅜ");
-      navigate("/")
+      navigate("/") //홈으로 이동
       return;
     }    
     
@@ -66,7 +66,8 @@ const Write = () => {
     const updateAt = moment().format("YYYY-MM-DD HH:mm:ss");
     const userName = user_name
     console.log(imageUrl);
-    
+  
+    //is_edit모드일때 담을 데이터
     if (is_edit) {
       let contents_obj = {
         updateAt,
@@ -78,7 +79,7 @@ const Write = () => {
         __v: 0,
       };
       return contents_obj
-    } else {
+    } else { //작성 페이지일때 담을 데이터
       let contents_obj = {
         CreateAt,
         updateAt,

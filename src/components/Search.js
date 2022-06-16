@@ -12,16 +12,21 @@ const Serch = () => {
     const dispatch = useDispatch();
     const [search, setSearch] = useState("");
 
+
+    // 엔터 누를때 search로 데이터 보냄
     const onChangeSearch = (e) => {
         e.preventDefault();
         setSearch(e.target.value)
     }
+
+    //검색한 데이터를 변수에 담음
     const getInputData = () => {
+      //빈칸일시 return
       if (search === "") {
         window.alert("검색어를 입력하세요!");
         return;
       }
-
+      //검색한 value값
       const content = search;
       let contents_obj = {
         value: content,
@@ -29,12 +34,12 @@ const Serch = () => {
       return contents_obj;
     };
 
+    //upLoad시 리듀서에 보냄
     const upLoad = (e) => {
         e.preventDefault();
         const upLoad_obj = getInputData();
         if(!upLoad_obj) return;
         dispatch(searchBoardDB(upLoad_obj));
-        // setSearch("")
     }
 
     return (

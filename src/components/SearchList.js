@@ -23,17 +23,6 @@ const SearchList = ({ board }) => {
 
     const search_data = useSelector((state) => state.board.searchList);
 
-  // 게시글 삭제 redux 함수 호출
-  const onRemoveBoard = () => {
-    dispatch(removeBoardDB(board._id));
-  };
-
-  // 댓글 삭제 - state 반영
-  const handleRemoveComment = targetId => {
-    const commentData = commentValue.filter(list => list.commentId !== targetId);
-    setCommentValue(commentData);
-  };
-
   //사진 슬라이드
   const settings = {
     dots: true,

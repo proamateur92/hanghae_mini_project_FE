@@ -58,7 +58,6 @@ export const updateBoardDB = (contents_obj, id) => {
 export const removeBoardDB = targetId => {
   return async function (dispatch) {
     try {
-      // await axios.delete(`localhost:5000/content/${targetId}`);
       await instance.delete(`/content/${targetId}`);
       dispatch(removeBoard(targetId));
     } catch (error) {
@@ -72,8 +71,6 @@ export const searchBoardDB = search_data => {
   return async function (dispatch) {
     try {
       await instance.get('/content/search', { params: { value: search_data.value } }).then(response => {
-        // file_link_ref.current = [...file_link_ref.current, file_url];
-        // search = [...response.data.SearchContent];
         dispatch(searchBoard([...response.data.SearchContent]));
       });
     } catch (error) {
@@ -92,10 +89,6 @@ const boardSlice = createSlice({
   },
 
   reducers: {
-    // 예시로 하나 남겨두겠습니다.
-    // changeName: (state, action) => {
-    //   state.name = action.payload;
-    // },
     loadBoard: (state, action) => {
       console.log(action.payload.pages);
       state.list = [...action.payload.newstate];
@@ -109,7 +102,6 @@ const boardSlice = createSlice({
     },
     updateBoard(state, action) {
       const newState = state.list.filter((l, idx) => {
-        // return l.id !== parseInt(action.payload.id);
         return l.id !== action.payload.id;
       });
       const newwState = [...newState, action.payload];
@@ -129,6 +121,5 @@ const boardSlice = createSlice({
   },
 });
 
-// export const boardActions = boardSlice.actions;
 export const { loadBoard, createBoard, updateBoard, removeBoard, searchBoard } = boardSlice.actions;
 export default boardSlice.reducer;

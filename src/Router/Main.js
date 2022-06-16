@@ -27,25 +27,26 @@ const Main = () => {
   const pages = useSelector(state => state.board?.pages);
   const search_data = useSelector(state => state.board.searchList);
 
-  // //무한 스크롤
+  //무한 스크롤
   const [isLoaded, setIsLoaded] = useState(false);
   const [target, setTarget] = useState(null);
   const [page, setPage] = useState(4);
 
+
+  // 인터섹션 callback
   const onIntersect = async ([entry], observer) => {
     if (entry.isIntersecting) {
       observer.unobserve(entry.target);
       await dispatch(loadBoardDB(page));
     }
   };
+
+  // 무한스크롤 구현 중 다른 페이지 이동 했을때 재랜더링 되는걸 방지
   useEffect(() => {
-    setPage(pages);
+    setPage(pages); 
   }, [pages]);
 
-  console.log(page)
-
-  
-
+  // 옵저버 등록 
   useEffect(() => {
     let observer;
     if (target) {
