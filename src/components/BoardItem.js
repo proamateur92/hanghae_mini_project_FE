@@ -194,10 +194,10 @@ const Text = styled.div`
     color: #9c9c9c;
     display: block;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
   }
   ${Content} {
-    font-size: 16px;
+    font-size: 30px;
   }
   ${More} {
     color: #383838;
@@ -229,7 +229,8 @@ const ImageBox = styled.div`
   }
 `;
 
-const Comment = styled.span``;
+const Comment = styled.span`
+`;
 const Detail = styled.div`
   margin: 0 10px;
   padding: 15px;
@@ -240,7 +241,7 @@ const Detail = styled.div`
   ${Comment} {
     color: #383838;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 20px;
   }
 `;
 

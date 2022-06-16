@@ -95,14 +95,14 @@ const Item = styled.div`
 `;
 const Title = styled.div`
   color: white;
-  font-size:14px;
+  font-size:20px;
   font-weight: bolder;
 `;
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: ${(props) => props.theme.color.primary};
-  background-color:black;
+  /* background-color:#D5ECC2; */
+  background-color:#98DDCA;
   position:fixed;
   width:100%;
   z-index:100;
@@ -118,7 +118,7 @@ const Container = styled.div`
   }
   ${Item} {
     margin-left: 10px;
-    font-size: 14px;
+    font-size: 20px;
     font-weight:bold;
     color: white;
     cursor: pointer;

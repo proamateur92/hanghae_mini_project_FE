@@ -27,10 +27,6 @@ const Main = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [target, setTarget] = useState(null);
   const [page, setPage] = useState(4)
-
-  console.log(process.env.REACT_APP_MY_NAME)
-
-  console.log(boards)
     
   const onIntersect = async ([entry], observer) => {
     if (entry.isIntersecting) {
@@ -77,8 +73,8 @@ const Main = () => {
                 </>
                 <SubTitle>전체 게시글</SubTitle>
               <List>
-                {boards && boards.map((board, i) => (<><BoardItem key={Math.random()} board={board}/>
-                <div ref={i === boards.length - 1 ? setTarget : null} >{isLoaded && <Loder/>}</div></>))}
+                {boards && boards.map((board, i) => (<div key={i}><BoardItem key={Math.random()} board={board}/>
+                <div ref={i === boards.length - 1 ? setTarget : null} >{isLoaded && <Loder/>}</div></div>))}
               </List>
             </Box>
           </Container>
@@ -120,12 +116,12 @@ const WriteButton = styled.div`
   position: fixed;
   right: 20px;
   bottom: 20px;
-  color: #bfdffb;
+  color: #98DDCA;
   cursor: pointer;
   transition: 0.4s;
   &:hover {
     transform: scale(1.1);
-    color: #58b9fa;
+    color: #68ab99;
   }
 `;
 const SubTitle = styled.h3`

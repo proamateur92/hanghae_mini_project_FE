@@ -164,7 +164,7 @@ const Write = () => {
         <Title>{is_edit ? "Update" : "Write"}</Title>
         <ImgInputWrap>
           <label htmlFor="file" onChange={handleAddImages}>
-            <ImageBtn>image</ImageBtn>
+            <ImageBtn>이미지 첨부</ImageBtn>
             {/* <p>3장까지만 첨부 가능</p> */}
             <input
               type="file"
@@ -238,6 +238,7 @@ const WriteWrap = styled.div`
   margin: 0 auto;
   margin-top:5vh;
   width: 50%;
+  /* font-size:20px; */
   label {
     display: inline-block;
     font-size: inherit;
@@ -266,11 +267,13 @@ width:500px;
 `
 const FormWrap = styled.form`
   text-align: center;
+  border-radius:8px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
 `;
 //font
 const Title = styled.h1`
-  color: #c61b43;
+  color: #5a7197;
+  font-size:40px;
   width:90%;
   border-bottom:1px solid #d3d2d2; ;
   padding:20px 0;
@@ -279,10 +282,13 @@ const Title = styled.h1`
 
 //input
 const TextInput = styled.textarea`
+  box-sizing:border-box;
   width: 90%;
   height: 200px;
   border: 1px solid #d3d2d2;
   border-radius: 6px;
+  font-size:26px;
+  padding:20px
 `;
 const Img = styled.div`
   width:500px;
@@ -298,9 +304,11 @@ const Temporary = styled.div`
   width:500px;
   height:300px;
   text-indent:-9999px;
-  border: 1px solid #d3d2d2;
-  background-image:url("https://i.pinimg.com/564x/65/03/f2/6503f27ab49db51a7224cd20a9d438f4.jpg");
+  /* border: 1px solid #d3d2d2; */
+  background-image:url("https://cdn.icon-icons.com/icons2/2436/PNG/512/photo_image_icon_147448.png");
   background-position:center;
+  background-size:contain;
+  background-repeat: no-repeat;
 `
 const ImgWrap = styled.div`
 position: relative;
@@ -338,6 +346,7 @@ const InputButtonWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top:20px;
+  border-radius:0 0 8px 8px;
 `;
 const InputLink = styled(Link)`
   color: white;
@@ -345,7 +354,11 @@ const InputLink = styled(Link)`
   border-radius: 6px;
   margin-left: 16px;
   background-color: #e8e7e7;
+  font-size:20px;
   text-decoration: none;
+  &:hover {
+    color:#5a7197;
+  }
 `;
 const InputButton = styled.input`
   border: none;
@@ -353,5 +366,12 @@ const InputButton = styled.input`
   padding: 10px;
   border-radius: 6px;
   margin-right: 16px;
-  background-color: #ff586e;
+  font-size:20px;
+  background-color: #5a7197;
+  transition: background-color 0.3s;
+  transition: color 0.3s;
+  &:hover {
+    background-color:rgba(90, 113, 151, 0.2);
+    color:#5a7197
+  }
 `;

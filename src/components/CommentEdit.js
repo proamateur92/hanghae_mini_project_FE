@@ -80,12 +80,24 @@ const Icon = styled.div`
 const Option = styled.div``;
 const OptionDetail = styled.div`
   display: flex;
+  position:relative;
   span {
     font-size: 14px;
     padding: 5px 8px;
+    width:30px;
+    text-align: center;
     margin-left: 5px;
-    border-radius: 15px;
+    border-radius: 5px 5px 0 0 ;
+    background-color:white;
+    box-shadow:1px 1px 1px gray;
     cursor: pointer;
+    position:absolute;
+    top:0px;
+    right:-10px;
+  }
+  span:last-child {
+    top:27px;
+    border-radius: 0 0 5px 5px;
   }
   span:hover {
     cursor: pointer;

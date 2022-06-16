@@ -90,5 +90,8 @@ const SearchBtn = styled.button`
   height:50px;
   width:50px;
   color:#7d7d7d;
-  
+  transition: 0.4s;
+  &:hover {
+    font-size:18px;
+  }
 `;
