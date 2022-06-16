@@ -1,70 +1,88 @@
-# Getting Started with Create React App
+![header](https://capsule-render.vercel.app/api?type=slice&color=gradient&height=200&section=header&text=항대숲&fontSize=90&animation=fadeIn&fontAlignY=38&desc=%20&descAlignY=62&descAlign=62)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<br>
 
-## Available Scripts
+## 프로젝트명: 항해 대나무 숲
 
-In the project directory, you can run:
+<br>
 
-### `npm start`
+#### 프로젝트 설명
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+<br>
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# 🎋 항대숲(항해 대나무 숲) - 1조 미니프로젝트
 
-### `npm test`
+## 1. 제작기간
+### 2022년 6월 9일 ~ 2022년 6월 16일
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 2. 역할 배분
+#### 기준 : 페이지 별 역할 배분
+* 임준수 : 로그인, 회원가입 페이지
+* 이동복 : 게시글 목록 페이지
+* 김영호 : 게시글 작성, 수정 페이지
 
-### `npm run build`
+<br>
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+#### 추가 기능: 
+* 임준수 : 모달 창 플로팅
+* 이동복 : 댓글 기능, 좋아요 기능
+* 김영호 : 검색 기능, 무한스크롤 기능, 사진 업로드 기능(다중 선택, 슬라이드)
+ 
+<br>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### ![Tistory Badge](https://img.shields.io/badge/FrontEnd-555263?style=flat&logoColor=white)
+- #### 팀장: 임준수
+- #### 팀원: 이동복 
+- #### 팀원: 김영호
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+<br>
 
-### `npm run eject`
+================================================== 수정 필요
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 2. 사용기술 
+![Tistory Badge](https://img.shields.io/badge/BackEnd-555263?style=flat&logoColor=white) <br>
+<img src="https://img.shields.io/badge/python-3776AB?style=for-the-badge&logo=python&logoColor=white"> <img src="https://img.shields.io/badge/flask-000000?style=for-the-badge&logo=flask&logoColor=white"> <img src="https://img.shields.io/badge/mongoDB-47A248?style=for-the-badge&logo=MongoDB&logoColor=white">
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<br>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+![Tistory Badge](https://img.shields.io/badge/FrontEnd-555263?style=flat&logoColor=white) <br>
+<img src="https://img.shields.io/badge/html5-E34F26?style=for-the-badge&logo=html5&logoColor=white"> <img src="https://img.shields.io/badge/css-1572B6?style=for-the-badge&logo=css3&logoColor=white"> <img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
+<img src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white">
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+<br>
 
-## Learn More
+## 3. 실행화면
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+<br>
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### 로그인 페이지
 
-### Code Splitting
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+<br>
 
-### Analyzing the Bundle Size
+### 메인 페이지
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+<br>
 
-### Making a Progressive Web App
+## 4. 기능
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<br>
 
-### Advanced Configuration
+### 로그인, 회원가입
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+<br>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+<br>
+
+## 5. 시연영상
+### YOUTUBE:
+
+<br>
+
+## 6. 링크
+### SA:
+
+![Footer](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=footer)
