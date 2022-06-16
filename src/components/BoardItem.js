@@ -1,6 +1,6 @@
 import instance from '../shared/axios';
 import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { faThumbsUp } from '@fortawesome/free-regular-svg-icons';
 import { faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons';
@@ -14,7 +14,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 const BoardItem = ({ board }) => {
-  const USER_NICKNAME = getCookie('nickname');
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [commentValue, setCommentValue] = useState([]);
@@ -23,6 +22,11 @@ const BoardItem = ({ board }) => {
   const [likeId, setLikeId] = useState('');
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
+  const USER_NICKNAME = getCookie('nickname');
+  const user = useSelector(state => state.user);
+
+  // 로그인 여부에 따른 컴포넌트 렌더링
+  useEffect(() => {}, [user.isLogin]);
 
   const loadLikeInfo = async () => {
     try {
@@ -52,7 +56,6 @@ const BoardItem = ({ board }) => {
     const load = async () => {
       const boardResponse = await instance.get(`/comment/${board._id}`);
       setCommentValue(boardResponse.data.comment);
-
       loadLikeInfo();
     };
     load();
@@ -64,7 +67,6 @@ const BoardItem = ({ board }) => {
       alert('로그인이 필요한 기능입니다.');
       return;
     }
-
     const data = {
       contentId: board._id,
       nickname: USER_NICKNAME,
@@ -272,8 +274,7 @@ const ImageBox = styled.div`
   }
 `;
 
-const Comment = styled.span`
-`;
+const Comment = styled.span``;
 const Detail = styled.div`
   margin: 0 10px;
   padding: 15px;
