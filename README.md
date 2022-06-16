@@ -60,13 +60,13 @@
   - | 라이브러리명      | 내용                                    | 참고 |
 | :-------------------- | :-------------------------------------- | :--- |
 | axios                 | 서버통신                                |      |
-| react-router-dom      | 렌더링                                   |      |
-| react-redux           |  상태관리                                 |      |
-| @reduxjs/toolkit      |  Redux를 더 쉽게 사용                     |      |
+| react-router-dom      | 렌더링                                  |      |
+| react-redux           |  상태관리                               |      |
+| @reduxjs/toolkit      |  Redux를 더 쉽게 사용                   |      |
 | react-slick           |  슬라이드                               |      |
 | moment                |  시간이 포함된 데이터                    |      |
-| intersection-observer |   옵저버                                 |      |
-| fortawesome         |    아이콘 툴킷                              |      |
+| intersection-observer |   옵저버                                |      |
+| fortawesome           |    아이콘 툴킷                          |      |
 
 <br>
 
