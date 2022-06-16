@@ -132,10 +132,10 @@ const Text = styled.div`
     color: #9c9c9c;
     display: block;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 20px;
   }
   ${Content} {
-    font-size: 16px;
+    font-size: 30px;
   }
   ${More} {
     color: #383838;
