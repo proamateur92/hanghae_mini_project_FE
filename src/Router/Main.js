@@ -42,6 +42,10 @@ const Main = () => {
     setPage(pages);
   }, [pages]);
 
+  console.log(page)
+
+  
+
   useEffect(() => {
     let observer;
     if (target) {

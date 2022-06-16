@@ -23,10 +23,18 @@ export const createBoardDB = contents_obj => {
   return async function (dispatch) {
     await instance
       .post('/content', contents_obj)
-      .then(response => {})
+      .then(response => {
+        console.log(response.data.postContent.id)
+        contents_obj = {
+          ...contents_obj,
+          _id:response?.data?.postContent?.id
+        }
+      })
       .catch(function (error) {
         console.log('에러', error.response.data);
       });
+      console.log(contents_obj)
+      // debugger;
     await dispatch(createBoard(contents_obj));
   };
 };
@@ -80,7 +88,7 @@ const boardSlice = createSlice({
   initialState: {
     list: [],
     searchList: [],
-    pages:0,
+    pages:4,
   },
 
   reducers: {
@@ -89,14 +97,13 @@ const boardSlice = createSlice({
     //   state.name = action.payload;
     // },
     loadBoard: (state, action) => {
-      // console.log(action.payload.pages);
+      console.log(action.payload.pages);
       state.list = [...action.payload.newstate];
-      state.pages = action.payload.pages - 4
+      state.pages = action.payload.pages
       // state.list.sort((a, b) => new Date(b.CreateAt) - new Date(a.CreateAt));
     },
     createBoard(state, action) {
       console.log('리듀서', action.payload);
-      // state.list.unshift(action.payload);
       state.list.push(action.payload);
       state.list.sort((a, b) => new Date(b.CreateAt) - new Date(a.CreateAt));
     },
