@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { loadBoardDB } from '../redux/modules/boardSlice';
 import styled from 'styled-components';
 import Header from './Header';
@@ -14,35 +13,39 @@ import { useNavigate } from 'react-router-dom';
 import { getCookie } from '../shared/cookie';
 
 const Main = () => {
-  const USER_LOGIN = getCookie('is_login');
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const USER_LOGIN = getCookie('is_login');
+  const user = useSelector(state => state.user);
+
+  // 로그인 여부에 따른 컴포넌트 렌더링
+  useEffect(() => {}, [user.isLogin]);
 
   // redux로부터 게시글 정보 받아오기
   const [isLoading, setIsLoading] = useState(false);
   const boards = useSelector(state => state.board?.list);
-  const pages = useSelector(state => state.board?.pages)
-  const search_data = useSelector((state) => state.board.searchList);
+  const pages = useSelector(state => state.board?.pages);
+  const search_data = useSelector(state => state.board.searchList);
 
   // //무한 스크롤
   const [isLoaded, setIsLoaded] = useState(false);
   const [target, setTarget] = useState(null);
-  const [page, setPage] = useState(4)
-    
+  const [page, setPage] = useState(4);
+
   const onIntersect = async ([entry], observer) => {
     if (entry.isIntersecting) {
       observer.unobserve(entry.target);
-      await dispatch(loadBoardDB(page)) 
+      await dispatch(loadBoardDB(page));
     }
   };
   useEffect(() => {
-    setPage(pages)
-  },[pages])
+    setPage(pages);
+  }, [pages]);
 
   useEffect(() => {
     let observer;
     if (target) {
-      setPage(page+4)
+      setPage(page + 4);
       observer = new IntersectionObserver(onIntersect, {
         threshold: 0.5,
       });
@@ -51,7 +54,6 @@ const Main = () => {
     return () => {
       observer && observer.disconnect();
     };
-
   }, [target]);
 
   // 컴포넌트 호출 될 때 초기화
@@ -70,24 +72,25 @@ const Main = () => {
           <Container>
             <Box>
               <Search />
-                <>
-                  <SearchList board={search_data}/>
-                  <ShadowBr />
-                </>
-                <SubTitle>전체 게시글</SubTitle>
+              <>
+                <SearchList board={search_data} />
+                <ShadowBr />
+              </>
+              <SubTitle>전체 게시글</SubTitle>
               <List>
-                {boards && boards.map((board, i) => (<div key={i}><BoardItem key={Math.random()} board={board}/>
-                <div ref={i === boards.length - 1 ? setTarget : null} >{isLoaded && <Loder/>}</div></div>))}
+                {boards &&
+                  boards.map((board, i) => (
+                    <div key={i}>
+                      <BoardItem key={Math.random()} board={board} />
+                      <div ref={i === boards.length - 1 ? setTarget : null}>{isLoaded && <Loder />}</div>
+                    </div>
+                  ))}
               </List>
             </Box>
           </Container>
           {USER_LOGIN && (
             <WriteButton>
-              <FontAwesomeIcon
-                onClick={() => navigate("/write")}
-                icon={faSquarePlus}
-                size="3x"
-              />
+              <FontAwesomeIcon onClick={() => navigate('/write')} icon={faSquarePlus} size='3x' />
             </WriteButton>
           )}
         </>
@@ -119,7 +122,7 @@ const WriteButton = styled.div`
   position: fixed;
   right: 20px;
   bottom: 20px;
-  color: #98DDCA;
+  color: #98ddca;
   cursor: pointer;
   transition: 0.4s;
   &:hover {
@@ -127,14 +130,13 @@ const WriteButton = styled.div`
     color: #68ab99;
   }
 `;
-const SubTitle = styled.h3`
-`;
+const SubTitle = styled.h3``;
 
 const ShadowBr = styled.div`
-width:96%;
-margin:0 auto;
-background-color:#e0e0e0;
-height:1px;
+  width: 96%;
+  margin: 0 auto;
+  background-color: #e0e0e0;
+  height: 1px;
 `;
 
 export default Main;
