@@ -84,7 +84,7 @@
 <br>
 
 ## 5. 시연영상
-### YOUTUBE:
+### YOUTUBE: https://www.youtube.com/watch?v=Z8PfX1_YuYM
 
 <br>
 
