@@ -17,7 +17,8 @@ export const loginUserDB = ({ users, close }) => {
         setCookie("nickname", `${nickname}`);
         // 저장된 토큰으로 login 여부 확인
         if (accessToken) {
-          dispatch(loginUser(true));
+          dispatch(loginUser({true:true, nickname}));
+          // dispatch(loadBoard({newstate, pages}));
           //토근 들어왔을 때 모달close 함수 실행
           close();
         }
@@ -33,12 +34,15 @@ const userSlice = createSlice({
   name: "user",
   initialState: {
     isLogin: false,
+    nickname:[],
   },
 
   reducers: {
     loginUser: (state, action) => {
-      state.isLogin = action.payload;
-    },
+      state.isLogin = action.payload.true;
+      state.nickname = action.payload.nickname;
+      console.log(action.payload)
+    }
   },
 });
 
