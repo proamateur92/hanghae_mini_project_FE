@@ -48,10 +48,12 @@ const ModalSignup = (props) => {
     await axios
       //서버에 users 인풋 값 보내주기
       .post("http://13.209.64.124/users/signup", users)
+      //성공시 리스폰스 받아옴
       .then((response) => {
         window.alert("회원가입 성공");
         close();
       })
+      //실패시 에러메시지 받아옴, 작성한 벨리데이션 문구도 같이
       .catch(function (error) {
         if (
           email_ref.current.value === "" ||

@@ -9,9 +9,6 @@ import { useSelector } from "react-redux";
 const Header = () => {
   const navigate = useNavigate();
 
-  //로그인 체크 state로 상태 변경할 필요가 없다!, app.js에서 전역으로 적용했기 때문에, 두번 일을 하는 것!
-  // const [is_login, setIsLogin] = React.useState(false);
-
   //로그인 상태 reducer에서 가져옴
   const user = useSelector((state) => state.user);
 
