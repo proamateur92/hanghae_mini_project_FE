@@ -24,36 +24,41 @@ const BoardItem = ({ board }) => {
   const [isMore, setIsMore] = useState(false);
   const [isComment, setIsComment] = useState(false);
 
+  const loadLikeInfo = async () => {
+    try {
+      // 좋아요 리스트 가져오기
+      const likeResponse = await instance.get(`/like/${board._id}`);
+      // console.log(likeResponse.data);
+
+      // 좋아요 활성화
+      const likeMatch = likeResponse.data.filter(like => like.nickname === USER_NICKNAME);
+      setActiveLike(likeMatch.length);
+
+      // 해당 게시글의 유저가 좋아요를 한 경우
+      if (likeMatch.length) {
+        setLikeId(likeMatch[0]._id);
+      }
+
+      // 좋아요 개수 출력
+      const likeNums = likeResponse.data.filter(like => like.contentId === board._id);
+      setLikeNum(likeNums.length);
+    } catch (error) {
+      console.log(`좋아요 불러오기 에러: ${error}`);
+    }
+  };
+
+  // 댓글 리스트 가져오기
   useEffect(() => {
     const load = async () => {
-      // 댓글 리스트 가져오기
       const boardResponse = await instance.get(`/comment/${board._id}`);
       setCommentValue(boardResponse.data.comment);
 
-      try {
-        // 좋아요 리스트 가져오기
-        const likeResponse = await instance.get(`/like/${board._id}`);
-        console.log(likeResponse.data);
-
-        // 좋아요 활성화
-        const likeMatch = likeResponse.data.filter(like => like.nickname === USER_NICKNAME);
-        setActiveLike(likeMatch.length);
-
-        // 해당 게시글의 유저가 좋아요를 한 경우
-        if (likeMatch.length) {
-          setLikeId(likeMatch[0]._id);
-        }
-
-        // 좋아요 개수 출력
-        const likeNums = likeResponse.data.filter(like => like.contentId === board._id);
-        setLikeNum(likeNums.length);
-      } catch (error) {
-        console.log(`좋아요 불러오기 에러: ${error}`);
-      }
+      loadLikeInfo();
     };
     load();
   }, [board]);
 
+  // 좋아요 버튼 클릭 했을 때
   const switchLike = async targetId => {
     if (!USER_NICKNAME) {
       alert('로그인이 필요한 기능입니다.');
@@ -66,15 +71,14 @@ const BoardItem = ({ board }) => {
     };
 
     if (targetId) {
-      console.log('좋아요 취소');
-      const response = await instance.delete(`/like/${board._id}/${targetId}`, USER_NICKNAME);
-      console.log(response);
+      await instance.delete(`/like/${board._id}/${targetId}`, USER_NICKNAME);
+      setLikeId('');
     } else {
-      console.log('좋아요 추가');
-      const response = await instance.post(`/like/${board._id}/`, data);
-      console.log(response);
-      console.log(board._id);
+      await instance.post(`/like/${board._id}`, data);
+      setLikeId(USER_NICKNAME);
     }
+
+    loadLikeInfo();
   };
 
   // 게시글 삭제 redux 함수 호출
