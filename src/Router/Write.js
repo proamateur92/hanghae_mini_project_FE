@@ -44,7 +44,8 @@ const Write = () => {
   const [showImages, setShowImages] = useState(is_edit?_post?.imageURL:[]);
   
   //cokie
-  const user_name = localStorage.getItem("nickname")
+  const user_name = getCookie("nickname")
+  // const user_name = localStorage.getItem("nickname")
 
   useEffect(() => {
     if (is_edit && !_post) { //is_edit모드, _post정보가 비어있으면 

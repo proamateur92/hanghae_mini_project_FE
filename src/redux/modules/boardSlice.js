@@ -11,7 +11,7 @@ export const loadBoardDB = (page) => {
       const response = await instance.get(`/content/`, { params: {page} });
       const data = getState().board.list
       const newstate = [...data, ...response.data];
-      const pages = page + 4;
+      const pages = page?page + 4:4;
       dispatch(loadBoard({newstate, pages}));
     } catch (error) {
     }
@@ -90,9 +90,8 @@ const boardSlice = createSlice({
 
   reducers: {
     loadBoard: (state, action) => {
-      console.log(action.payload.pages);
       state.list = [...action.payload.newstate];
-      state.pages = action.payload.pages
+      state.pages = action.payload.pages;
       // state.list.sort((a, b) => new Date(b.CreateAt) - new Date(a.CreateAt));
     },
     createBoard(state, action) {

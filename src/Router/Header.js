@@ -11,6 +11,7 @@ const Header = () => {
 
   //로그인 상태 reducer에서 가져옴
   const user = useSelector((state) => state.user);
+  const users = getCookie("nickname")
 
   // 컴포넌트 렌더링 시 로그인 여부 체크
   useEffect(() => {}, [user.isLogin]);
@@ -48,13 +49,13 @@ const Header = () => {
         <img src="logo3.png" alt="로고" />
       </Logo>
       <List>
-        {!user.isLogin && <Item onClick={openSignupModal}>회원가입</Item>}
-        {!user.isLogin && <Item onClick={openLoginModal}>로그인</Item>}
+        {!users && <Item onClick={openSignupModal}>회원가입</Item>}
+        {!users && <Item onClick={openLoginModal}>로그인</Item>}
 
         <ModalLogin open={modalLoginOpen} close={closeLoginModal}></ModalLogin>
         {/* <FontAwesomeIcon icon={faBars} size="2x" /> */}
-        {user.isLogin && <Title>{getCookie("nickname")}님 안녕하세요!</Title>}
-        {user.isLogin && <Item onClick={deleteCookie}>로그아웃</Item>}
+        {users && <Title>{getCookie("nickname")}님 안녕하세요!</Title>}
+        {users && <Item onClick={deleteCookie}>로그아웃</Item>}
 
         <ModalSignup
           open={modalSignupOpen}
