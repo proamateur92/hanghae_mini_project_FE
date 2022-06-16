@@ -60,7 +60,7 @@
 
 <br>
 
-### 로그인 페이지
+### 로그인, 회원가입 모달창 플로팅
 
 
 <br>
@@ -73,7 +73,8 @@
 
 <br>
 
-### 로그인, 회원가입
+### 로그인, 회원가입, 게시물 CRUD, 게시물 댓글 CRUD 기능, 게시글 이미지 첨부기능, 쿠키에 토큰을 저장 및 사용 기능, 좋아요 기능, 무한 스크롤, 게시글 이미지 슬라이드,이미지 다중 선택, 검색기능, 로그인 및 회원가입 페이지를 모달창 플로팅
+
 
 
 <br>
@@ -88,6 +89,6 @@
 <br>
 
 ## 6. 링크
-### SA:
+### SA 링크 : https://www.notion.so/S-A-1-d81d76a9390e499dbf918deaccdc80e5
 
 ![Footer](https://capsule-render.vercel.app/api?type=waving&color=gradient&height=200&section=footer)
