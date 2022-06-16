@@ -7,7 +7,13 @@ import { getCookie } from '../shared/cookie';
 
 const CommentEdit = ({ comments, onEdit, off, callRemoveComment }) => {
   const USER_NICKNAME = getCookie('nickname');
+
+  const { commentId, contentId, nickname } = comments;
+
+  // 수정, 삭제 toggle을 위한 state
   const [option, setOption] = useState(false);
+
+  // 취소 버튼을 눌렀을 때 모든 toggle 초기화
   const [cancel, setCancel] = useState(false);
 
   useEffect(() => {
@@ -17,13 +23,14 @@ const CommentEdit = ({ comments, onEdit, off, callRemoveComment }) => {
     }
   }, [off]);
 
-  const { commentId, contentId, nickname } = comments;
-
   const availeWrite = () => {
+    //
     setCancel(true);
+    // 수정, 삭제 토글 off 처리
     onEdit(true);
   };
 
+  // 취소
   const reset = () => {
     setCancel(false);
     onEdit(false);
@@ -45,9 +52,12 @@ const CommentEdit = ({ comments, onEdit, off, callRemoveComment }) => {
 
   // 댓글 삭제
   const handleRemove = async () => {
+    // 수정, 삭제 가리기
     setOption(false);
     try {
+      // 댓글 삭제 요청
       await instance.delete(`/comment/${contentId}/${commentId}`);
+      // 상위 컴포넌트에 id값 전달
       callRemoveComment(commentId);
     } catch (error) {
       console.log('통신실패');
@@ -80,23 +90,23 @@ const Icon = styled.div`
 const Option = styled.div``;
 const OptionDetail = styled.div`
   display: flex;
-  position:relative;
+  position: relative;
   span {
     font-size: 14px;
     padding: 5px 8px;
-    width:30px;
+    width: 30px;
     text-align: center;
     margin-left: 5px;
-    border-radius: 5px 5px 0 0 ;
-    background-color:white;
-    box-shadow:1px 1px 1px gray;
+    border-radius: 5px 5px 0 0;
+    background-color: white;
+    box-shadow: 1px 1px 1px gray;
     cursor: pointer;
-    position:absolute;
-    top:0px;
-    right:-10px;
+    position: absolute;
+    top: 0px;
+    right: -10px;
   }
   span:last-child {
-    top:27px;
+    top: 27px;
     border-radius: 0 0 5px 5px;
   }
   span:hover {

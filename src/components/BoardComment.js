@@ -1,12 +1,11 @@
 import instance from '../shared/axios';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import CommentItem from './CommentItem';
 import styled from 'styled-components';
 import { getCookie } from '../shared/cookie';
 
 const BoardComment = ({ board, comment, onAddComment, onUpdateContent, onRemoveContent }) => {
   const [commentValue, setCommentValue] = useState('');
-  const [activeComment, setActiveComment] = useState(false);
   const USER_LOGIN = getCookie('is_login');
 
   // 댓글 입력 값 감지 함수
@@ -23,26 +22,32 @@ const BoardComment = ({ board, comment, onAddComment, onUpdateContent, onRemoveC
       event.preventDefault();
     }
 
+    // 댓글 내용 전달
     const commentData = {
-      // nickname: 'admin99',
       // contentId: `${board._id}`,
       comment: `${commentValue}`,
     };
 
     // 댓글 추가하기
     try {
+      // 해당 게시글의 댓글 추가 요청
       const response = await instance.post(`/comment/${board._id}`, commentData);
+
+      // state반영을 위해 BoardItem으로 전달
       onAddComment(response.data.contentcomment);
     } catch (error) {
       console.log('통신실패');
     }
+    // 댓글 입력 값 초기화
     setCommentValue('');
   };
 
+  // state반영을 위해 BoardItem으로 전달
   const updateContent = (targetId, newComment) => {
     onUpdateContent(targetId, newComment);
   };
 
+  // state반영을 위해 BoardItem으로 전달
   const removeContent = targetId => {
     onRemoveContent(targetId);
   };

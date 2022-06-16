@@ -30,20 +30,22 @@ const BoardItem = ({ board }) => {
 
   const loadLikeInfo = async () => {
     try {
-      // 좋아요 리스트 가져오기
+      // 게시글 id 값으로 좋아요 목록 가져오기
       const likeResponse = await instance.get(`/like/${board._id}`);
       // console.log(likeResponse.data);
 
       // 좋아요 활성화
+      // 해당 게시글에 존재하는 좋아요 목록 중 로그인한 유저의 닉네임과 일치하는 좋아요 목록 반환
       const likeMatch = likeResponse.data.filter(like => like.nickname === USER_NICKNAME);
+      // 배열 값이 존재하면 1 없으면 0으로 좋아요 버튼 색깔 전환
       setActiveLike(likeMatch.length);
 
-      // 해당 게시글의 유저가 좋아요를 한 경우
+      // 해당 게시글의 유저가 좋아요를 한 경우 Like 태그의 id값을 부여 (좋아요 추가, 삭제 구분하기 위한 id값)
       if (likeMatch.length) {
         setLikeId(likeMatch[0]._id);
       }
 
-      // 좋아요 개수 출력
+      // 좋아요 개수 반환
       const likeNums = likeResponse.data.filter(like => like.contentId === board._id);
       setLikeNum(likeNums.length);
     } catch (error) {
@@ -51,32 +53,51 @@ const BoardItem = ({ board }) => {
     }
   };
 
-  // 댓글 리스트 가져오기
+  // 게시글 정보가 바뀔 때마다 호출
   useEffect(() => {
     const load = async () => {
+      // 게시글 id 값으로 댓글 목록 가져오기
       const boardResponse = await instance.get(`/comment/${board._id}`);
+
+      // 댓글 반영결과가 바로 반영되도록 state 값을 set
       setCommentValue(boardResponse.data.comment);
+
+      // 좋아요 갯수, 버튼 활성화 여부를 렌더링 해주기 위한 함수 호출
       loadLikeInfo();
     };
+
+    // 의미없이 렌더링 되지 않도록 처리
     load();
   }, [board]);
 
   // 좋아요 버튼 클릭 했을 때
   const switchLike = async targetId => {
+    // cookie에 로그인 정보가 들어있지 않으면 return
     if (!USER_NICKNAME) {
       alert('로그인이 필요한 기능입니다.');
       return;
     }
+
+    // 좋아요 삭제를 위해 필요한 객체
     const data = {
       contentId: board._id,
       nickname: USER_NICKNAME,
     };
 
+    // 45번 line 값으로 부여
+    // 좋아요 생성이 되어있다면 id값이 부여되어있음
+    // 좋아요 생성이 되어있지 않다면 빈 문자열이 부여되어있음
     if (targetId) {
+      // 좋아요 삭제 요청 -> 게시글 id, nickname 필요
       await instance.delete(`/like/${board._id}/${targetId}`, USER_NICKNAME);
+
+      // Like 태그의 id 값을 초기화 해준다.
       setLikeId('');
     } else {
+      // 좋아요 수정 요청 -> 게시글 id 필요, 83 line 객체 전달
       await instance.post(`/like/${board._id}`, data);
+
+      // Like 태그의 id 값에 nickname 값을 넣어준다.
       setLikeId(USER_NICKNAME);
     }
 
@@ -123,8 +144,6 @@ const BoardItem = ({ board }) => {
     slidesToScroll: 1,
   };
 
-  // console.log('댓글목록 정보');
-  // console.log(commentValue);
   return (
     <Item>
       <Text>

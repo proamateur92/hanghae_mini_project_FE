@@ -4,7 +4,10 @@ import styled from 'styled-components';
 import CommentEdit from './CommentEdit';
 
 const CommentItem = ({ comm, handleUpdateContent, handleRemoveContent }) => {
+  // 댓글 입력 값을 담기 위한 state
   const [commentValue, setCommentValue] = useState(comm.comment);
+
+  // 수정 버튼 클릭하면 input tag로 전환, 취소하면 초기화
   const [activeInput, setActiveInput] = useState(false);
 
   // 댓글 입력 값 감지 함수
@@ -21,6 +24,7 @@ const CommentItem = ({ comm, handleUpdateContent, handleRemoveContent }) => {
   const submitHandler = async event => {
     event.preventDefault();
 
+    // 댓글이 공백이면 return
     if (commentValue.trim() === '') return;
 
     const commentData = {
@@ -35,14 +39,17 @@ const CommentItem = ({ comm, handleUpdateContent, handleRemoveContent }) => {
       console.log('통신실패');
       return;
     }
+    // 댓글 입력하면 input 태그 해제
     setActiveInput(false);
   };
 
   const handleNewContent = result => {
+    // 수정 버튼을 클릭하면 input태그 해제
     setActiveInput(result);
   };
 
   const excuteRemoveComment = targetId => {
+    // 삭제 버튼 클릭하면 id값 전달
     handleRemoveContent(targetId);
   };
 
