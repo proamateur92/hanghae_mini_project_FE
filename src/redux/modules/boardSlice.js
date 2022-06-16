@@ -6,21 +6,15 @@ import instance from '../../shared/axios';
 // 게시글 불러오기
 export const loadBoardDB = (page) => {
   return async function (dispatch, getState) {
-    console.log(page)
     // 테스트 url
     try {
-      // const response = await instance.get(`/content/`);
       const response = await instance.get(`/content/`, { params: {page} });
-      
-      // const response = await axios.get('http://13.209.64.124/content');
       const data = getState().board.list
       const newstate = [...data, ...response.data];
-      dispatch(loadBoard(newstate));
+      const pages = page + 4;
+      dispatch(loadBoard({newstate, pages}));
     } catch (error) {
-      // 게시글 불러오지 못할 때
-      // 멘토링 때 물어보기
     }
-    // console.log(response);
   };
 };
 
@@ -86,6 +80,7 @@ const boardSlice = createSlice({
   initialState: {
     list: [],
     searchList: [],
+    pages:0,
   },
 
   reducers: {
@@ -94,8 +89,9 @@ const boardSlice = createSlice({
     //   state.name = action.payload;
     // },
     loadBoard: (state, action) => {
-      // console.log(action.payload);
-      state.list = [...action.payload];
+      // console.log(action.payload.pages);
+      state.list = [...action.payload.newstate];
+      state.pages = action.payload.pages - 4
       // state.list.sort((a, b) => new Date(b.CreateAt) - new Date(a.CreateAt));
     },
     createBoard(state, action) {

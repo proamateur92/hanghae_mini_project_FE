@@ -21,6 +21,7 @@ const Main = () => {
   // redux로부터 게시글 정보 받아오기
   const [isLoading, setIsLoading] = useState(false);
   const boards = useSelector(state => state.board?.list);
+  const pages = useSelector(state => state.board?.pages)
   const search_data = useSelector((state) => state.board.searchList);
 
   // //무한 스크롤
@@ -35,6 +36,10 @@ const Main = () => {
     }
   };
   useEffect(() => {
+    setPage(pages)
+  },[pages])
+
+  useEffect(() => {
     let observer;
     if (target) {
       setPage(page+4)
@@ -48,8 +53,6 @@ const Main = () => {
     };
 
   }, [target]);
-
-{/* <><div ref={i === boards.length - 1 ? setTarget : null} ></div> */}
 
   // 컴포넌트 호출 될 때 초기화
   useEffect(() => {
