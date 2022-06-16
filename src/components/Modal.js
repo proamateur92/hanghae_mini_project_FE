@@ -90,7 +90,11 @@ const ModalSignup = (props) => {
       {open ? (
         <section>
           <header>
-            <button className="close" onClick={close}>
+            <button
+              style={{ fontSize: "40px" }}
+              className="close"
+              onClick={close}
+            >
               &times;
             </button>
           </header>
@@ -189,7 +193,11 @@ const ModalLogin = (props) => {
       {open ? (
         <section>
           <header>
-            <button className="close" onClick={close}>
+            <button
+              style={{ fontSize: "40px" }}
+              className="close"
+              onClick={close}
+            >
               &times;
             </button>
           </header>
@@ -232,7 +240,8 @@ const ModalLogin = (props) => {
 };
 
 const SignupTitle = styled.h1`
-  color: #e07575;
+  color: #3ddaad;
+  font-size: 25px;
 `;
 
 const SignupHeader = styled.div`
@@ -246,7 +255,7 @@ const SignupWrap = styled.div`
   background-color: whitesmoke;
   height: 90%;
   width: 90%;
-  border-radius: 10%;
+  border-radius: 10px;
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -257,8 +266,8 @@ const SignupWrap = styled.div`
 const Input = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 5px 0;
-  color: #e07575;
+  margin: 2px 0;
+  color: #38d8ab;
   font-size: 1.2rem;
   width: 60%;
   label {
@@ -268,17 +277,19 @@ const Input = styled.div`
     width: 100%;
     height: 30px;
     border: none;
-    border-bottom: 2px solid #ffcaca;
+    background-color: whitesmoke;
+    border-bottom: 2px solid #d5ecc2;
+    font-size: 18px;
   }
   & input:focus {
     outline: none;
-    border-bottom: 2px solid #e07575;
+    border-bottom: 2px solid #98ddca;
   }
 `;
 const MiniTitle = styled.p`
   margin-top: 10px;
   color: #999494;
-  font-size: 13px;
+  font-size: 16px;
 `;
 
 const Btn = styled.button`
@@ -288,10 +299,10 @@ const Btn = styled.button`
   margin-top: 20px;
   height: 50px;
   font-size: 1.5rem;
-  background-color: #ffcaca;
+  background-color: #d0eabb;
   color: white;
   &:hover {
-    background-color: #e07575;
+    background-color: #98ddca;
   }
 `;
 
